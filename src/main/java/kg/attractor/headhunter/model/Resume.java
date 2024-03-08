@@ -1,6 +1,7 @@
 package kg.attractor.headhunter.model;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class Resume {
     private int id;
@@ -9,6 +10,6 @@ public class Resume {
     private int categoryId;
     private int salary;
     private boolean isActive;
-    private Timestamp createdTime;
-    private Timestamp updateTime;
+    private LocalDateTime createdTime;
+    private LocalDateTime updateTime;
 }

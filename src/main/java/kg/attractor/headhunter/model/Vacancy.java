@@ -1,17 +1,18 @@
 package kg.attractor.headhunter.model;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class Vacancy {
     private int id;
     private String name;
     private String description;
     private int categoryId;
-    private int salary;
+    private double salary;
     private int experienceFrom;
     private int experienceTo;
     private boolean isActive;
     private int authorId;
-    private Timestamp createdDate;
-    private Timestamp updateTime;
+    private LocalDateTime createdDate;
+    private LocalDateTime updateTime;
 }
