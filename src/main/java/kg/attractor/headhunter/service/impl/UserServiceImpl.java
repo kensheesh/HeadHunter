@@ -79,4 +79,19 @@ public class UserServiceImpl implements UserService {
                 .accountType(user.getAccountType())
                 .build();
     }
+
+    public UserDto checkUserInDB(String email) throws UserNotFoundException {
+        User user = userDao.getUserByEmail(email).orElseThrow(() -> new UserNotFoundException("There isn't any user with email: " + email));
+        return UserDto.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .surname(user.getSurname())
+                .age(user.getAge())
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .phoneNumber(user.getPhoneNumber())
+                .avatar(user.getAvatar())
+                .accountType(user.getAccountType())
+                .build();
+    }
 }

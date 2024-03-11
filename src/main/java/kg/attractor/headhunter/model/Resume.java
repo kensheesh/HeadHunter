@@ -1,10 +1,15 @@
 package kg.attractor.headhunter.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 public class Resume {
     private int id;
-    private int respondedApplicantId;
+    private int UserId;
     private String name;
     private int categoryId;
     private int salary;
