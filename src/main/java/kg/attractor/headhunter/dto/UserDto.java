@@ -1,11 +1,13 @@
-package kg.attractor.headhunter.model;
+package kg.attractor.headhunter.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import kg.attractor.headhunter.model.AccountType;
+import lombok.*;
 
-@Getter
-@Setter
-public class User {
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class UserDto {
     private int id;
     private String name;
     private String surname;
