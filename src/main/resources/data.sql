@@ -74,9 +74,10 @@ VALUES ('Информационные технологии'),
        ('Маркетинг');
 
 INSERT INTO vacancies (name, description, categoryId, salary, experienceFrom, experienceTo, isActive, authorId,
-                     createdDate, updateTime)
+                       createdDate, updateTime)
 VALUES ('Senior Java Developer', 'Разработка высоконагруженных систем', 1, 150000, 3, 5, TRUE, 1, NOW(), NOW()),
-       ('Менеджер по продажам', 'Работа с клиентской базой, увеличение продаж', 2, 70000, 1, 3, TRUE, 2, NOW(), NOW());
+       ('Менеджер по продажам', 'Работа с клиентской базой, увеличение продаж', 2, 70000, 1, 3, TRUE, 2, NOW(), NOW()),
+       ('Менеджер по покупкам', 'Работа по покупке за хорошую цену', 2, 340000, 4, 7, TRUE, 1, NOW(), NOW());
 
 INSERT INTO resumes (name, userId, categoryId, salary, isActive, createdTime, updateTime)
 VALUES ('Разработчик ПО', 1, 1, 100000, TRUE, NOW(), NOW()),

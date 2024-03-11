@@ -1,13 +1,17 @@
-package kg.attractor.headhunter.model;
+package kg.attractor.headhunter.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
-public class Vacancy {
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class VacancyDto {
     private int id;
     private String name;
     private String description;
