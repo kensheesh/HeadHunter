@@ -66,7 +66,6 @@ CREATE TABLE IF NOT EXISTS respondedApplicants
 INSERT INTO users (name, surname, age, email, password, phoneNumber, avatar, accountType)
 VALUES ('John', 'Doe', 28, 'john.doe@example.com', 'securepass', '555-0101', '', 'APPLICANT');
 
--- Работодатель
 INSERT INTO users (name, surname, age, email, password, phoneNumber, avatar, accountType)
 VALUES ('Alice', 'Smith', 35, 'alice.smith@corp.com', 'securepass123', '555-0102', '', 'EMPLOYER');
 
@@ -81,7 +80,8 @@ VALUES ('Senior Java Developer', 'Разработка высоконагруж�
 
 INSERT INTO resumes (name, userId, categoryId, salary, isActive, createdTime, updateTime)
 VALUES ('Разработчик ПО', 1, 1, 100000, TRUE, NOW(), NOW()),
-       ('Тестировщик', 2, 2, 80000, TRUE, NOW(), NOW());
+       ('Тестировщик', 2, 2, 80000, TRUE, NOW(), NOW()),
+       ('Видеограф', 2, 2, 801000, TRUE, NOW(), NOW());
 
 INSERT INTO respondedApplicants (resumeId, vacancyId, confirmation)
 VALUES (1, 1, FALSE),

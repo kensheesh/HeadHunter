@@ -21,7 +21,7 @@ public class ResumeServiceImpl implements ResumeService {
         List<ResumeDto> dtos = new ArrayList<>();
         resumes.forEach(e -> dtos.add(ResumeDto.builder()
                 .id(e.getId())
-                .respondedApplicantId(e.getUserId())
+                .userId(e.getUserId())
                         .name(e.getName())
                         .categoryId(e.getCategoryId())
                         .salary(e.getSalary())
@@ -32,4 +32,19 @@ public class ResumeServiceImpl implements ResumeService {
         return dtos;
     }
 
+    public List<ResumeDto> getResumeByUserId(int userId) throws ResumeNotFoundException {
+        List<Resume> resumes = resumeDao.getResumeByUserId(userId).orElseThrow(() -> new ResumeNotFoundException("Can't find resume with this userId: " + userId));
+        List<ResumeDto> dtos = new ArrayList<>();
+        resumes.forEach(e -> dtos.add(ResumeDto.builder()
+                .id(e.getId())
+                .userId(e.getUserId())
+                .name(e.getName())
+                .categoryId(e.getCategoryId())
+                .salary(e.getSalary())
+                .isActive(e.isActive())
+                .createdTime(e.getCreatedTime())
+                .updateTime(e.getUpdateTime())
+                .build()));
+        return dtos;
+    }
 }

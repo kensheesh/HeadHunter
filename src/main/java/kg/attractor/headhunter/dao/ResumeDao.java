@@ -1,14 +1,11 @@
 package kg.attractor.headhunter.dao;
 
 import kg.attractor.headhunter.model.Resume;
-import kg.attractor.headhunter.model.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,10 +20,19 @@ public class ResumeDao {
                 where categoryId = ?;
                 """;
 
-        return Optional.of(
-                Collections.singletonList(DataAccessUtils.singleResult(
-                        template.query(sql, new BeanPropertyRowMapper<>(Resume.class), categoryId)
-                ))
-        );
+        List<Resume> resumes = template.query(sql, new BeanPropertyRowMapper<>(Resume.class), categoryId);
+
+        return resumes.isEmpty() ? Optional.empty() : Optional.of(resumes);
+    }
+
+    public Optional<List<Resume>> getResumeByUserId(int userId) {
+        String sql = """
+                select * from resumes
+                where userId = ?;
+                """;
+
+        List<Resume> resumes = template.query(sql, new BeanPropertyRowMapper<>(Resume.class), userId);
+
+        return resumes.isEmpty() ? Optional.empty() : Optional.of(resumes);
     }
 }

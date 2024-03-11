@@ -17,10 +17,20 @@ import java.util.List;
 public class ResumeController {
     private final ResumeService resumeService;
 
-    @GetMapping("resumes/{categoryId}")
+    @GetMapping("resumes/categoryId{categoryId}")
     public ResponseEntity<?> getResumesByCategory(@PathVariable int categoryId) {
         try {
             List<ResumeDto> resumeDto = resumeService.getResumesByCategory(categoryId);
+            return ResponseEntity.ok(resumeDto);
+        } catch (ResumeNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("resumes/userId{userId}")
+    public ResponseEntity<?> getResumesByUserId(@PathVariable int userId) {
+        try {
+            List<ResumeDto> resumeDto = resumeService.getResumeByUserId(userId);
             return ResponseEntity.ok(resumeDto);
         } catch (ResumeNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

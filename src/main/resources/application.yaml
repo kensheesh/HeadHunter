@@ -5,6 +5,6 @@ spring:
     password: qwerty
     driver-class-name: org.h2.Driver
 
-  sql:
-    init:
-      mode: always
+#  sql:
+#    init:
+#      mode: always

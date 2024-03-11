@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ResumeDto {
     private int id;
-    private int respondedApplicantId;
+    private int userId;
     private String name;
     private int categoryId;
     private int salary;
