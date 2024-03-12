@@ -33,7 +33,7 @@ public class RespondedApplicantDao {
                FROM respondedApplicants ra
                JOIN resumes r ON ra.resumeId = r.id
                JOIN vacancies v ON ra.vacancyId = v.id
-               WHERE r.userId = ? AND ra.confirmation = TRUE;
+               WHERE r.userId = ?;
                 """;
         List<Vacancy> vacancies = template.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), userId);
         return vacancies.isEmpty() ? Optional.empty() : Optional.of(vacancies);

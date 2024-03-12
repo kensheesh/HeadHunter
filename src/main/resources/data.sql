@@ -132,7 +132,7 @@ INSERT INTO respondedApplicants (resumeId, vacancyId, confirmation)
 VALUES (1, 4, TRUE),
        (2, 1, FALSE),
        (5, 4, TRUE),
-       (3, 3, FALSE),
+       (4, 4, FALSE),
        (4, 5, TRUE);
 INSERT INTO contactTypes (type)
 VALUES ('Telegram'),
