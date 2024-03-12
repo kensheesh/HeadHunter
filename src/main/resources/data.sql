@@ -85,5 +85,5 @@ VALUES ('Разработчик ПО', 1, 1, 100000, TRUE, NOW(), NOW()),
        ('Видеограф', 2, 2, 801000, TRUE, NOW(), NOW());
 
 INSERT INTO respondedApplicants (resumeId, vacancyId, confirmation)
-VALUES (1, 1, FALSE),
-       (2, 2, FALSE);
+VALUES (2, 1, TRUE),
+       (1, 2, FALSE);
