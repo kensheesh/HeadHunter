@@ -6,9 +6,7 @@ import kg.attractor.headhunter.service.ResumeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,6 +25,16 @@ public class ResumeController {
         }
     }
 
+    @GetMapping("resumes/id{id}")
+    public ResponseEntity<?> getResumeById(@PathVariable int id) {
+        try {
+            ResumeDto resumeDto = resumeService.getResumeById(id);
+            return ResponseEntity.ok(resumeDto);
+        } catch (ResumeNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
     @GetMapping("resumes/userId{userId}")
     public ResponseEntity<?> getResumesByUserId(@PathVariable int userId) {
         try {
@@ -35,5 +43,12 @@ public class ResumeController {
         } catch (ResumeNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
+    }
+
+
+
+    @PostMapping("resumes/add")
+    public ResponseEntity<?> createResume(@RequestBody ResumeDto resumeDto) {
+        return ResponseEntity.ok(resumeService.createResume(resumeDto));
     }
 }

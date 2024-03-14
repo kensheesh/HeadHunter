@@ -1,5 +1,6 @@
 package kg.attractor.headhunter.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,4 +17,12 @@ public class Resume {
     private boolean isActive;
     private LocalDateTime createdTime;
     private LocalDateTime updateTime;
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
 }
