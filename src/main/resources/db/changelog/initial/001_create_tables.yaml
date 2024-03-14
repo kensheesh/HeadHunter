@@ -1,0 +1,468 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-user-table
+      author: Nursultan
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: surname
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: age
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: phoneNumber
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: avatar
+                  type: varchar(255)
+              - column:
+                  name: accountType
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: create-categories-table
+      author: Nursultan
+      changes:
+        - createTable:
+            tableName: categories
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: parentId
+                  type: int
+                  constraints:
+                    nullable: true
+        - addForeignKeyConstraint:
+            baseTableName: categories
+            baseColumnNames: parentId
+            constraintName: fk_categories_parentId
+            referencedTableName: categories
+            referencedColumnNames: id
+
+
+
+  - changeSet:
+      id: create-vacancies-table
+      author: Nursultan
+      changes:
+        - createTable:
+            tableName: vacancies
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: categoryId
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: salary
+                  type: double
+                  constraints:
+                    nullable: false
+              - column:
+                  name: experienceFrom
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: experienceTo
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: isActive
+                  type: boolean
+                  constraints:
+                    nullable: false
+              - column:
+                  name: authorId
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: createdDate
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updateTime
+                  type: datetime
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: vacancies
+            baseColumnNames: categoryId
+            constraintName: fk_vacancies_categoryId
+            referencedTableName: categories
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            baseTableName: vacancies
+            baseColumnNames: authorId
+            constraintName: fk_vacancies_authorId
+            referencedTableName: users
+            referencedColumnNames: id
+
+
+
+
+  - changeSet:
+      id: create-resumes-table
+      author: Nursultan
+      changes:
+        - createTable:
+            tableName: resumes
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: userId
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: categoryId
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: salary
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: isActive
+                  type: boolean
+                  constraints:
+                    nullable: false
+              - column:
+                  name: createdTime
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updateTime
+                  type: datetime
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: resumes
+            baseColumnNames: categoryId
+            constraintName: fk_resumes_categoryId
+            referencedTableName: categories
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            baseTableName: resumes
+            baseColumnNames: userId
+            constraintName: fk_resumes_userId
+            referencedTableName: users
+            referencedColumnNames: id
+
+
+  - changeSet:
+      id: create-respondedApplicants-table
+      author: Nursultan
+      changes:
+        - createTable:
+            tableName: respondedApplicants
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: resumeId
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: vacancyId
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: confirmation
+                  type: boolean
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: respondedApplicants
+            baseColumnNames: resumeId
+            constraintName: fk_respondedApplicants_resumeId
+            referencedTableName: resumes
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            baseTableName: respondedApplicants
+            baseColumnNames: vacancyId
+            constraintName: fk_respondedApplicants_vacancyId
+            referencedTableName: vacancies
+            referencedColumnNames: id
+
+
+  - changeSet:
+      id: create-contactTypes-table
+      author: Nursultan
+      changes:
+        - createTable:
+            tableName: contactTypes
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: type
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: create-contactsInfo-table
+      author: Nursultan
+      changes:
+        - createTable:
+            tableName: contactsInfo
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: ContactTypeId
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: resumeId
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: content
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: contactsInfo
+            baseColumnNames: ContactTypeId
+            constraintName: fk_contactsInfo_ContactTypeId
+            referencedTableName: contactTypes
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            baseTableName: contactsInfo
+            baseColumnNames: resumeId
+            constraintName: fk_contactsInfo_resumeId
+            referencedTableName: resumes
+            referencedColumnNames: id
+
+  - changeSet:
+      id: create-messages-table
+      author: Nursultan
+      changes:
+        - createTable:
+            tableName: messages
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: respondedApplicantsId
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: content
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: timestamp
+                  type: datetime
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: messages
+            baseColumnNames: respondedApplicantsId
+            constraintName: fk_messages_respondedApplicantsId
+            referencedTableName: respondedApplicants
+            referencedColumnNames: id
+
+  - changeSet:
+      id: create-workExperienceInfo-table
+      author: Nursultan
+      changes:
+        - createTable:
+            tableName: workExperienceInfo
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: resumeId
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: years
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: companyName
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: position
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: responsibilities
+                  type: text
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: workExperienceInfo
+            baseColumnNames: resumeId
+            constraintName: fk_workExperienceInfo_resumeId
+            referencedTableName: resumes
+            referencedColumnNames: id
+
+  - changeSet:
+      id: create-educationInfo-table
+      author: Nursultan
+      changes:
+        - createTable:
+            tableName: educationInfo
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: resumeId
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: institution
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: program
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: startDate
+                  type: date
+                  constraints:
+                    nullable: false
+              - column:
+                  name: endDate
+                  type: date
+              - column:
+                  name: degree
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: educationInfo
+            baseColumnNames: resumeId
+            constraintName: fk_educationInfo_resumeId
+            referencedTableName: resumes
+            referencedColumnNames: id
