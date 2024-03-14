@@ -15,5 +15,5 @@ public interface UserService {
     UserDto getUserByEmail(String email) throws UserNotFoundException;
     boolean doesUserExistByEmail(String email);
 
-
+    void editUser(UserDto userDto);
 }

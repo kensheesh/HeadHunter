@@ -1,5 +1,6 @@
 package kg.attractor.headhunter.dao;
 
+import kg.attractor.headhunter.model.Resume;
 import kg.attractor.headhunter.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.support.DataAccessUtils;
@@ -7,6 +8,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,4 +68,23 @@ public class UserDao {
         return template.queryForObject(sql, Boolean.class, email);
     }
 
+    public void editUser(User user) {
+        String sql = """
+            UPDATE users
+            SET name = ?, surname = ?, age = ?, email = ?, password = ?, phoneNumber = ?, avatar = ?, accountType = ?
+            WHERE id = ?;
+            """;
+
+        System.out.println(user.getAccountType());
+        template.update(sql,
+                user.getName(),
+                user.getSurname(),
+                user.getAge(),
+                user.getEmail(),
+                user.getPassword(),
+                user.getPhoneNumber(),
+                user.getAvatar(),
+                user.getAccountType().toString(),
+                user.getId());
+    }
 }

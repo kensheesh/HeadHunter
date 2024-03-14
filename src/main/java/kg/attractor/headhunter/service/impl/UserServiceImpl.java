@@ -1,8 +1,10 @@
 package kg.attractor.headhunter.service.impl;
 
 import kg.attractor.headhunter.dao.UserDao;
+import kg.attractor.headhunter.dto.ResumeDto;
 import kg.attractor.headhunter.dto.UserDto;
 import kg.attractor.headhunter.exception.UserNotFoundException;
+import kg.attractor.headhunter.model.Resume;
 import kg.attractor.headhunter.model.User;
 import kg.attractor.headhunter.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -85,4 +87,19 @@ public class UserServiceImpl implements UserService {
         return userDao.doesUserExistByEmail(email);
     }
 
+    @Override
+    public void editUser(UserDto userDto) {
+        User user = new User();
+        user.setId(userDto.getId());
+        user.setName(userDto.getName());
+        user.setSurname(userDto.getSurname());
+        user.setAge(userDto.getAge());
+        user.setEmail(userDto.getEmail());
+        user.setPassword(userDto.getPassword());
+        user.setAccountType(userDto.getAccountType());
+        user.setPhoneNumber(userDto.getPhoneNumber());
+        user.setAvatar(userDto.getAvatar());
+
+        userDao.editUser(user);
+    }
 }

@@ -1,14 +1,13 @@
 package kg.attractor.headhunter.controller;
 
+import kg.attractor.headhunter.dto.ResumeDto;
 import kg.attractor.headhunter.dto.UserDto;
 import kg.attractor.headhunter.exception.UserNotFoundException;
 import kg.attractor.headhunter.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -58,4 +57,10 @@ public class UserController {
         return ResponseEntity.ok(exists);
     }
 
+
+    @PostMapping("users/edit")
+    public ResponseEntity<?> editUser(@RequestBody UserDto userDto) {
+        userService.editUser(userDto);
+        return ResponseEntity.ok().build();
+    }
 }
