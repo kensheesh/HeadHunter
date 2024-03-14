@@ -10,6 +10,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.KeyGenerator;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.util.List;
@@ -77,5 +78,20 @@ public class ResumeDao {
             return ps;
         }, keyHolder);
         return Objects.requireNonNull(keyHolder.getKey()).intValue();
+    }
+
+    public void editResume(Resume resume) {
+        String sql = """
+            UPDATE resumes
+            SET name = ?, userId = ?, categoryId = ?, salary = ?, isActive = ?, createdTime = ?, updateTime = ?
+            WHERE id = ?;
+            """;
+
+        template.update(sql, resume.getName(), resume.getUserId(), resume.getCategoryId(), resume.getSalary(), resume.isActive(), Timestamp.valueOf(resume.getCreatedTime()), Timestamp.valueOf(resume.getUpdateTime()), resume.getId());
+    }
+
+    public void deleteResumeById(int id) {
+        String sql = "DELETE FROM resumes WHERE id = ?";
+        template.update(sql, id);
     }
 }

@@ -1,0 +1,59 @@
+databaseChangeLog:
+  - changeSet:
+      id: modify-fk-for-cascade-delete-all
+      author: Nursultan
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: respondedApplicants
+            constraintName: fk_respondedApplicants_resumeId
+        - addForeignKeyConstraint:
+            constraintName: fk_respondedApplicants_resumeId
+            baseTableName: respondedApplicants
+            baseColumnNames: resumeId
+            referencedTableName: resumes
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        - dropForeignKeyConstraint:
+            baseTableName: contactsInfo
+            constraintName: fk_contactsInfo_resumeId
+        - addForeignKeyConstraint:
+            constraintName: fk_contactsInfo_resumeId
+            baseTableName: contactsInfo
+            baseColumnNames: resumeId
+            referencedTableName: resumes
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        - dropForeignKeyConstraint:
+            baseTableName: workExperienceInfo
+            constraintName: fk_workExperienceInfo_resumeId
+        - addForeignKeyConstraint:
+            constraintName: fk_workExperienceInfo_resumeId
+            baseTableName: workExperienceInfo
+            baseColumnNames: resumeId
+            referencedTableName: resumes
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        - dropForeignKeyConstraint:
+            baseTableName: educationInfo
+            constraintName: fk_educationInfo_resumeId
+        - addForeignKeyConstraint:
+            constraintName: fk_educationInfo_resumeId
+            baseTableName: educationInfo
+            baseColumnNames: resumeId
+            referencedTableName: resumes
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        - dropForeignKeyConstraint:
+            baseTableName: messages
+            constraintName: FK_MESSAGES_RESPONDEDAPPLICANTSID
+        - addForeignKeyConstraint:
+            constraintName: FK_MESSAGES_RESPONDEDAPPLICANTSID
+            baseTableName: messages
+            baseColumnNames: respondedApplicantsId
+            referencedTableName: respondedApplicants
+            referencedColumnNames: id
+            onDelete: CASCADE

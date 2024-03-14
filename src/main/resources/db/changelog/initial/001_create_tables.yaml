@@ -466,3 +466,4 @@ databaseChangeLog:
             constraintName: fk_educationInfo_resumeId
             referencedTableName: resumes
             referencedColumnNames: id
+

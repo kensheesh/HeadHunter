@@ -11,4 +11,6 @@ public interface ResumeService {
     List<ResumeDto> getResumeByUserId(int userId) throws ResumeNotFoundException;
     ResumeDto getResumeById(int id) throws ResumeNotFoundException;
     int createResume(ResumeDto resumeDto);
+    void editResume(ResumeDto resumeDto);
+    void deleteResumeById(int id);
 }

@@ -45,10 +45,20 @@ public class ResumeController {
         }
     }
 
-
-
     @PostMapping("resumes/add")
     public ResponseEntity<?> createResume(@RequestBody ResumeDto resumeDto) {
         return ResponseEntity.ok(resumeService.createResume(resumeDto));
+    }
+
+    @PostMapping("resumes/edit")
+    public ResponseEntity<?> editResume(@RequestBody ResumeDto resumeDto) {
+        resumeService.editResume(resumeDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("resumes/delete{id}")
+    public ResponseEntity<?> deleteResumeById(@PathVariable int id) {
+        resumeService.deleteResumeById(id);
+        return ResponseEntity.ok().build();
     }
 }
