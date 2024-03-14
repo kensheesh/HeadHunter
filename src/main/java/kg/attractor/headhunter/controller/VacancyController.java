@@ -1,5 +1,6 @@
 package kg.attractor.headhunter.controller;
 
+import kg.attractor.headhunter.dto.ResumeDto;
 import kg.attractor.headhunter.dto.VacancyDto;
 import kg.attractor.headhunter.exception.ResumeNotFoundException;
 import kg.attractor.headhunter.exception.VacancyNotFoundException;
@@ -33,4 +34,20 @@ public class VacancyController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+
+    @GetMapping("vacancies/userId{userId}")
+    public ResponseEntity<?> getVacanciesByUserId(@PathVariable int userId) {
+        try {
+            List<VacancyDto> vacancyDto = vacancyService.getVacanciesByUserId(userId);
+            return ResponseEntity.ok(vacancyDto);
+        } catch (VacancyNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("vacancies/active")
+    public ResponseEntity<?> getActiveVacancies() {
+        return ResponseEntity.ok(vacancyService.getActiveVacancies());
+    }
+
 }

@@ -26,7 +26,7 @@ VALUES
 INSERT INTO vacancies (name, description, categoryId, salary, experienceFrom, experienceTo, isActive, authorId, createdDate, updateTime)
 VALUES
     ('Designer GUI', 'Дизайн интерфейсов и взаимодействия', (SELECT id FROM categories WHERE name = 'Бухгалтерия'), 110000, 2, 4, TRUE, (SELECT id FROM users WHERE email = 'asdf.robinson@corp.com'), NOW(), NOW()),
-    ('Scrum Master', 'Управление командой разработки', (SELECT id FROM categories WHERE name = 'Образование'), 140000, 3, 5, TRUE, (SELECT id FROM users WHERE email = 'asdf.johnson@example.com'), NOW(), NOW()),
+    ('Scrum Master', 'Управление командой разработки', (SELECT id FROM categories WHERE name = 'Образование'), 140000, 3, 5, FALSE, (SELECT id FROM users WHERE email = 'asdf.johnson@example.com'), NOW(), NOW()),
     ('Accountant', 'Ведение бухгалтерского учета', (SELECT id FROM categories WHERE name = 'Информационные технологии'), 90000, 1, 3, TRUE, (SELECT id FROM users WHERE email = 'asdf.wilson@example.com'), NOW(), NOW()),
     ('Employing recruiter', 'Поиск и подбор персонала', (SELECT id FROM categories WHERE name = 'Образование'), 85000, 2, 4, TRUE, (SELECT id FROM users WHERE email = 'alice.smith@corp.com'), NOW(), NOW()),
     ('Teacher', 'Преподавание в области IT', (SELECT id FROM categories WHERE name = 'HrРекрутинг'), 95000, 3, 7, TRUE, (SELECT id FROM users WHERE email = 'john.doe@example.com'), NOW(), NOW());

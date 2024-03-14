@@ -1,5 +1,6 @@
 package kg.attractor.headhunter.dao;
 
+import kg.attractor.headhunter.model.Resume;
 import kg.attractor.headhunter.model.Vacancy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -30,5 +31,24 @@ public class VacancyDao {
         List<Vacancy> vacancies = template.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), categoryId);
         return Optional.ofNullable(vacancies.isEmpty() ? null : vacancies);
     }
+
+    public Optional<List<Vacancy>> getVacanciesByUserId(int userId) {
+        String sql = """
+                select * from vacancies
+                where authorId = ?;
+                """;
+
+        List<Vacancy> vacancies = template.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), userId);
+
+        return vacancies.isEmpty() ? Optional.empty() : Optional.of(vacancies);
+    }
+
+    public List<Vacancy> getActiveVacancies() {
+        String sql = """
+            select * from vacancies where isActive = true
+            """;
+        return template.query(sql, new BeanPropertyRowMapper<>(Vacancy.class));
+    }
+
 }
 
