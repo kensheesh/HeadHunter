@@ -22,7 +22,7 @@ databaseChangeLog:
                   name: surname
                   type: varchar(255)
                   constraints:
-                    nullable: false
+                    nullable: true
               - column:
                   name: age
                   type: int

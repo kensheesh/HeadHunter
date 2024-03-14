@@ -52,14 +52,10 @@ public class UserController {
         }
     }
 
-    @GetMapping("users/checkUser{email}")
-    public boolean checkUserInDB(@PathVariable String email) {
-        try {
-            UserDto user = userService.getUserByEmail(email);
-            return ResponseEntity.ok(user).hasBody();
-        } catch (UserNotFoundException e) {
-            return !ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage()).hasBody();
-        }
+    @GetMapping("users/existByEmail/{email}")
+    public ResponseEntity<Boolean> checkUserExistenceByEmail(@PathVariable String email) {
+        boolean exists = userService.doesUserExistByEmail(email);
+        return ResponseEntity.ok(exists);
     }
 
 }

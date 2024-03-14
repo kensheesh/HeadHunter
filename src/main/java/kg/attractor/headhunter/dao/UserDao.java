@@ -58,4 +58,12 @@ public class UserDao {
                 )
         );
     }
+
+    public boolean doesUserExistByEmail(String email) {
+        String sql = """
+            select exists(select 1 from users where email = ?);
+            """;
+        return template.queryForObject(sql, Boolean.class, email);
+    }
+
 }

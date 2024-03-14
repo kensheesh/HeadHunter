@@ -5,7 +5,7 @@ VALUES ('Джон', 'Доу', 28, 'john.doe@example.com', 'se3111curepasfs', '55
        ('Робин', 'Робинсон', 28, 'asdf.robinson@corp.com', 'Se11cure456', '555-0402', '', 'EMPLOYER'),
        ('Джон', 'Джонсон', 31, 'asdf.johnson@example.com', 'av11a1234', '555-0403', '', 'APPLICANT'),
        ('Майк', 'Гарсиа', 27, 'asdf.garcia@corp.com', 'ib2ell3a35678', '555-0404', '', 'EMPLOYER'),
-       ('Софья', 'Мартинез', 26, 'asdf.martinez@example.com', '3s3o32112iePass910', '555-0405', '', 'APPLICANT');
+       ('Софья', null, 26, 'asdf.martinez@example.com', '3s3o32112iePass910', '555-0405', '', 'APPLICANT');
 
 INSERT INTO categories (name)
 VALUES ('Информационные технологии'),
@@ -15,26 +15,40 @@ VALUES ('Информационные технологии'),
        ('Образование');
 
 INSERT INTO resumes (name, userId, categoryId, salary, isActive, createdTime, updateTime)
-VALUES ('Engineer', 1, 3, 95000, TRUE, NOW(), NOW()),
-       ('DevOops Engineer', 4, 1, 140000, TRUE, NOW(), NOW()),
-       ('Graphics Designer', 2, 3, 75000, TRUE, NOW(), NOW()),
-       ('Projects Coordinator', 3, 5, 65000, TRUE, NOW(), NOW()),
-       ('Financing Analyst', 5, 4, 120000, TRUE, NOW(), NOW());
+VALUES
+    ('Engineer', (SELECT id FROM users WHERE email = 'john.doe@example.com'), (SELECT id FROM categories WHERE name = 'HrРекрутинг'), 95000, TRUE, NOW(), NOW()),
+    ('DevOops Engineer', (SELECT id FROM users WHERE email = 'asdf.robinson@corp.com'), (SELECT id FROM categories WHERE name = 'Информационные технологии'), 140000, TRUE, NOW(), NOW()),
+    ('Graphics Designer', (SELECT id FROM users WHERE email = 'alice.smith@corp.com'), (SELECT id FROM categories WHERE name = 'HrРекрутинг'), 75000, TRUE, NOW(), NOW()),
+    ('Projects Coordinator', (SELECT id FROM users WHERE email = 'asdf.wilson@example.com'), (SELECT id FROM categories WHERE name = 'Образование'), 65000, TRUE, NOW(), NOW()),
+    ('Financing Analyst', (SELECT id FROM users WHERE email = 'asdf.johnson@example.com'), (SELECT id FROM categories WHERE name = 'Бухгалтерия'), 120000, TRUE, NOW(), NOW());
 
-INSERT INTO vacancies (name, description, categoryId, salary, experienceFrom, experienceTo, isActive, authorId,
-                       createdDate, updateTime)
-VALUES ('Designer GUI', 'Дизайн интерфейсов и взаимодействия', 4, 110000, 2, 4, TRUE, 4, NOW(), NOW()),
-       ('Scrum Master', 'Управление командой разработки', 5, 140000, 3, 5, TRUE, 5, NOW(), NOW()),
-       ('Accountant', 'Ведение бухгалтерского учета', 1, 90000, 1, 3, TRUE, 3, NOW(), NOW()),
-       ('Employing recruiter', 'Поиск и подбор персонала', 5, 85000, 2, 4, TRUE, 2, NOW(), NOW()),
-       ('Teacher', 'Преподавание в области IT', 3, 95000, 3, 7, TRUE, 1, NOW(), NOW());
+
+INSERT INTO vacancies (name, description, categoryId, salary, experienceFrom, experienceTo, isActive, authorId, createdDate, updateTime)
+VALUES
+    ('Designer GUI', 'Дизайн интерфейсов и взаимодействия', (SELECT id FROM categories WHERE name = 'Бухгалтерия'), 110000, 2, 4, TRUE, (SELECT id FROM users WHERE email = 'asdf.robinson@corp.com'), NOW(), NOW()),
+    ('Scrum Master', 'Управление командой разработки', (SELECT id FROM categories WHERE name = 'Образование'), 140000, 3, 5, TRUE, (SELECT id FROM users WHERE email = 'asdf.johnson@example.com'), NOW(), NOW()),
+    ('Accountant', 'Ведение бухгалтерского учета', (SELECT id FROM categories WHERE name = 'Информационные технологии'), 90000, 1, 3, TRUE, (SELECT id FROM users WHERE email = 'asdf.wilson@example.com'), NOW(), NOW()),
+    ('Employing recruiter', 'Поиск и подбор персонала', (SELECT id FROM categories WHERE name = 'Образование'), 85000, 2, 4, TRUE, (SELECT id FROM users WHERE email = 'alice.smith@corp.com'), NOW(), NOW()),
+    ('Teacher', 'Преподавание в области IT', (SELECT id FROM categories WHERE name = 'HrРекрутинг'), 95000, 3, 7, TRUE, (SELECT id FROM users WHERE email = 'john.doe@example.com'), NOW(), NOW());
+
 
 INSERT INTO respondedApplicants (resumeId, vacancyId, confirmation)
-VALUES (1, 4, TRUE),
-       (2, 1, FALSE),
-       (5, 4, TRUE),
-       (4, 4, FALSE),
-       (4, 5, TRUE);
+VALUES
+    ((SELECT resumes.id FROM resumes JOIN users ON resumes.userId = users.id WHERE resumes.name = 'Engineer' AND users.email = 'john.doe@example.com'),
+     (SELECT id FROM vacancies WHERE name = 'Employing recruiter'), TRUE),
+
+    ((SELECT resumes.id FROM resumes JOIN users ON resumes.userId = users.id WHERE resumes.name = 'DevOops Engineer' AND users.email = 'asdf.robinson@corp.com'),
+     (SELECT id FROM vacancies WHERE name = 'Designer GUI'), FALSE),
+
+    ((SELECT resumes.id FROM resumes JOIN users ON resumes.userId = users.id WHERE resumes.name = 'Financing Analyst' AND users.email = 'asdf.johnson@example.com'),
+     (SELECT id FROM vacancies WHERE name = 'Employing recruiter'), TRUE),
+
+    ((SELECT resumes.id FROM resumes JOIN users ON resumes.userId = users.id WHERE resumes.name = 'Projects Coordinator' AND users.email = 'asdf.wilson@example.com'),
+     (SELECT id FROM vacancies WHERE name = 'Employing recruiter'), FALSE),
+
+    ((SELECT resumes.id FROM resumes JOIN users ON resumes.userId = users.id WHERE resumes.name = 'Projects Coordinator' AND users.email = 'asdf.wilson@example.com'),
+     (SELECT id FROM vacancies WHERE name = 'Teacher'), TRUE);
+
 
 INSERT INTO contactTypes (type)
 VALUES ('Telegram'),
@@ -44,21 +58,27 @@ VALUES ('Telegram'),
        ('PhoneNumber');
 
 INSERT INTO contactsInfo (ContactTypeId, resumeId, content)
-VALUES (1, 1, 'john.doe@example.com'),
-       (2, 1, '555-0101'),
-       (3, 1, 'john.doe.linkedin.com'),
-       (1, 2, 'alice.smith@corp.com'),
-       (2, 2, '555-0102');
+VALUES
+    ((SELECT id FROM contactTypes WHERE type = 'Telegram'), (SELECT id FROM resumes WHERE name = 'Engineer' AND userId = (SELECT id FROM users WHERE email = 'john.doe@example.com')), 'john.doe@example.com'),
+    ((SELECT id FROM contactTypes WHERE type = 'LinkedIn'), (SELECT id FROM resumes WHERE name = 'Engineer' AND userId = (SELECT id FROM users WHERE email = 'john.doe@example.com')), '555-0101'),
+    ((SELECT id FROM contactTypes WHERE type = 'Facebook'), (SELECT id FROM resumes WHERE name = 'Engineer' AND userId = (SELECT id FROM users WHERE email = 'john.doe@example.com')), 'john.doe.linkedin.com'),
+    ((SELECT id FROM contactTypes WHERE type = 'Telegram'), (SELECT id FROM resumes WHERE name = 'DevOops Engineer' AND userId = (SELECT id FROM users WHERE email = 'asdf.robinson@corp.com')), 'alice.smith@corp.com'),
+    ((SELECT id FROM contactTypes WHERE type = 'LinkedIn'), (SELECT id FROM resumes WHERE name = 'DevOops Engineer' AND userId = (SELECT id FROM users WHERE email = 'asdf.robinson@corp.com')), '555-0102');
+
 
 INSERT INTO educationInfo (resumeId, institution, program, startDate, endDate, degree)
-VALUES (1, 'Harvard', 'Computer Scientist', '2015-09-01', '2019-06-30', 'B'),
-       (2, 'Masachusitch', 'Graphic Designer', '2014-09-01', '2018-06-30', 'A'),
-       (3, 'School', 'Project Management', '2016-09-01', '2020-06-30', 'C');
+VALUES
+    ((SELECT id FROM resumes WHERE userId = (SELECT id FROM users WHERE email = 'john.doe@example.com')), 'Harvard', 'Computer Scientist', '2015-09-01', '2019-06-30', 'B'),
+    ((SELECT id FROM resumes WHERE userId = (SELECT id FROM users WHERE email = 'alice.smith@corp.com')), 'Masachusitch', 'Graphic Designer', '2014-09-01', '2018-06-30', 'A'),
+    ((SELECT id FROM resumes WHERE userId = (SELECT id FROM users WHERE email = 'asdf.wilson@example.com')), 'School', 'Project Management', '2016-09-01', '2020-06-30', 'C');
+
 
 INSERT INTO workExperienceInfo (resumeId, years, companyName, position, responsibilities)
-VALUES (1, 3, 'Tech Corp', 'Junior Developer', '..'),
-       (2, 5, 'Design Studio', 'Senior Graphic Designer', '...'),
-       (3, 2, 'Project Inc.', 'HR', '...');
+VALUES
+    ((SELECT id FROM resumes WHERE userId = (SELECT id FROM users WHERE email = 'john.doe@example.com')), 3, 'Tech Corp', 'Junior Developer', '...'),
+    ((SELECT id FROM resumes WHERE userId = (SELECT id FROM users WHERE email = 'alice.smith@corp.com')), 5, 'Design Studio', 'Senior Graphic Designer', '...'),
+    ((SELECT id FROM resumes WHERE userId = (SELECT id FROM users WHERE email = 'asdf.wilson@example.com')), 2, 'Project Inc.', 'HR', '...');
+
 
 INSERT INTO messages (respondedApplicantsId, content, timestamp)
 VALUES (1, 'Thank you', NOW()),

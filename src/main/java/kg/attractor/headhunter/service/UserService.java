@@ -13,6 +13,7 @@ public interface UserService {
     UserDto getUserByPhoneNumber(String phoneNumber) throws UserNotFoundException;
 
     UserDto getUserByEmail(String email) throws UserNotFoundException;
+    boolean doesUserExistByEmail(String email);
 
-    UserDto checkUserInDB(String email) throws UserNotFoundException;
+
 }
