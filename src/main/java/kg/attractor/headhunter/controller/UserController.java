@@ -1,6 +1,5 @@
 package kg.attractor.headhunter.controller;
 
-import kg.attractor.headhunter.dto.ResumeDto;
 import kg.attractor.headhunter.dto.UserDto;
 import kg.attractor.headhunter.exception.UserNotFoundException;
 import kg.attractor.headhunter.service.UserService;

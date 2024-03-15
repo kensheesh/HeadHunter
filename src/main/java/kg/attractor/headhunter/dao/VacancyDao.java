@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -29,25 +28,21 @@ public class VacancyDao {
         return template.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), name);
     }
 
-    public Optional<List<Vacancy>> getVacanciesByCategory(int categoryId) {
+    public List<Vacancy> getVacanciesByCategory(int categoryId) {
         String sql = """
                 select * from vacancies
                 where categoryId = ?;
                 """;
+        return template.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), categoryId);
 
-        List<Vacancy> vacancies = template.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), categoryId);
-        return Optional.ofNullable(vacancies.isEmpty() ? null : vacancies);
     }
 
-    public Optional<List<Vacancy>> getVacanciesByUserId(int userId) {
+    public List<Vacancy> getVacanciesByUserId(int userId) {
         String sql = """
                 select * from vacancies
                 where authorId = ?;
                 """;
-
-        List<Vacancy> vacancies = template.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), userId);
-
-        return vacancies.isEmpty() ? Optional.empty() : Optional.of(vacancies);
+        return template.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), userId);
     }
 
     public List<Vacancy> getActiveVacancies() {
@@ -59,14 +54,14 @@ public class VacancyDao {
 
     public List<Vacancy> getVacanciesBySalaryDescending() {
         String sql = """
-                 select * from vacancies order by salary desc;               
+                 select * from vacancies order by salary desc;
                 """;
         return template.query(sql, new BeanPropertyRowMapper<>(Vacancy.class));
     }
 
     public List<Vacancy> getVacanciesBySalaryAscending() {
         String sql = """
-                 select * from vacancies order by salary asc;               
+                 select * from vacancies order by salary asc;
                 """;
         return template.query(sql, new BeanPropertyRowMapper<>(Vacancy.class));
     }
