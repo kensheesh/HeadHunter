@@ -2,6 +2,7 @@ package kg.attractor.headhunter.service.impl;
 
 import kg.attractor.headhunter.dao.VacancyDao;
 import kg.attractor.headhunter.dto.ResumeDto;
+import kg.attractor.headhunter.dto.UserDto;
 import kg.attractor.headhunter.dto.VacancyDto;
 import kg.attractor.headhunter.exception.ResumeNotFoundException;
 import kg.attractor.headhunter.exception.VacancyNotFoundException;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +39,27 @@ public class VacancyServiceImpl implements VacancyService {
                 .updateTime(e.getUpdateTime())
                 .build()));
         return dtos;
+    }
+
+    @Override
+    public List<VacancyDto> getVacanciesByName(String name) throws VacancyNotFoundException{
+        List<Vacancy> vacancies = vacancyDao.getVacancyByName(name);
+        if (vacancies.isEmpty()) {
+            throw new VacancyNotFoundException("Can't find vacancy with this name: " + name);
+        }
+        return vacancies.stream().map(e -> VacancyDto.builder()
+                .id(e.getId())
+                .name(e.getName())
+                .description(e.getDescription())
+                .categoryId(e.getCategoryId())
+                .salary(e.getSalary())
+                .experienceFrom(e.getExperienceFrom())
+                .experienceTo(e.getExperienceTo())
+                .isActive(e.isActive())
+                .authorId(e.getAuthorId())
+                .createdDate(e.getCreatedDate())
+                .updateTime(e.getUpdateTime())
+                .build()).collect(Collectors.toList());
     }
 
     @Override

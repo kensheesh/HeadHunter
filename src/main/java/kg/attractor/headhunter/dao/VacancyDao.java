@@ -21,6 +21,14 @@ public class VacancyDao {
         return template.query(sql, new BeanPropertyRowMapper<>(Vacancy.class));
     }
 
+    public List<Vacancy> getVacancyByName(String name) {
+        String sql = """
+                select * from vacancies
+                where name = ?
+                """;
+        return template.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), name);
+    }
+
     public Optional<List<Vacancy>> getVacanciesByCategory(int categoryId) {
         String sql = """
                 select * from vacancies

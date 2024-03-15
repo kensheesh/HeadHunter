@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface VacancyService {
     List<VacancyDto> getVacancies();
+    List<VacancyDto> getVacanciesByName(String name) throws VacancyNotFoundException;
 
     List<VacancyDto> getVacanciesByCategory(int categoryId) throws VacancyNotFoundException;
 

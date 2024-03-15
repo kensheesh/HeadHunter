@@ -1,8 +1,10 @@
 package kg.attractor.headhunter.controller;
 
 import kg.attractor.headhunter.dto.ResumeDto;
+import kg.attractor.headhunter.dto.UserDto;
 import kg.attractor.headhunter.dto.VacancyDto;
 import kg.attractor.headhunter.exception.ResumeNotFoundException;
+import kg.attractor.headhunter.exception.UserNotFoundException;
 import kg.attractor.headhunter.exception.VacancyNotFoundException;
 import kg.attractor.headhunter.service.impl.VacancyServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,16 @@ public class VacancyController {
     @GetMapping("vacancies")
     public ResponseEntity<?> getVacancies() {
         return ResponseEntity.ok(vacancyService.getVacancies());
+    }
+
+    @GetMapping("vacancies/name{name}")
+    public ResponseEntity<?> getVacanciesByName(@PathVariable String name) {
+        try {
+            List<VacancyDto> vacancies = vacancyService.getVacanciesByName(name);
+            return ResponseEntity.ok(vacancies);
+        } catch (VacancyNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     @GetMapping("vacancies/categoryId{categoryId}")
