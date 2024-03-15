@@ -54,6 +54,43 @@ public class ResumeServiceImpl implements ResumeService {
                 .build()).collect(Collectors.toList());
     }
 
+    @Override
+    public List<ResumeDto> getActiveResumes() {
+        List<Resume> resumes = resumeDao.getActiveResumes();
+        List<ResumeDto> dtos = new ArrayList<>();
+        resumes.forEach(e -> dtos.add(ResumeDto.builder()
+                .id(e.getId())
+                .userId(e.getUserId())
+                .name(e.getName())
+                .categoryId(e.getCategoryId())
+                .salary(e.getSalary())
+                .isActive(e.isActive())
+                .createdTime(e.getCreatedTime())
+                .updateTime(e.getUpdateTime())
+                .build()));
+        return dtos;
+    }
+
+    @Override
+    public List<ResumeDto> getActiveResumesByUserId(int userId) throws ResumeNotFoundException {
+        List<Resume> resumes = resumeDao.getActiveResumesByUserId(userId);
+        List<ResumeDto> dtos = new ArrayList<>();
+        if (resumes.isEmpty() || userId == 0) {
+            throw new ResumeNotFoundException("Can't find resume with this userId: " + userId);
+        }
+
+        return resumes.stream().map(resume -> ResumeDto.builder()
+                .id(resume.getId())
+                .userId(resume.getUserId())
+                .name(resume.getName())
+                .categoryId(resume.getCategoryId())
+                .salary(resume.getSalary())
+                .isActive(resume.isActive())
+                .createdTime(resume.getCreatedTime())
+                .updateTime(resume.getUpdateTime())
+                .build()).collect(Collectors.toList());
+    }
+
 
     @Override
     public List<ResumeDto> getResumesByUserId(int userId) throws ResumeNotFoundException {

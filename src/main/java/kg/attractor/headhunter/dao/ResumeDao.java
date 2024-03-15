@@ -1,7 +1,7 @@
 package kg.attractor.headhunter.dao;
 
 import kg.attractor.headhunter.model.Resume;
-import kg.attractor.headhunter.model.User;
+import kg.attractor.headhunter.model.Vacancy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -10,7 +10,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.KeyGenerator;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.util.List;
@@ -38,6 +37,21 @@ public class ResumeDao {
         return template.query(sql, new BeanPropertyRowMapper<>(Resume.class), categoryId);
     }
 
+    public List<Resume> getActiveResumes() {
+        String sql = """
+                select * from resumes where isActive = true
+                """;
+        return template.query(sql, new BeanPropertyRowMapper<>(Resume.class));
+    }
+
+    public List<Resume> getActiveResumesByUserId(int userId) {
+        String sql = """
+                select * from resumes
+                where UserId = ? and isActive = true;
+                """;
+        return template.query(sql, new BeanPropertyRowMapper<>(Resume.class), userId);
+    }
+
     public List<Resume> getResumesByUserId(int userId) {
         String sql = """
                 select * from resumes
@@ -60,6 +74,7 @@ public class ResumeDao {
                 )
         );
     }
+
     public int createResume(Resume resume) {
         String sql = """
                 insert into resumes (name, userId, categoryId, salary, isActive, createdTime, updateTime)
@@ -84,10 +99,10 @@ public class ResumeDao {
 
     public void editResume(Resume resume) {
         String sql = """
-            UPDATE resumes
-            SET name = ?, userId = ?, categoryId = ?, salary = ?, isActive = ?, createdTime = ?, updateTime = ?
-            WHERE id = ?;
-            """;
+                UPDATE resumes
+                SET name = ?, userId = ?, categoryId = ?, salary = ?, isActive = ?, createdTime = ?, updateTime = ?
+                WHERE id = ?;
+                """;
 
         template.update(sql, resume.getName(), resume.getUserId(), resume.getCategoryId(), resume.getSalary(), resume.isActive(), Timestamp.valueOf(resume.getCreatedTime()), Timestamp.valueOf(resume.getUpdateTime()), resume.getId());
     }

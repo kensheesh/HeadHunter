@@ -1,7 +1,9 @@
 package kg.attractor.headhunter.controller;
 
 import kg.attractor.headhunter.dto.ResumeDto;
+import kg.attractor.headhunter.dto.VacancyDto;
 import kg.attractor.headhunter.exception.ResumeNotFoundException;
+import kg.attractor.headhunter.exception.VacancyNotFoundException;
 import kg.attractor.headhunter.service.ResumeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -55,6 +57,20 @@ public class ResumeController {
         }
     }
 
+    @GetMapping("resumes/active")
+    public ResponseEntity<?> getActiveVacancies() {
+        return ResponseEntity.ok(resumeService.getActiveResumes());
+    }
+
+    @GetMapping("resumes/activeUserId{userId}")
+    public ResponseEntity<?> getActiveResumesByUserId(@PathVariable int userId) {
+        try {
+            List<ResumeDto> resumeDto = resumeService.getActiveResumesByUserId(userId);
+            return ResponseEntity.ok(resumeDto);
+        } catch (ResumeNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
 
     @PostMapping("resumes/add")
     public ResponseEntity<?> createResume(@RequestBody ResumeDto resumeDto) {
