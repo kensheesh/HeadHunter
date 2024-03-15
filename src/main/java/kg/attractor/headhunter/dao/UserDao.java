@@ -75,7 +75,7 @@ public class UserDao {
     public void editUser(User user) {
         String sql = """
             UPDATE users
-            SET name = ?, surname = ?, age = ?, email = ?, password = ?, phoneNumber = ?, avatar = ?, accountType = ?
+            SET name = ?, surname = ?, age = ?,  password = ?, avatar = ?
             WHERE id = ?;
             """;
 
@@ -83,11 +83,8 @@ public class UserDao {
                 user.getName(),
                 user.getSurname(),
                 user.getAge(),
-                user.getEmail(),
                 user.getPassword(),
-                user.getPhoneNumber(),
                 user.getAvatar(),
-                user.getAccountType().toString(),
                 user.getId());
     }
 

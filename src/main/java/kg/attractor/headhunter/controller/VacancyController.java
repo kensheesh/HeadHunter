@@ -61,6 +61,16 @@ public class VacancyController {
         return ResponseEntity.ok(vacancyService.getActiveVacancies());
     }
 
+    @GetMapping("vacancies/activeUserId{userId}")
+    public ResponseEntity<?> getActiveVacanciesByUserId(@PathVariable int userId) {
+        try {
+            List<VacancyDto> vacancyDto = vacancyService.getActiveVacanciesByUserId(userId);
+            return ResponseEntity.ok(vacancyDto);
+        } catch (VacancyNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
     @GetMapping("vacancies/bySalaryDescending")
     public ResponseEntity<?> getVacanciesBySalaryDescending() {
         return ResponseEntity.ok(vacancyService.getVacanciesBySalary(false));

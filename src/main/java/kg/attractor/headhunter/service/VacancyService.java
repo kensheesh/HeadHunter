@@ -16,6 +16,8 @@ public interface VacancyService {
 
     List<VacancyDto> getActiveVacancies();
 
+    List<VacancyDto> getActiveVacanciesByUserId(int userId) throws VacancyNotFoundException;
+
     List<VacancyDto> getVacanciesBySalary(boolean bool);
 
     List<VacancyDto> getVacanciesByUpdateTime(boolean bool);

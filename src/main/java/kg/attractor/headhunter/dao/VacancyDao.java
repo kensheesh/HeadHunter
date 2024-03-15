@@ -1,5 +1,6 @@
 package kg.attractor.headhunter.dao;
 
+import jakarta.servlet.http.PushBuilder;
 import kg.attractor.headhunter.model.Vacancy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -41,6 +42,14 @@ public class VacancyDao {
         String sql = """
                 select * from vacancies
                 where authorId = ?;
+                """;
+        return template.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), userId);
+    }
+
+    public List<Vacancy> getActiveVacanciesByUserId(int userId) {
+        String sql = """
+                select * from vacancies
+                where authorId = ? and isActive = true;
                 """;
         return template.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), userId);
     }

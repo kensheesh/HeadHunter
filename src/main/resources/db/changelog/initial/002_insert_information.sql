@@ -42,7 +42,7 @@ VALUES ('Designer GUI', 'Дизайн интерфейсов и взаимоде
        ('Employing recruiter', 'Поиск и подбор персонала', (SELECT id FROM categories WHERE name = 'Образование'),
         85000, 2, 4, TRUE, (SELECT id FROM users WHERE email = 'alice.smith@corp.com'), NOW(), '2030-01-15'),
        ('Teacher', 'Преподавание в области IT', (SELECT id FROM categories WHERE name = 'HrРекрутинг'), 95000, 3, 7,
-        TRUE, (SELECT id FROM users WHERE email = 'john.doe@example.com'), NOW(), '2010-01-15');
+        false, (SELECT id FROM users WHERE email = 'john.doe@example.com'), NOW(), '2010-01-15');
 
 
 INSERT INTO respondedApplicants (resumeId, vacancyId, confirmation)

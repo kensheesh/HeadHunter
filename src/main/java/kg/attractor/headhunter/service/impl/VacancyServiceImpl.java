@@ -121,6 +121,29 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
     @Override
+    public List<VacancyDto> getActiveVacanciesByUserId(int userId) throws VacancyNotFoundException{
+        List<Vacancy> vacancies = vacancyDao.getActiveVacanciesByUserId(userId);
+        List<VacancyDto> dtos = new ArrayList<>();
+        if (vacancies.isEmpty() || userId == 0) {
+            throw new VacancyNotFoundException("Can't find vacancy with this userId: " + userId);
+        }
+        vacancies.forEach(e -> dtos.add(VacancyDto.builder()
+                .id(e.getId())
+                .name(e.getName())
+                .description(e.getDescription())
+                .categoryId(e.getCategoryId())
+                .salary(e.getSalary())
+                .experienceFrom(e.getExperienceFrom())
+                .experienceTo(e.getExperienceTo())
+                .isActive(e.isActive())
+                .authorId(e.getAuthorId())
+                .createdDate(e.getCreatedDate())
+                .updateTime(e.getUpdateTime())
+                .build()));
+        return dtos;
+    }
+
+    @Override
     public List<VacancyDto> getVacanciesBySalary(boolean bool) {
         List<Vacancy> vacancies;
         if (!bool) {
