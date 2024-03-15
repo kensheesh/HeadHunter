@@ -21,11 +21,22 @@ public class UserController {
         return ResponseEntity.ok(userService.getUsers());
     }
 
+    @GetMapping("users/id{id}")
+    public ResponseEntity<?> getUserById(@PathVariable int id) {
+        try {
+            UserDto user = userService.getUserById(id);
+            return ResponseEntity.ok(user);
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+
     @GetMapping("users/name{name}")
     public ResponseEntity<?> getUserByName(@PathVariable String name) {
         try {
-            UserDto user = userService.getUserByName(name);
-            return ResponseEntity.ok(user);
+            List<UserDto> users = userService.getUserByName(name);
+            return ResponseEntity.ok(users);
         } catch (UserNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
@@ -34,8 +45,8 @@ public class UserController {
     @GetMapping("users/phoneNumber{phoneNumber}")
     public ResponseEntity<?> getUserByPhoneNumber(@PathVariable String phoneNumber) {
         try {
-            UserDto user = userService.getUserByPhoneNumber(phoneNumber);
-            return ResponseEntity.ok(user);
+            List<UserDto> users = userService.getUserByPhoneNumber(phoneNumber);
+            return ResponseEntity.ok(users);
         } catch (UserNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
@@ -51,7 +62,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("users/existByEmail/{email}")
+    @GetMapping("users/existByEmail{email}")
     public ResponseEntity<Boolean> checkUserExistenceByEmail(@PathVariable String email) {
         boolean exists = userService.doesUserExistByEmail(email);
         return ResponseEntity.ok(exists);
@@ -61,6 +72,12 @@ public class UserController {
     @PostMapping("users/edit")
     public ResponseEntity<?> editUser(@RequestBody UserDto userDto) {
         userService.editUser(userDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("users/delete{id}")
+    public ResponseEntity<?> deleteUserById(@PathVariable int id) {
+        userService.deleteUserById(id);
         return ResponseEntity.ok().build();
     }
 }

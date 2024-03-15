@@ -1,0 +1,48 @@
+databaseChangeLog:
+  - changeSet:
+      id: modify-fk-for-cascade-delete-all-2.0
+      author: Nursultan
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: vacancies
+            constraintName: fk_vacancies_authorId
+        - addForeignKeyConstraint:
+            constraintName: fk_vacancies_authorId
+            baseTableName: vacancies
+            baseColumnNames: authorId
+            referencedTableName: users
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        - dropForeignKeyConstraint:
+            baseTableName: resumes
+            constraintName: fk_resumes_userId
+        - addForeignKeyConstraint:
+            constraintName: fk_resumes_userId
+            baseTableName: resumes
+            baseColumnNames: userId
+            referencedTableName: users
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        - dropForeignKeyConstraint:
+            baseTableName: respondedApplicants
+            constraintName: fk_respondedApplicants_resumeId
+        - addForeignKeyConstraint:
+            constraintName: fk_respondedApplicants_resumeId
+            baseTableName: respondedApplicants
+            baseColumnNames: resumeId
+            referencedTableName: resumes
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        - dropForeignKeyConstraint:
+            baseTableName: respondedApplicants
+            constraintName: fk_respondedApplicants_vacancyId
+        - addForeignKeyConstraint:
+            constraintName: fk_respondedApplicants_vacancyId
+            baseTableName: respondedApplicants
+            baseColumnNames: vacancyId
+            referencedTableName: vacancies
+            referencedColumnNames: id
+            onDelete: CASCADE

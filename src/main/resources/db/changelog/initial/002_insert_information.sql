@@ -1,6 +1,6 @@
 INSERT INTO users (name, surname, age, email, password, phoneNumber, avatar, accountType)
 VALUES ('Джон', 'Доу', 28, 'john.doe@example.com', 'se3111curepasfs', '555-0101', '', 'APPLICANT'),
-       ('Алис', 'Смит', 35, 'alice.smith@corp.com', 'securepass123', '555-0102', '', 'EMPLOYER'),
+       ('Алис', 'Смит', 35, 'alice.smith@corp.com', 'securepass123', '555-0101', '', 'EMPLOYER'),
        ('Лиам', 'Вилсон', 34, 'asdf.wilson@example.com', 'lia21312mPass789', '555-0401', '', 'APPLICANT'),
        ('Робин', 'Робинсон', 28, 'asdf.robinson@corp.com', 'Se11cure456', '555-0402', '', 'EMPLOYER'),
        ('Джон', 'Джонсон', 31, 'asdf.johnson@example.com', 'av11a1234', '555-0403', '', 'APPLICANT'),

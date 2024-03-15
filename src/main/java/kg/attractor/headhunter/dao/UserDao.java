@@ -24,29 +24,33 @@ public class UserDao {
         return template.query(sql, new BeanPropertyRowMapper<>(User.class));
     }
 
-    public Optional<User> getUserByName(String name) {
+    public Optional<User> getUserById(int id) {
         String sql = """
                 select * from users
-                where name = ?;
+                where id = ?
                 """;
-
         return Optional.ofNullable(
                 DataAccessUtils.singleResult(
-                        template.query(sql, new BeanPropertyRowMapper<>(User.class), name)
+                        template.query(sql, new BeanPropertyRowMapper<>(User.class), id)
                 )
         );
     }
 
-    public Optional<User> getUserByPhoneNumber(String phoneNumber) {
+    public List<User> getUserByName(String name) {
+        String sql = """
+            select * from users
+            where name = ?;
+            """;
+        return template.query(sql, new BeanPropertyRowMapper<>(User.class), name);
+    }
+
+
+    public List<User> getUserByPhoneNumber(String phoneNumber) {
         String sql = """
                 select * from users
                 where phoneNumber = ?;
                 """;
-        return Optional.ofNullable(
-                DataAccessUtils.singleResult(
-                        template.query(sql, new BeanPropertyRowMapper<>(User.class), phoneNumber)
-                )
-        );
+        return template.query(sql, new BeanPropertyRowMapper<>(User.class), phoneNumber);
     }
 
     public Optional<User> getUserByEmail(String email) {
@@ -75,7 +79,6 @@ public class UserDao {
             WHERE id = ?;
             """;
 
-        System.out.println(user.getAccountType());
         template.update(sql,
                 user.getName(),
                 user.getSurname(),
@@ -86,5 +89,13 @@ public class UserDao {
                 user.getAvatar(),
                 user.getAccountType().toString(),
                 user.getId());
+    }
+
+    public void deleteUserById(int id) {
+        String sql = """
+                delete from users
+                where id = ?
+                """;
+        template.update(sql, id);
     }
 }

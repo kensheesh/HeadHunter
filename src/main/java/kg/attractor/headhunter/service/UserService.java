@@ -7,13 +7,15 @@ import java.util.List;
 
 public interface UserService {
     List<UserDto> getUsers();
+    UserDto getUserById(int id) throws UserNotFoundException;
+    List<UserDto> getUserByName(String name) throws UserNotFoundException;
 
-    UserDto getUserByName(String name) throws UserNotFoundException;
-
-    UserDto getUserByPhoneNumber(String phoneNumber) throws UserNotFoundException;
+    List<UserDto> getUserByPhoneNumber(String phoneNumber) throws UserNotFoundException;
 
     UserDto getUserByEmail(String email) throws UserNotFoundException;
     boolean doesUserExistByEmail(String email);
 
     void editUser(UserDto userDto);
+    void deleteUserById(int id);
+
 }

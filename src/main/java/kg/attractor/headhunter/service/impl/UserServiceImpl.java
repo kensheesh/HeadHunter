@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,8 +38,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUserByName(String name) throws UserNotFoundException {
-        User user = userDao.getUserByName(name).orElseThrow(() -> new UserNotFoundException("Can't find user with name:" + name));
+    public UserDto getUserById(int id) throws UserNotFoundException {
+        User user = userDao.getUserById(id).orElseThrow(() -> new UserNotFoundException("Can't find user with id: " + id));
         return UserDto.builder()
                 .id(user.getId())
                 .name(user.getName())
@@ -52,9 +53,13 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
-    public UserDto getUserByPhoneNumber(String phoneNumber) throws UserNotFoundException {
-        User user = userDao.getUserByPhoneNumber(phoneNumber).orElseThrow(() -> new UserNotFoundException("Can't find user with phoneNumber:" + phoneNumber));
-        return UserDto.builder()
+    @Override
+    public List<UserDto> getUserByName(String name) throws UserNotFoundException{
+        List<User> users = userDao.getUserByName(name);
+        if (users.isEmpty()) {
+            throw new UserNotFoundException("Can't find user with name: " + name);
+        }
+        return users.stream().map(user -> UserDto.builder()
                 .id(user.getId())
                 .name(user.getName())
                 .surname(user.getSurname())
@@ -64,7 +69,27 @@ public class UserServiceImpl implements UserService {
                 .phoneNumber(user.getPhoneNumber())
                 .avatar(user.getAvatar())
                 .accountType(user.getAccountType())
-                .build();
+                .build()).collect(Collectors.toList());
+    }
+
+
+
+    public List<UserDto> getUserByPhoneNumber(String phoneNumber) throws UserNotFoundException {
+        List<User> users = userDao.getUserByPhoneNumber(phoneNumber);
+        if (users.isEmpty()) {
+            throw new UserNotFoundException("Can't find user with phoneNumber:" + phoneNumber);
+        }
+        return users.stream().map(user -> UserDto.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .surname(user.getSurname())
+                .age(user.getAge())
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .phoneNumber(user.getPhoneNumber())
+                .avatar(user.getAvatar())
+                .accountType(user.getAccountType())
+                .build()).collect(Collectors.toList());
     }
 
     public UserDto getUserByEmail(String email) throws UserNotFoundException {
@@ -101,5 +126,10 @@ public class UserServiceImpl implements UserService {
         user.setAvatar(userDto.getAvatar());
 
         userDao.editUser(user);
+    }
+
+    @Override
+    public void deleteUserById(int id) {
+        userDao.deleteUserById(id);
     }
 }
