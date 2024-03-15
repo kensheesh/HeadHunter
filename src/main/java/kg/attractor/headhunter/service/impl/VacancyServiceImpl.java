@@ -58,6 +58,7 @@ public class VacancyServiceImpl implements VacancyService {
                 .build()));
         return dtos;
     }
+
     @Override
     public List<VacancyDto> getVacanciesByUserId(int userId) throws VacancyNotFoundException {
         List<Vacancy> vacancies = vacancyDao.getVacanciesByUserId(userId).orElseThrow(() -> new VacancyNotFoundException("Can't find vacancy with this userId: " + userId));
@@ -81,6 +82,56 @@ public class VacancyServiceImpl implements VacancyService {
     @Override
     public List<VacancyDto> getActiveVacancies() {
         List<Vacancy> vacancies = vacancyDao.getActiveVacancies();
+        List<VacancyDto> dtos = new ArrayList<>();
+        vacancies.forEach(e -> dtos.add(VacancyDto.builder()
+                .id(e.getId())
+                .name(e.getName())
+                .description(e.getDescription())
+                .categoryId(e.getCategoryId())
+                .salary(e.getSalary())
+                .experienceFrom(e.getExperienceFrom())
+                .experienceTo(e.getExperienceTo())
+                .isActive(e.isActive())
+                .authorId(e.getAuthorId())
+                .createdDate(e.getCreatedDate())
+                .updateTime(e.getUpdateTime())
+                .build()));
+        return dtos;
+    }
+
+    @Override
+    public List<VacancyDto> getVacanciesBySalary(boolean bool) {
+        List<Vacancy> vacancies;
+        if (!bool) {
+            vacancies = vacancyDao.getVacanciesBySalaryDescending();
+        } else {
+            vacancies = vacancyDao.getVacanciesBySalaryAscending();
+        }
+        List<VacancyDto> dtos = new ArrayList<>();
+        vacancies.forEach(e -> dtos.add(VacancyDto.builder()
+                .id(e.getId())
+                .name(e.getName())
+                .description(e.getDescription())
+                .categoryId(e.getCategoryId())
+                .salary(e.getSalary())
+                .experienceFrom(e.getExperienceFrom())
+                .experienceTo(e.getExperienceTo())
+                .isActive(e.isActive())
+                .authorId(e.getAuthorId())
+                .createdDate(e.getCreatedDate())
+                .updateTime(e.getUpdateTime())
+                .build()));
+        return dtos;
+    }
+
+    @Override
+    public List<VacancyDto> getVacanciesByUpdateTime(boolean bool) {
+        List<Vacancy> vacancies;
+        if (!bool) {
+            vacancies = vacancyDao.getVacanciesByUpdateTimeDescending();
+        } else {
+            vacancies = vacancyDao.getVacanciesByUpdateTimeAscending();
+        }
         List<VacancyDto> dtos = new ArrayList<>();
         vacancies.forEach(e -> dtos.add(VacancyDto.builder()
                 .id(e.getId())

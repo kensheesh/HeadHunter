@@ -2,17 +2,15 @@ package kg.attractor.headhunter.service.impl;
 
 import kg.attractor.headhunter.dao.ResumeDao;
 import kg.attractor.headhunter.dto.ResumeDto;
-import kg.attractor.headhunter.dto.UserDto;
 import kg.attractor.headhunter.exception.ResumeNotFoundException;
-import kg.attractor.headhunter.exception.UserNotFoundException;
 import kg.attractor.headhunter.model.Resume;
-import kg.attractor.headhunter.model.User;
 import kg.attractor.headhunter.service.ResumeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,9 +18,10 @@ public class ResumeServiceImpl implements ResumeService {
     private final ResumeDao resumeDao;
 
     @Override
-    public List<ResumeDto> getResumesByCategory(int categoryId) throws ResumeNotFoundException {
-        List<Resume> resumes = resumeDao.getResumesByCategory(categoryId).orElseThrow(() -> new ResumeNotFoundException("Can't find resume with this category: " + categoryId));
+    public List<ResumeDto> getResumes() {
+        List<Resume> resumes = resumeDao.getResumes();
         List<ResumeDto> dtos = new ArrayList<>();
+
         resumes.forEach(e -> dtos.add(ResumeDto.builder()
                 .id(e.getId())
                 .userId(e.getUserId())
@@ -37,20 +36,42 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public List<ResumeDto> getResumeByUserId(int userId) throws ResumeNotFoundException {
-        List<Resume> resumes = resumeDao.getResumeByUserId(userId).orElseThrow(() -> new ResumeNotFoundException("Can't find resume with this userId: " + userId));
-        List<ResumeDto> dtos = new ArrayList<>();
-        resumes.forEach(e -> dtos.add(ResumeDto.builder()
-                .id(e.getId())
-                .userId(e.getUserId())
-                .name(e.getName())
-                .categoryId(e.getCategoryId())
-                .salary(e.getSalary())
-                .isActive(e.isActive())
-                .createdTime(e.getCreatedTime())
-                .updateTime(e.getUpdateTime())
-                .build()));
-        return dtos;
+    public List<ResumeDto> getResumesByCategory(int categoryId) throws ResumeNotFoundException {
+        List<Resume> resumes = resumeDao.getResumesByCategory(categoryId);
+        if (resumes.isEmpty() || categoryId == 0) {
+            throw new ResumeNotFoundException("Can't find resume with this category: " + categoryId);
+        }
+
+        return resumes.stream().map(resume -> ResumeDto.builder()
+                .id(resume.getId())
+                .userId(resume.getUserId())
+                .name(resume.getName())
+                .categoryId(resume.getCategoryId())
+                .salary(resume.getSalary())
+                .isActive(resume.isActive())
+                .createdTime(resume.getCreatedTime())
+                .updateTime(resume.getUpdateTime())
+                .build()).collect(Collectors.toList());
+    }
+
+
+    @Override
+    public List<ResumeDto> getResumesByUserId(int userId) throws ResumeNotFoundException {
+        List<Resume> resumes = resumeDao.getResumesByUserId(userId);
+        if (resumes.isEmpty() || userId == 0) {
+            throw new ResumeNotFoundException("Can't find resume with this category: " + userId);
+        }
+
+        return resumes.stream().map(resume -> ResumeDto.builder()
+                .id(resume.getId())
+                .userId(resume.getUserId())
+                .name(resume.getName())
+                .categoryId(resume.getCategoryId())
+                .salary(resume.getSalary())
+                .isActive(resume.isActive())
+                .createdTime(resume.getCreatedTime())
+                .updateTime(resume.getUpdateTime())
+                .build()).collect(Collectors.toList());
     }
 
     @Override
@@ -97,6 +118,7 @@ public class ResumeServiceImpl implements ResumeService {
 
         resumeDao.editResume(resume);
     }
+
     @Override
     public void deleteResumeById(int id) {
         resumeDao.deleteResumeById(id);

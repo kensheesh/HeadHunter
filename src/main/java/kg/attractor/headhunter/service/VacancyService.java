@@ -9,7 +9,12 @@ public interface VacancyService {
     List<VacancyDto> getVacancies();
 
     List<VacancyDto> getVacanciesByCategory(int categoryId) throws VacancyNotFoundException;
+
     List<VacancyDto> getVacanciesByUserId(int userId) throws VacancyNotFoundException;
+
     List<VacancyDto> getActiveVacancies();
+
+    List<VacancyDto> getVacanciesBySalary(boolean bool);
+    List<VacancyDto> getVacanciesByUpdateTime(boolean bool);
 
 }

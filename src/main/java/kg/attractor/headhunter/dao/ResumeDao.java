@@ -22,26 +22,29 @@ import java.util.Optional;
 public class ResumeDao {
     private final JdbcTemplate template;
 
-    public Optional<List<Resume>> getResumesByCategory(int categoryId) {
+    public List<Resume> getResumes() {
+        String sql = """
+                select * from resumes;
+                """;
+        return template.query(sql, new BeanPropertyRowMapper<>(Resume.class));
+    }
+
+    public List<Resume> getResumesByCategory(int categoryId) {
         String sql = """
                 select * from resumes
                 where categoryId = ?;
                 """;
 
-        List<Resume> resumes = template.query(sql, new BeanPropertyRowMapper<>(Resume.class), categoryId);
-
-        return resumes.isEmpty() ? Optional.empty() : Optional.of(resumes);
+        return template.query(sql, new BeanPropertyRowMapper<>(Resume.class), categoryId);
     }
 
-    public Optional<List<Resume>> getResumeByUserId(int userId) {
+    public List<Resume> getResumesByUserId(int userId) {
         String sql = """
                 select * from resumes
                 where userId = ?;
                 """;
 
-        List<Resume> resumes = template.query(sql, new BeanPropertyRowMapper<>(Resume.class), userId);
-
-        return resumes.isEmpty() ? Optional.empty() : Optional.of(resumes);
+        return template.query(sql, new BeanPropertyRowMapper<>(Resume.class), userId);
     }
 
     public Optional<Resume> getResumeById(int id) {
@@ -57,7 +60,6 @@ public class ResumeDao {
                 )
         );
     }
-
     public int createResume(Resume resume) {
         String sql = """
                 insert into resumes (name, userId, categoryId, salary, isActive, createdTime, updateTime)

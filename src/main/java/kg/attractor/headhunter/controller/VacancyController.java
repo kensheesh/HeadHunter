@@ -22,7 +22,6 @@ public class VacancyController {
     @GetMapping("vacancies")
     public ResponseEntity<?> getVacancies() {
         return ResponseEntity.ok(vacancyService.getVacancies());
-
     }
 
     @GetMapping("vacancies/categoryId{categoryId}")
@@ -48,6 +47,26 @@ public class VacancyController {
     @GetMapping("vacancies/active")
     public ResponseEntity<?> getActiveVacancies() {
         return ResponseEntity.ok(vacancyService.getActiveVacancies());
+    }
+
+    @GetMapping("vacancies/bySalaryDescending")
+    public ResponseEntity<?> getVacanciesBySalaryDescending() {
+        return ResponseEntity.ok(vacancyService.getVacanciesBySalary(false));
+    }
+
+    @GetMapping("vacancies/bySalaryAscending")
+    public ResponseEntity<?> getVacanciesBySalaryAscending() {
+        return ResponseEntity.ok(vacancyService.getVacanciesBySalary(true));
+    }
+
+    @GetMapping("vacancies/byUpdateTimeDescending")
+    public ResponseEntity<?> getVacanciesByUpdateTimeDescending() {
+        return ResponseEntity.ok(vacancyService.getVacanciesByUpdateTime(false));
+    }
+
+    @GetMapping("vacancies/byUpdateTimeAscending")
+    public ResponseEntity<?> getVacanciesByUpdateTimeAscending() {
+        return ResponseEntity.ok(vacancyService.getVacanciesByUpdateTime(true));
     }
 
 }

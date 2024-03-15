@@ -15,14 +15,9 @@ import java.util.List;
 public class ResumeController {
     private final ResumeService resumeService;
 
-    @GetMapping("resumes/categoryId{categoryId}")
-    public ResponseEntity<?> getResumesByCategory(@PathVariable int categoryId) {
-        try {
-            List<ResumeDto> resumeDto = resumeService.getResumesByCategory(categoryId);
-            return ResponseEntity.ok(resumeDto);
-        } catch (ResumeNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+    @GetMapping("resumes")
+    public ResponseEntity<?> getResumes() {
+        return ResponseEntity.ok(resumeService.getResumes());
     }
 
     @GetMapping("resumes/id{id}")
@@ -35,15 +30,31 @@ public class ResumeController {
         }
     }
 
+
     @GetMapping("resumes/userId{userId}")
     public ResponseEntity<?> getResumesByUserId(@PathVariable int userId) {
         try {
-            List<ResumeDto> resumeDto = resumeService.getResumeByUserId(userId);
+            List<ResumeDto> resumeDto = resumeService.getResumesByUserId(userId);
             return ResponseEntity.ok(resumeDto);
         } catch (ResumeNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+
+    @GetMapping("resumes/categoryId{categoryId}")
+    public ResponseEntity<?> getResumesByCategory(@PathVariable(required = false) Integer categoryId) {
+        if (categoryId == null || categoryId <= 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Can't find resume with this category: " + categoryId);
+        }
+
+        try {
+            List<ResumeDto> resumeDto = resumeService.getResumesByCategory(categoryId);
+            return ResponseEntity.ok(resumeDto);
+        } catch (ResumeNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
 
     @PostMapping("resumes/add")
     public ResponseEntity<?> createResume(@RequestBody ResumeDto resumeDto) {
