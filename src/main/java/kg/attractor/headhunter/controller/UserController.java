@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -79,4 +80,17 @@ public class UserController {
         userService.deleteUserById(id);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("users/{id}/addAvatar")
+    public ResponseEntity<?> addAvatar(@PathVariable int id, @RequestParam("file") MultipartFile file) {
+        try {
+            userService.addAvatar(id, file);
+            return ResponseEntity.ok().build();
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
 }

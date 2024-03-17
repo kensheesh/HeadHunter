@@ -95,4 +95,13 @@ public class UserDao {
                 """;
         template.update(sql, id);
     }
+
+    public void addAvatar(User user) {
+        String sql = """
+                UPDATE users
+                SET avatar = ?
+                WHERE id = ?;
+                """;
+        template.update(sql, user.getAvatar(), user.getId());
+    }
 }

@@ -7,8 +7,10 @@ import kg.attractor.headhunter.exception.UserNotFoundException;
 import kg.attractor.headhunter.model.Resume;
 import kg.attractor.headhunter.model.User;
 import kg.attractor.headhunter.service.UserService;
+import kg.attractor.headhunter.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
+    private final FileUtil fileUtil;
 
     @Override
     public List<UserDto> getUsers() {
@@ -125,8 +128,18 @@ public class UserServiceImpl implements UserService {
         userDao.editUser(user);
     }
 
+
     @Override
     public void deleteUserById(int id) {
         userDao.deleteUserById(id);
     }
+
+    @Override
+    public void addAvatar(int id, MultipartFile file) throws UserNotFoundException {
+        User user = userDao.getUserById(id).orElseThrow(() -> new UserNotFoundException("Can't find user with id: " + id));
+        String filename = fileUtil.saveUploadedFile(file, "avatars");
+        user.setAvatar(filename);
+        userDao.addAvatar(user);
+    }
+
 }

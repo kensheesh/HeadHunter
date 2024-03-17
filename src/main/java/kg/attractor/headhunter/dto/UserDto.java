@@ -2,6 +2,7 @@ package kg.attractor.headhunter.dto;
 
 import kg.attractor.headhunter.model.AccountType;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @Builder
@@ -16,5 +17,6 @@ public class UserDto {
     private String password;
     private String phoneNumber;
     private String avatar;
+    private MultipartFile file;
     private AccountType accountType;
 }
