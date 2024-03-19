@@ -1,27 +1,42 @@
 package kg.attractor.headhunter.service.impl;
 
 import kg.attractor.headhunter.dao.ResumeDao;
+import kg.attractor.headhunter.dao.UserDao;
 import kg.attractor.headhunter.dto.ResumeDto;
 import kg.attractor.headhunter.exception.ResumeNotFoundException;
+import kg.attractor.headhunter.exception.UserNotFoundException;
 import kg.attractor.headhunter.model.Resume;
+import kg.attractor.headhunter.model.User;
 import kg.attractor.headhunter.service.ResumeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ResumeServiceImpl implements ResumeService {
     private final ResumeDao resumeDao;
+    private final UserDao userDao;
 
     @Override
-    public List<ResumeDto> getResumes() {
+    public List<ResumeDto> getResumes(int userId) throws UserNotFoundException {
+        Optional<User> user = userDao.getUserById(userId);
+
+        if (userId > userDao.getUsers().size() || userId < 1) {
+            throw new UserNotFoundException("Don't have access");
+        }
+        if (user.isPresent()) {
+            if (user.get().getAccountType().name().equals("APPLICANT")) {
+                throw new UserNotFoundException("Don't have access");
+            }
+        }
+
         List<Resume> resumes = resumeDao.getResumes();
         List<ResumeDto> dtos = new ArrayList<>();
-
         resumes.forEach(e -> dtos.add(ResumeDto.builder()
                 .id(e.getId())
                 .userId(e.getUserId())
@@ -36,8 +51,8 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public List<ResumeDto> getResumesByCategory(int categoryId) throws ResumeNotFoundException {
-        List<Resume> resumes = resumeDao.getResumesByCategory(categoryId);
+    public List<ResumeDto> getResumesByCategoryId(int categoryId) throws ResumeNotFoundException {
+        List<Resume> resumes = resumeDao.getResumesByCategoryId(categoryId);
         if (resumes.isEmpty() || categoryId == 0) {
             throw new ResumeNotFoundException("Can't find resume with this category: " + categoryId);
         }
@@ -53,6 +68,37 @@ public class ResumeServiceImpl implements ResumeService {
                 .updateTime(resume.getUpdateTime())
                 .build()).collect(Collectors.toList());
     }
+
+    @Override
+    public List<ResumeDto> getResumesByCategoryName(String categoryName, int userId) throws ResumeNotFoundException {
+        Optional<User> user = userDao.getUserById(userId);
+
+        if (userId > userDao.getUsers().size() || userId < 1) {
+            throw new ResumeNotFoundException("Don't have access");
+        }
+        if (user.isPresent()) {
+            if (user.get().getAccountType().name().equals("APPLICANT")) {
+                throw new ResumeNotFoundException("Don't have access");
+            }
+        }
+
+        List<Resume> resumes = resumeDao.getResumesByCategoryName(categoryName);
+        if (resumes.isEmpty()) {
+            throw new ResumeNotFoundException("Can't find resume with this category: " + categoryName);
+        }
+
+        return resumes.stream().map(resume -> ResumeDto.builder()
+                .id(resume.getId())
+                .userId(resume.getUserId())
+                .name(resume.getName())
+                .categoryId(resume.getCategoryId())
+                .salary(resume.getSalary())
+                .isActive(resume.isActive())
+                .createdTime(resume.getCreatedTime())
+                .updateTime(resume.getUpdateTime())
+                .build()).collect(Collectors.toList());
+    }
+
 
     @Override
     public List<ResumeDto> getActiveResumes() {
@@ -127,7 +173,18 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public int createResume(ResumeDto resumeDto) {
+    public void createResume(ResumeDto resumeDto, int userId) throws UserNotFoundException {
+        Optional<User> user = userDao.getUserById(userId);
+
+        if (userId > userDao.getUsers().size() || userId < 1) {
+            throw new UserNotFoundException("Don't have access");
+        }
+        if (user.isPresent()) {
+            if (user.get().getAccountType().name().equals("EMPLOYER")) {
+                throw new UserNotFoundException("Don't have access");
+            }
+        }
+
         Resume resume = new Resume();
         resume.setId(resumeDto.getId());
         resume.setUserId(resumeDto.getUserId());
@@ -138,26 +195,45 @@ public class ResumeServiceImpl implements ResumeService {
         resume.setCreatedTime(resumeDto.getCreatedTime());
         resume.setUpdateTime(resumeDto.getUpdateTime());
 
-        return resumeDao.createResume(resume);
+        resumeDao.createResume(resume);
     }
 
     @Override
-    public void editResume(ResumeDto resumeDto) {
+    public void editResume(ResumeDto resumeDto, int userId) throws UserNotFoundException {
+        Optional<User> user = userDao.getUserById(userId);
+
+        if (userId > userDao.getUsers().size() || userId < 1) {
+            throw new UserNotFoundException("Don't have access");
+        }
+        if (user.isPresent()) {
+            if (user.get().getAccountType().name().equals("EMPLOYER")) {
+                throw new UserNotFoundException("Don't have access");
+            }
+        }
+
         Resume resume = new Resume();
         resume.setId(resumeDto.getId());
-        resume.setUserId(resumeDto.getUserId());
         resume.setName(resumeDto.getName());
-        resume.setCategoryId(resumeDto.getCategoryId());
         resume.setSalary(resumeDto.getSalary());
         resume.setActive(resumeDto.isActive());
-        resume.setCreatedTime(resumeDto.getCreatedTime());
         resume.setUpdateTime(resumeDto.getUpdateTime());
 
         resumeDao.editResume(resume);
     }
 
     @Override
-    public void deleteResumeById(int id) {
+    public void deleteResumeById(int id, int userId) throws UserNotFoundException {
+        Optional<User> user = userDao.getUserById(userId);
+
+        if (userId > userDao.getUsers().size() || userId < 1) {
+            throw new UserNotFoundException("Don't have access");
+        }
+        if (user.isPresent()) {
+            if (user.get().getAccountType().name().equals("EMPLOYER")) {
+                throw new UserNotFoundException("Don't have access");
+            }
+        }
+
         resumeDao.deleteResumeById(id);
     }
 }

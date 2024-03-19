@@ -1,25 +1,23 @@
 package kg.attractor.headhunter.dao;
 
 import kg.attractor.headhunter.model.Resume;
-import kg.attractor.headhunter.model.Vacancy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
 public class ResumeDao {
     private final JdbcTemplate template;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public List<Resume> getResumes() {
         String sql = """
@@ -28,7 +26,7 @@ public class ResumeDao {
         return template.query(sql, new BeanPropertyRowMapper<>(Resume.class));
     }
 
-    public List<Resume> getResumesByCategory(int categoryId) {
+    public List<Resume> getResumesByCategoryId(int categoryId) {
         String sql = """
                 select * from resumes
                 where categoryId = ?;
@@ -36,6 +34,17 @@ public class ResumeDao {
 
         return template.query(sql, new BeanPropertyRowMapper<>(Resume.class), categoryId);
     }
+
+    public List<Resume> getResumesByCategoryName(String categoryName) {
+        String sql = """
+                select r.* from resumes r
+                join categories c on r.categoryId = c.id
+                where c.name = ?;
+                """;
+
+        return template.query(sql, new BeanPropertyRowMapper<>(Resume.class), categoryName);
+    }
+
 
     public List<Resume> getActiveResumes() {
         String sql = """
@@ -75,36 +84,32 @@ public class ResumeDao {
         );
     }
 
-    public int createResume(Resume resume) {
+    public void createResume(Resume resume) {
         String sql = """
                 insert into resumes (name, userId, categoryId, salary, isActive, createdTime, updateTime)
-                values(?,?,?,?,?,?,?);
-                 """;
-        KeyHolder keyHolder = new GeneratedKeyHolder();
+                values (:name, :userId, :categoryId, :salary, :isActive, :createdTime, :updateTime)
+                """;
 
-        template.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
-            ps.setString(1, resume.getName());
-            ps.setInt(2, resume.getUserId());
-            ps.setInt(3, resume.getCategoryId());
-            ps.setInt(4, resume.getSalary());
-            ps.setBoolean(5, resume.isActive());
-            ps.setTimestamp(6, Timestamp.valueOf(resume.getCreatedTime()));
-            ps.setTimestamp(7, Timestamp.valueOf(resume.getUpdateTime()));
-
-            return ps;
-        }, keyHolder);
-        return Objects.requireNonNull(keyHolder.getKey()).intValue();
+        namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource()
+                .addValue("name", resume.getName())
+                .addValue("userId", resume.getUserId())
+                .addValue("categoryId", resume.getCategoryId())
+                .addValue("salary", resume.getSalary())
+                .addValue("isActive", resume.isActive())
+                .addValue("createdTime", resume.getCreatedTime())
+                .addValue("updateTime", resume.getUpdateTime())
+        );
     }
+
 
     public void editResume(Resume resume) {
         String sql = """
                 UPDATE resumes
-                SET name = ?, userId = ?, categoryId = ?, salary = ?, isActive = ?, createdTime = ?, updateTime = ?
+                SET name = ?, salary = ?, isActive = ?, updateTime = ?
                 WHERE id = ?;
                 """;
 
-        template.update(sql, resume.getName(), resume.getUserId(), resume.getCategoryId(), resume.getSalary(), resume.isActive(), Timestamp.valueOf(resume.getCreatedTime()), Timestamp.valueOf(resume.getUpdateTime()), resume.getId());
+        template.update(sql, resume.getName(), resume.getSalary(), resume.isActive(), Timestamp.valueOf(resume.getUpdateTime()), resume.getId());
     }
 
     public void deleteResumeById(int id) {
