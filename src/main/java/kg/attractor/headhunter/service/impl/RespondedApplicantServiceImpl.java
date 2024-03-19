@@ -32,7 +32,7 @@ public class RespondedApplicantServiceImpl implements RespondedApplicantService 
             throw new VacancyNotFoundException("Don't have access");
         }
         if (user.isPresent()) {
-            if (user.get().getAccountType().name().equals("APPLICANT")) {
+            if (user.get().getAccountType().name().equals("EMPLOYER")) {
                 throw new VacancyNotFoundException("Don't have access");
             }
         }

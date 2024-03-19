@@ -1,10 +1,9 @@
 package kg.attractor.headhunter.service.impl;
 
 import kg.attractor.headhunter.dao.UserDao;
-import kg.attractor.headhunter.dto.ResumeDto;
 import kg.attractor.headhunter.dto.UserDto;
+import kg.attractor.headhunter.exception.ResumeNotFoundException;
 import kg.attractor.headhunter.exception.UserNotFoundException;
-import kg.attractor.headhunter.model.Resume;
 import kg.attractor.headhunter.model.User;
 import kg.attractor.headhunter.service.UserService;
 import kg.attractor.headhunter.util.FileUtil;
@@ -14,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getUserByName(String name) throws UserNotFoundException{
+    public List<UserDto> getUserByNameForEmployersAndApplicants(String name) throws UserNotFoundException {
         List<User> users = userDao.getUserByName(name);
         if (users.isEmpty()) {
             throw new UserNotFoundException("Can't find user with name: " + name);
@@ -76,8 +76,18 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    public List<UserDto> getUserByPhoneNumber(String phoneNumber, int userId) throws UserNotFoundException {
+        if (userId > userDao.getUsers().size() || userId < 1) {
+            throw new UserNotFoundException("Don't have access");
+        }
 
-    public List<UserDto> getUserByPhoneNumber(String phoneNumber) throws UserNotFoundException {
+        Optional<User> userForChecking = userDao.getUserById(userId);
+        if (userForChecking.isPresent()) {
+            if (userForChecking.get().getAccountType().name().equals("APPLICANT")) {
+                throw new UserNotFoundException("Don't have access");
+            }
+        }
+
         List<User> users = userDao.getUserByPhoneNumber(phoneNumber);
         if (users.isEmpty()) {
             throw new UserNotFoundException("Can't find user with phoneNumber:" + phoneNumber);
@@ -95,7 +105,18 @@ public class UserServiceImpl implements UserService {
                 .build()).collect(Collectors.toList());
     }
 
-    public UserDto getUserByEmail(String email) throws UserNotFoundException {
+    public UserDto getUserByEmail(String email, int userId) throws UserNotFoundException {
+        if (userId > userDao.getUsers().size() || userId < 1) {
+            throw new UserNotFoundException("Don't have access");
+        }
+
+        Optional<User> userForChecking = userDao.getUserById(userId);
+        if (userForChecking.isPresent()) {
+            if (userForChecking.get().getAccountType().name().equals("APPLICANT")) {
+                throw new UserNotFoundException("Don't have access");
+            }
+        }
+
         User user = userDao.getUserByEmail(email).orElseThrow(() -> new UserNotFoundException("Can't find user with email:" + email));
         return UserDto.builder()
                 .id(user.getId())
@@ -128,6 +149,24 @@ public class UserServiceImpl implements UserService {
         userDao.editUser(user);
     }
 
+    @Override
+    public void createUser(UserDto userDto) {
+        if (userDto.getAccountType().name().equals("EMPLOYER")) {
+            userDto.setSurname(null);
+        }
+
+        User user = new User();
+        user.setName(userDto.getName());
+        user.setSurname(userDto.getSurname());
+        user.setEmail(userDto.getEmail());
+        user.setPassword(userDto.getPassword());
+        user.setPhoneNumber(userDto.getPhoneNumber());
+        user.setAvatar("base_avatar.jpg");
+        user.setAccountType(userDto.getAccountType());
+
+        userDao.createUser(user);
+    }
+
 
     @Override
     public void deleteUserById(int id) {
@@ -141,5 +180,4 @@ public class UserServiceImpl implements UserService {
         user.setAvatar(filename);
         userDao.addAvatar(user);
     }
-
 }

@@ -9,15 +9,16 @@ import java.util.List;
 public interface UserService {
     List<UserDto> getUsers();
     UserDto getUserById(int id) throws UserNotFoundException;
-    List<UserDto> getUserByName(String name) throws UserNotFoundException;
+    List<UserDto> getUserByNameForEmployersAndApplicants(String name) throws UserNotFoundException;
 
-    List<UserDto> getUserByPhoneNumber(String phoneNumber) throws UserNotFoundException;
+    List<UserDto> getUserByPhoneNumber(String phoneNumber, int userId) throws UserNotFoundException;
 
-    UserDto getUserByEmail(String email) throws UserNotFoundException;
+    UserDto getUserByEmail(String email, int userId) throws UserNotFoundException;
     boolean doesUserExistByEmail(String email);
 
     void editUser(UserDto userDto);
     void deleteUserById(int id);
     void addAvatar(int id, MultipartFile file) throws UserNotFoundException;
 
+    void createUser(UserDto userDto);
 }

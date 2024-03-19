@@ -27,7 +27,7 @@ databaseChangeLog:
                   name: age
                   type: int
                   constraints:
-                    nullable: false
+                    nullable: true
               - column:
                   name: email
                   type: varchar(255)
@@ -46,6 +46,8 @@ databaseChangeLog:
               - column:
                   name: avatar
                   type: varchar(255)
+                  constraints:
+                    nullable: true
               - column:
                   name: accountType
                   type: varchar(255)

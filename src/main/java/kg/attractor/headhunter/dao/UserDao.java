@@ -1,14 +1,14 @@
 package kg.attractor.headhunter.dao;
 
-import kg.attractor.headhunter.model.Resume;
 import kg.attractor.headhunter.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +16,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserDao {
     private final JdbcTemplate template;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public List<User> getUsers() {
         String sql = """
@@ -38,9 +39,9 @@ public class UserDao {
 
     public List<User> getUserByName(String name) {
         String sql = """
-            select * from users
-            where name = ?;
-            """;
+                select * from users
+                where name = ?;
+                """;
         return template.query(sql, new BeanPropertyRowMapper<>(User.class), name);
     }
 
@@ -67,17 +68,17 @@ public class UserDao {
 
     public boolean doesUserExistByEmail(String email) {
         String sql = """
-            select exists(select 1 from users where email = ?);
-            """;
+                select exists(select 1 from users where email = ?);
+                """;
         return template.queryForObject(sql, Boolean.class, email);
     }
 
     public void editUser(User user) {
         String sql = """
-            UPDATE users
-            SET name = ?, surname = ?, age = ?,  password = ?, avatar = ?
-            WHERE id = ?;
-            """;
+                UPDATE users
+                SET name = ?, surname = ?, age = ?,  password = ?, avatar = ?
+                WHERE id = ?;
+                """;
 
         template.update(sql,
                 user.getName(),
@@ -103,5 +104,22 @@ public class UserDao {
                 WHERE id = ?;
                 """;
         template.update(sql, user.getAvatar(), user.getId());
+    }
+
+    public void createUser(User user) {
+        String sql = """
+                insert into users(name, surname, email, password, phoneNumber, avatar, accountType)
+                values (:name, :surname, :email, :password, :phoneNumber, :avatar, :accountType)
+                """;
+
+        namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource()
+                .addValue("name", user.getName())
+                .addValue("surname", user.getSurname())
+                .addValue("email", user.getEmail())
+                .addValue("password", user.getPassword())
+                .addValue("phoneNumber", user.getPhoneNumber())
+                .addValue("avatar", user.getAvatar())
+                .addValue("accountType", user.getAccountType().name())
+        );
     }
 }

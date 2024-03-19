@@ -41,7 +41,7 @@ public class VacancyServiceImpl implements VacancyService {
     public List<VacancyDto> getVacancies(int userId) throws UserNotFoundException{
         Optional<User> user = userDao.getUserById(userId);
 
-        if (userId > userDao.getUsers().size()) {
+        if (userId > userDao.getUsers().size() || userId < 1) {
             throw new UserNotFoundException("Don't have access");
         }
         if (user.isPresent()) {
@@ -84,7 +84,7 @@ public class VacancyServiceImpl implements VacancyService {
     public List<VacancyDto> getVacanciesByCategoryName(String categoryName, int userId) throws VacancyNotFoundException {
         Optional<User> user = userDao.getUserById(userId);
 
-        if (userId > userDao.getUsers().size()) {
+        if (userId > userDao.getUsers().size() || userId < 1) {
             throw new VacancyNotFoundException("Don't have access");
         }
         if (user.isPresent()) {
@@ -145,7 +145,7 @@ public class VacancyServiceImpl implements VacancyService {
     public void createVacancy(VacancyDto vacancyDto, int userId) throws UserNotFoundException {
         Optional<User> user = userDao.getUserById(userId);
 
-        if (userId > userDao.getUsers().size()) {
+        if (userId > userDao.getUsers().size() || userId < 1) {
             throw new UserNotFoundException("Don't have access");
         }
         if (user.isPresent()) {
@@ -173,7 +173,7 @@ public class VacancyServiceImpl implements VacancyService {
     public void editVacancy(VacancyDto vacancyDto, int userId) throws UserNotFoundException {
         Optional<User> user = userDao.getUserById(userId);
 
-        if (userId > userDao.getUsers().size()) {
+        if (userId > userDao.getUsers().size() || userId < 1) {
             throw new UserNotFoundException("Don't have access");
         }
         if (user.isPresent()) {
@@ -201,7 +201,7 @@ public class VacancyServiceImpl implements VacancyService {
     public void deleteVacancyById(int id, int userId) throws UserNotFoundException{
         Optional<User> user = userDao.getUserById(userId);
 
-        if (userId > userDao.getUsers().size()) {
+        if (userId > userDao.getUsers().size() || userId < 1) {
             throw new UserNotFoundException("Don't have access");
         }
         if (user.isPresent()) {

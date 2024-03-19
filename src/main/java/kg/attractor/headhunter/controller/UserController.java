@@ -12,16 +12,17 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
+@RequestMapping("accounts")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("users")
+    @GetMapping
     public ResponseEntity<List<UserDto>> getUsers() {
         return ResponseEntity.ok(userService.getUsers());
     }
 
-    @GetMapping("users/id{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getUserById(@PathVariable int id) {
         try {
             UserDto user = userService.getUserById(id);
@@ -31,57 +32,64 @@ public class UserController {
         }
     }
 
-
-    @GetMapping("users/name{name}")
+    @GetMapping("/name/{name}")
     public ResponseEntity<?> getUserByName(@PathVariable String name) {
         try {
-            List<UserDto> users = userService.getUserByName(name);
+            List<UserDto> users = userService.getUserByNameForEmployersAndApplicants(name);
             return ResponseEntity.ok(users);
         } catch (UserNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
-    @GetMapping("users/phoneNumber{phoneNumber}")
-    public ResponseEntity<?> getUserByPhoneNumber(@PathVariable String phoneNumber) {
+    @GetMapping("/phoneNumber/{phoneNumber}")
+    public ResponseEntity<?> getUserByPhoneNumber(@PathVariable String phoneNumber,
+                                                  @RequestParam int userId) {
         try {
-            List<UserDto> users = userService.getUserByPhoneNumber(phoneNumber);
+            List<UserDto> users = userService.getUserByPhoneNumber(phoneNumber, userId);
             return ResponseEntity.ok(users);
         } catch (UserNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
-    @GetMapping("users/email{email}")
-    public ResponseEntity<?> getUserByEmail(@PathVariable String email) {
+    @GetMapping("/email/{email}")
+    public ResponseEntity<?> getUserByEmail(@PathVariable String email,
+                                            @RequestParam int userId) {
         try {
-            UserDto user = userService.getUserByEmail(email);
+            UserDto user = userService.getUserByEmail(email, userId);
             return ResponseEntity.ok(user);
         } catch (UserNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
-    @GetMapping("users/existByEmail{email}")
+    @GetMapping("/exists/{email}")
     public ResponseEntity<Boolean> checkUserExistenceByEmail(@PathVariable String email) {
         boolean exists = userService.doesUserExistByEmail(email);
         return ResponseEntity.ok(exists);
     }
 
+    @PostMapping
+    public ResponseEntity<?> createUser(@RequestBody UserDto userDto) {
+        userService.createUser(userDto);
+        return ResponseEntity.ok().build();
+    }
 
-    @PostMapping("users/edit")
+
+    @PostMapping("/settings")
     public ResponseEntity<?> editUser(@RequestBody UserDto userDto) {
         userService.editUser(userDto);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("users/delete{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUserById(@PathVariable int id) {
         userService.deleteUserById(id);
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("users/{id}/addAvatar")
+    @PostMapping("/avatar/{id}")
     public ResponseEntity<?> addAvatar(@PathVariable int id, @RequestParam("file") MultipartFile file) {
         try {
             userService.addAvatar(id, file);
@@ -92,5 +100,4 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
-
 }
