@@ -1,32 +1,43 @@
 package kg.attractor.headhunter.controller;
 
-import kg.attractor.headhunter.dto.ResumeDto;
-import kg.attractor.headhunter.dto.UserDto;
 import kg.attractor.headhunter.dto.VacancyDto;
-import kg.attractor.headhunter.exception.ResumeNotFoundException;
 import kg.attractor.headhunter.exception.UserNotFoundException;
 import kg.attractor.headhunter.exception.VacancyNotFoundException;
 import kg.attractor.headhunter.service.impl.VacancyServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.swing.table.TableRowSorter;
 import java.util.List;
 
 @RestController
+@RequestMapping("/vacancies")
 @RequiredArgsConstructor
 public class VacancyController {
     private final VacancyServiceImpl vacancyService;
 
-    @GetMapping("vacancies")
-    public ResponseEntity<?> getVacancies() {
-        return ResponseEntity.ok(vacancyService.getVacancies());
+    @GetMapping
+    public ResponseEntity<?> getVacancies(@RequestParam int userId) {
+        try {
+            return ResponseEntity.ok(vacancyService.getVacancies(userId));
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
-    @GetMapping("vacancies/name{name}")
+    @GetMapping("/{id}")
+    public ResponseEntity<VacancyDto> getVacancyById(@PathVariable int id) {
+        try {
+            VacancyDto vacancy = vacancyService.getVacancyById(id);
+            return ResponseEntity.ok(vacancy);
+        } catch (VacancyNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    @GetMapping("/name/{name}")
     public ResponseEntity<?> getVacanciesByName(@PathVariable String name) {
         try {
             List<VacancyDto> vacancies = vacancyService.getVacanciesByName(name);
@@ -36,17 +47,28 @@ public class VacancyController {
         }
     }
 
-    @GetMapping("vacancies/categoryId{categoryId}")
-    public ResponseEntity<?> getVacanciesByCategory(@PathVariable int categoryId) {
+    @GetMapping("/categoryId/{categoryId}")
+    public ResponseEntity<?> getVacanciesByCategoryId(@PathVariable int categoryId) {
         try {
-            List<VacancyDto> vacancyDto = vacancyService.getVacanciesByCategory(categoryId);
+            List<VacancyDto> vacancyDto = vacancyService.getVacanciesByCategoryId(categoryId);
             return ResponseEntity.ok(vacancyDto);
         } catch (VacancyNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
-    @GetMapping("vacancies/userId{userId}")
+    @GetMapping("/categoryName/{categoryName}")
+    public ResponseEntity<?> getVacanciesByCategoryName(@PathVariable String categoryName,
+                                                        @RequestParam int userId) {
+        try {
+            List<VacancyDto> vacancies = vacancyService.getVacanciesByCategoryName(categoryName, userId);
+            return ResponseEntity.ok(vacancies);
+        } catch (VacancyNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/userId/{userId}")
     public ResponseEntity<?> getVacanciesByUserId(@PathVariable int userId) {
         try {
             List<VacancyDto> vacancyDto = vacancyService.getVacanciesByUserId(userId);
@@ -56,12 +78,12 @@ public class VacancyController {
         }
     }
 
-    @GetMapping("vacancies/active")
+    @GetMapping("/status")
     public ResponseEntity<?> getActiveVacancies() {
         return ResponseEntity.ok(vacancyService.getActiveVacancies());
     }
 
-    @GetMapping("vacancies/activeUserId{userId}")
+    @GetMapping("/status/{userId}")
     public ResponseEntity<?> getActiveVacanciesByUserId(@PathVariable int userId) {
         try {
             List<VacancyDto> vacancyDto = vacancyService.getActiveVacanciesByUserId(userId);
@@ -71,24 +93,57 @@ public class VacancyController {
         }
     }
 
-    @GetMapping("vacancies/bySalaryDescending")
+    @GetMapping("/salaryDesc")
     public ResponseEntity<?> getVacanciesBySalaryDescending() {
         return ResponseEntity.ok(vacancyService.getVacanciesBySalary(false));
     }
 
-    @GetMapping("vacancies/bySalaryAscending")
+    @GetMapping("/salaryAsc")
     public ResponseEntity<?> getVacanciesBySalaryAscending() {
         return ResponseEntity.ok(vacancyService.getVacanciesBySalary(true));
     }
 
-    @GetMapping("vacancies/byUpdateTimeDescending")
+    @GetMapping("/updateTimeDesc")
     public ResponseEntity<?> getVacanciesByUpdateTimeDescending() {
         return ResponseEntity.ok(vacancyService.getVacanciesByUpdateTime(false));
     }
 
-    @GetMapping("vacancies/byUpdateTimeAscending")
+    @GetMapping("/updateTimeAsc")
     public ResponseEntity<?> getVacanciesByUpdateTimeAscending() {
         return ResponseEntity.ok(vacancyService.getVacanciesByUpdateTime(true));
     }
 
+    @PostMapping
+    public ResponseEntity<?> createVacancy(@RequestBody VacancyDto vacancyDto,
+                                           @RequestParam int userId) {
+        try {
+            vacancyService.createVacancy(vacancyDto, userId);
+            return ResponseEntity.ok().build();
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @PutMapping
+    public ResponseEntity<?> editVacancy(@RequestBody VacancyDto vacancyDto,
+                                         @RequestParam int userId) {
+        try {
+            vacancyService.editVacancy(vacancyDto, userId);
+            return ResponseEntity.ok().build();
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteVacancyById(@PathVariable int id,
+                                               @RequestParam int userId) {
+        try {
+            vacancyService.deleteVacancyById(id, userId);
+            return ResponseEntity.ok().build();
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+
+    }
 }
