@@ -1,8 +1,10 @@
 package kg.attractor.headhunter.service.impl;
 
 import kg.attractor.headhunter.dao.RespondedApplicantDao;
+import kg.attractor.headhunter.dao.UserDao;
 import kg.attractor.headhunter.dto.UserDto;
 import kg.attractor.headhunter.dto.VacancyDto;
+import kg.attractor.headhunter.exception.ResumeNotFoundException;
 import kg.attractor.headhunter.exception.UserNotFoundException;
 import kg.attractor.headhunter.exception.VacancyNotFoundException;
 import kg.attractor.headhunter.model.User;
@@ -13,15 +15,29 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class RespondedApplicantServiceImpl implements RespondedApplicantService {
     private final RespondedApplicantDao respondedApplicantDao;
+    private final UserDao userDao;
+
 
     @Override
-    public List<VacancyDto> getVacanciesForRespondedApplicantsByUserId(int userId) throws VacancyNotFoundException {
-        List<Vacancy> vacancies = respondedApplicantDao.getVacanciesForRespondedApplicantsByUserId(userId).orElseThrow(() -> new VacancyNotFoundException("Can't find resume with this userId: " + userId));
+    public List<VacancyDto> getVacanciesForRespondedApplicantsByUserId(int id, int userId) throws VacancyNotFoundException {
+        Optional<User> user = userDao.getUserById(userId);
+
+        if (userId > userDao.getUsers().size() || userId < 1) {
+            throw new VacancyNotFoundException("Don't have access");
+        }
+        if (user.isPresent()) {
+            if (user.get().getAccountType().name().equals("APPLICANT")) {
+                throw new VacancyNotFoundException("Don't have access");
+            }
+        }
+
+        List<Vacancy> vacancies = respondedApplicantDao.getVacanciesForRespondedApplicantsByUserId(id).orElseThrow(() -> new VacancyNotFoundException("Can't find resume with this userId: " + id));
         List<VacancyDto> dtos = new ArrayList<>();
         vacancies.forEach(e -> dtos.add(VacancyDto.builder()
                 .id(e.getId())
@@ -40,7 +56,19 @@ public class RespondedApplicantServiceImpl implements RespondedApplicantService 
     }
 
     @Override
-    public List<UserDto> getRespondedUsersForVacancies(int vacancyId) throws UserNotFoundException {
+    public List<UserDto> getRespondedUsersForVacancies(int vacancyId, int userId) throws UserNotFoundException {
+        Optional<User> user = userDao.getUserById(userId);
+
+        if (userId > userDao.getUsers().size() || userId < 1) {
+            throw new UserNotFoundException("Don't have access");
+        }
+        if (user.isPresent()) {
+            if (user.get().getAccountType().name().equals("APPLICANT")) {
+                throw new UserNotFoundException("Don't have access");
+            }
+        }
+
+
         List<User> users = respondedApplicantDao.getRespondedUsersForVacancies(vacancyId).orElseThrow(() -> new UserNotFoundException("Can't find user with this userId: "));
         List<UserDto> dtos = new ArrayList<>();
         users.forEach(e -> dtos.add(UserDto.builder()
