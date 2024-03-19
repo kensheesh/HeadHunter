@@ -45,6 +45,15 @@ public class ResumeDao {
         return template.query(sql, new BeanPropertyRowMapper<>(Resume.class), categoryName);
     }
 
+    public List<Resume> getResumesByTitle(String title) {
+        String sql = """
+            select * from resumes
+            where name = ?;
+            """;
+        return template.query(sql, new BeanPropertyRowMapper<>(Resume.class), title);
+    }
+
+
 
     public List<Resume> getActiveResumes() {
         String sql = """

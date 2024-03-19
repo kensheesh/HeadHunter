@@ -1,0 +1,74 @@
+2024-03-19T18:36:18.612+06:00  INFO 9489 --- [main] k.a.headhunter.HeadHunterApplication     : Starting HeadHunterApplication using Java 17.0.8 with PID 9489 (/Users/kenshi/Desktop/homework50/HeadHunter/target/classes started by kenshi in /Users/kenshi/Desktop/homework50/HeadHunter)
+2024-03-19T18:36:18.613+06:00  INFO 9489 --- [main] k.a.headhunter.HeadHunterApplication     : No active profile set, falling back to 1 default profile: "default"
+2024-03-19T18:36:19.053+06:00  INFO 9489 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-03-19T18:36:19.056+06:00  INFO 9489 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-03-19T18:36:19.057+06:00  INFO 9489 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2024-03-19T18:36:19.100+06:00  INFO 9489 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-03-19T18:36:19.100+06:00  INFO 9489 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 468 ms
+2024-03-19T18:36:19.150+06:00  INFO 9489 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-03-19T18:36:19.295+06:00  INFO 9489 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn1: url=jdbc:h2:./db/headHunter user=ROOT
+2024-03-19T18:36:19.296+06:00  INFO 9489 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-03-19T18:36:19.323+06:00  INFO 9489 --- [main] liquibase.database                       : Set default schema name to PUBLIC
+2024-03-19T18:36:19.420+06:00  INFO 9489 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/001_create_tables.yaml
+2024-03-19T18:36:19.437+06:00  INFO 9489 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/002_insert_information.sql
+2024-03-19T18:36:19.439+06:00  INFO 9489 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/003_editiing_table.yaml
+2024-03-19T18:36:19.442+06:00  INFO 9489 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/004_editing_table.yaml
+2024-03-19T18:36:19.586+06:00  INFO 9489 --- [main] liquibase.changelog                      : Reading from PUBLIC.DATABASECHANGELOG
+2024-03-19T18:36:19.616+06:00  INFO 9489 --- [main] liquibase.ui                             : Database is up to date, no changesets to execute
+2024-03-19T18:36:19.617+06:00  INFO 9489 --- [main] liquibase.changelog                      : Reading from PUBLIC.DATABASECHANGELOG
+2024-03-19T18:36:19.621+06:00  INFO 9489 --- [main] liquibase.util                           : UPDATE SUMMARY
+2024-03-19T18:36:19.621+06:00  INFO 9489 --- [main] liquibase.util                           : Run:                          0
+2024-03-19T18:36:19.621+06:00  INFO 9489 --- [main] liquibase.util                           : Previously run:              13
+2024-03-19T18:36:19.621+06:00  INFO 9489 --- [main] liquibase.util                           : Filtered out:                 0
+2024-03-19T18:36:19.621+06:00  INFO 9489 --- [main] liquibase.util                           : -------------------------------
+2024-03-19T18:36:19.621+06:00  INFO 9489 --- [main] liquibase.util                           : Total change sets:           13
+2024-03-19T18:36:19.621+06:00  INFO 9489 --- [main] liquibase.util                           : Update summary generated
+2024-03-19T18:36:19.629+06:00  INFO 9489 --- [main] liquibase.lockservice                    : Successfully released change log lock
+2024-03-19T18:36:19.629+06:00  INFO 9489 --- [main] liquibase.command                        : Command execution complete
+2024-03-19T18:36:19.842+06:00  INFO 9489 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2024-03-19T18:36:19.848+06:00  INFO 9489 --- [main] k.a.headhunter.HeadHunterApplication     : Started HeadHunterApplication in 1.443 seconds (process running for 1.698)
+2024-03-19T18:36:31.775+06:00  INFO 9489 --- [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-03-19T18:36:31.777+06:00  INFO 9489 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-03-19T18:36:31.781+06:00  INFO 9489 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2024-03-19T18:44:25.071+06:00  INFO 9489 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-03-19T18:44:25.074+06:00  INFO 9489 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-03-19T18:44:28.859+06:00  INFO 9615 --- [main] k.a.headhunter.HeadHunterApplication     : Starting HeadHunterApplication using Java 17.0.8 with PID 9615 (/Users/kenshi/Desktop/homework50/HeadHunter/target/classes started by kenshi in /Users/kenshi/Desktop/homework50/HeadHunter)
+2024-03-19T18:44:28.860+06:00  INFO 9615 --- [main] k.a.headhunter.HeadHunterApplication     : No active profile set, falling back to 1 default profile: "default"
+2024-03-19T18:44:29.294+06:00  INFO 9615 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-03-19T18:44:29.298+06:00  INFO 9615 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-03-19T18:44:29.298+06:00  INFO 9615 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2024-03-19T18:44:29.338+06:00  INFO 9615 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-03-19T18:44:29.338+06:00  INFO 9615 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 459 ms
+2024-03-19T18:44:29.398+06:00  INFO 9615 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-03-19T18:44:29.549+06:00  INFO 9615 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn1: url=jdbc:h2:./db/headHunter user=ROOT
+2024-03-19T18:44:29.550+06:00  INFO 9615 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-03-19T18:44:29.581+06:00  INFO 9615 --- [main] liquibase.database                       : Set default schema name to PUBLIC
+2024-03-19T18:44:29.681+06:00  INFO 9615 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/001_create_tables.yaml
+2024-03-19T18:44:29.698+06:00  INFO 9615 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/002_insert_information.sql
+2024-03-19T18:44:29.701+06:00  INFO 9615 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/003_editiing_table.yaml
+2024-03-19T18:44:29.703+06:00  INFO 9615 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/004_editing_table.yaml
+2024-03-19T18:44:29.841+06:00  INFO 9615 --- [main] liquibase.changelog                      : Reading from PUBLIC.DATABASECHANGELOG
+2024-03-19T18:44:29.869+06:00  INFO 9615 --- [main] liquibase.ui                             : Database is up to date, no changesets to execute
+2024-03-19T18:44:29.870+06:00  INFO 9615 --- [main] liquibase.changelog                      : Reading from PUBLIC.DATABASECHANGELOG
+2024-03-19T18:44:29.874+06:00  INFO 9615 --- [main] liquibase.util                           : UPDATE SUMMARY
+2024-03-19T18:44:29.874+06:00  INFO 9615 --- [main] liquibase.util                           : Run:                          0
+2024-03-19T18:44:29.874+06:00  INFO 9615 --- [main] liquibase.util                           : Previously run:              13
+2024-03-19T18:44:29.874+06:00  INFO 9615 --- [main] liquibase.util                           : Filtered out:                 0
+2024-03-19T18:44:29.874+06:00  INFO 9615 --- [main] liquibase.util                           : -------------------------------
+2024-03-19T18:44:29.874+06:00  INFO 9615 --- [main] liquibase.util                           : Total change sets:           13
+2024-03-19T18:44:29.874+06:00  INFO 9615 --- [main] liquibase.util                           : Update summary generated
+2024-03-19T18:44:29.882+06:00  INFO 9615 --- [main] liquibase.lockservice                    : Successfully released change log lock
+2024-03-19T18:44:29.882+06:00  INFO 9615 --- [main] liquibase.command                        : Command execution complete
+2024-03-19T18:44:30.092+06:00  INFO 9615 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2024-03-19T18:44:30.098+06:00  INFO 9615 --- [main] k.a.headhunter.HeadHunterApplication     : Started HeadHunterApplication in 1.515 seconds (process running for 1.769)
+2024-03-19T18:44:45.542+06:00  INFO 9615 --- [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-03-19T18:44:45.542+06:00  INFO 9615 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-03-19T18:44:45.544+06:00  INFO 9615 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2024-03-19T18:44:45.567+06:00  WARN 9615 --- [http-nio-8080-exec-2] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'int'; For input string: "titleEngineer"]
+2024-03-19T18:44:51.289+06:00  WARN 9615 --- [http-nio-8080-exec-4] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'int'; For input string: "titleEngineer"]
+2024-03-19T18:44:56.396+06:00  WARN 9615 --- [http-nio-8080-exec-6] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'int'; For input string: "titleEngineer"]
+2024-03-19T18:45:17.546+06:00  WARN 9615 --- [http-nio-8080-exec-7] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'int'; For input string: "titleEngineer"]
+2024-03-19T18:45:19.770+06:00  WARN 9615 --- [http-nio-8080-exec-10] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'int'; For input string: "titleEngineer"]
+2024-03-19T18:45:20.478+06:00  WARN 9615 --- [http-nio-8080-exec-1] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'int'; For input string: "titleEngineer"]
+2024-03-19T18:45:51.540+06:00 ERROR 9615 --- [http-nio-8080-exec-3] k.a.h.service.impl.ResumeServiceImpl     : Access denied for applicant with ID: 3
+2024-03-19T18:45:54.474+06:00 ERROR 9615 --- [http-nio-8080-exec-5] k.a.h.service.impl.ResumeServiceImpl     : Access denied for applicant with ID: 1

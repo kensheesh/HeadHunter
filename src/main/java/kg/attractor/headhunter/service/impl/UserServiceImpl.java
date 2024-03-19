@@ -2,12 +2,12 @@ package kg.attractor.headhunter.service.impl;
 
 import kg.attractor.headhunter.dao.UserDao;
 import kg.attractor.headhunter.dto.UserDto;
-import kg.attractor.headhunter.exception.ResumeNotFoundException;
 import kg.attractor.headhunter.exception.UserNotFoundException;
 import kg.attractor.headhunter.model.User;
 import kg.attractor.headhunter.service.UserService;
 import kg.attractor.headhunter.util.FileUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -37,13 +38,14 @@ public class UserServiceImpl implements UserService {
                 .avatar(e.getAvatar())
                 .accountType(e.getAccountType())
                 .build()));
+        log.info("Got {} users", dtos.size());
         return dtos;
     }
 
     @Override
     public UserDto getUserById(int id) throws UserNotFoundException {
         User user = userDao.getUserById(id).orElseThrow(() -> new UserNotFoundException("Can't find user with id: " + id));
-        return UserDto.builder()
+        UserDto dto = UserDto.builder()
                 .id(user.getId())
                 .name(user.getName())
                 .surname(user.getSurname())
@@ -54,6 +56,8 @@ public class UserServiceImpl implements UserService {
                 .avatar(user.getAvatar())
                 .accountType(user.getAccountType())
                 .build();
+        log.info("Got user with ID: {}", id);
+        return dto;
     }
 
     @Override
@@ -151,6 +155,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void createUser(UserDto userDto) {
+        log.info("Creating new user: {}", userDto.getName());
         if (userDto.getAccountType().name().equals("EMPLOYER")) {
             userDto.setSurname(null);
         }

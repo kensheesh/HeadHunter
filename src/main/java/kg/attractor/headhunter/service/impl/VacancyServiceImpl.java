@@ -9,6 +9,7 @@ import kg.attractor.headhunter.model.User;
 import kg.attractor.headhunter.model.Vacancy;
 import kg.attractor.headhunter.service.VacancyService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class VacancyServiceImpl implements VacancyService {
     private final VacancyDao vacancyDao;
@@ -38,14 +40,16 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
     @Override
-    public List<VacancyDto> getVacancies(int userId) throws UserNotFoundException{
+    public List<VacancyDto> getVacancies(int userId) throws UserNotFoundException {
         Optional<User> user = userDao.getUserById(userId);
 
         if (userId > userDao.getUsers().size() || userId < 1) {
+            log.error("UserNotFoundException for ID: {}", userId);
             throw new UserNotFoundException("Don't have access");
         }
         if (user.isPresent()) {
             if (user.get().getAccountType().name().equals("EMPLOYER")) {
+                log.error("Access denied for employer with ID: {}", userId);
                 throw new UserNotFoundException("Don't have access");
             }
         }
@@ -57,9 +61,15 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     public VacancyDto getVacancyById(int id) throws VacancyNotFoundException {
+        log.info("Fetching vacancy by ID: {}", id);
         Vacancy vacancy = vacancyDao.getVacancyById(id)
-                .orElseThrow(() -> new VacancyNotFoundException("Can't find vacancy with id: " + id));
-        return convertToDto(vacancy);
+                .orElseThrow(() -> {
+                    log.error("VacancyNotFoundException for ID: {}", id);
+                    return new VacancyNotFoundException("Can't find vacancy with id: " + id);
+                });
+        VacancyDto dto = convertToDto(vacancy);
+        log.info("Retrieved vacancy with ID: {}", id);
+        return dto;
     }
 
     @Override
@@ -143,6 +153,7 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     public void createVacancy(VacancyDto vacancyDto, int userId) throws UserNotFoundException {
+        log.info("Creating vacancy: {} by user ID: {}", vacancyDto.getName(), userId);
         Optional<User> user = userDao.getUserById(userId);
 
         if (userId > userDao.getUsers().size() || userId < 1) {
@@ -165,7 +176,7 @@ public class VacancyServiceImpl implements VacancyService {
         vacancy.setAuthorId(vacancyDto.getAuthorId());
         vacancy.setCreatedDate(vacancyDto.getCreatedDate());
         vacancy.setUpdateTime(vacancyDto.getUpdateTime());
-
+        log.info("Vacancy created successfully with ID: {}", vacancy.getId());
         vacancyDao.createVacancy(vacancy);
     }
 
@@ -198,7 +209,7 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
     @Override
-    public void deleteVacancyById(int id, int userId) throws UserNotFoundException{
+    public void deleteVacancyById(int id, int userId) throws UserNotFoundException {
         Optional<User> user = userDao.getUserById(userId);
 
         if (userId > userDao.getUsers().size() || userId < 1) {

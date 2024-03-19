@@ -9,6 +9,7 @@ import kg.attractor.headhunter.model.Resume;
 import kg.attractor.headhunter.model.User;
 import kg.attractor.headhunter.service.ResumeService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class ResumeServiceImpl implements ResumeService {
     private final ResumeDao resumeDao;
@@ -27,10 +29,13 @@ public class ResumeServiceImpl implements ResumeService {
         Optional<User> user = userDao.getUserById(userId);
 
         if (userId > userDao.getUsers().size() || userId < 1) {
+            log.error("UserNotFoundException for ID: {}", userId);
             throw new UserNotFoundException("Don't have access");
         }
         if (user.isPresent()) {
             if (user.get().getAccountType().name().equals("APPLICANT")) {
+                log.error("Access denied for applicant with ID: {}", userId);
+
                 throw new UserNotFoundException("Don't have access");
             }
         }
@@ -49,6 +54,39 @@ public class ResumeServiceImpl implements ResumeService {
                 .build()));
         return dtos;
     }
+
+    @Override
+    public List<ResumeDto> getResumesByTitle(String title, int userId) throws ResumeNotFoundException {
+        Optional<User> user = userDao.getUserById(userId);
+
+        if (userId > userDao.getUsers().size() || userId < 1) {
+            log.error("UserNotFoundException for ID: {}", userId);
+            throw new ResumeNotFoundException("Don't have access");
+        }
+        if (user.isPresent()) {
+            if (user.get().getAccountType().name().equals("APPLICANT")) {
+                log.error("Access denied for applicant with ID: {}", userId);
+
+                throw new ResumeNotFoundException("Don't have access");
+            }
+        }
+
+        List<Resume> resumes = resumeDao.getResumesByTitle(title);
+        if (resumes.isEmpty()) {
+            throw new ResumeNotFoundException("Can't find resumes with title: " + title);
+        }
+        return resumes.stream().map(resume -> ResumeDto.builder()
+                .id(resume.getId())
+                .userId(resume.getUserId())
+                .name(resume.getName())
+                .categoryId(resume.getCategoryId())
+                .salary(resume.getSalary())
+                .isActive(resume.isActive())
+                .createdTime(resume.getCreatedTime())
+                .updateTime(resume.getUpdateTime())
+                .build()).collect(Collectors.toList());
+    }
+
 
     @Override
     public List<ResumeDto> getResumesByCategoryId(int categoryId) throws ResumeNotFoundException {
@@ -174,13 +212,16 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     public void createResume(ResumeDto resumeDto, int userId) throws UserNotFoundException {
+        log.info("Creating resume for user ID: {}", userId);
         Optional<User> user = userDao.getUserById(userId);
 
         if (userId > userDao.getUsers().size() || userId < 1) {
+            log.error("UserNotFoundException for creating resume, ID: {}", userId);
             throw new UserNotFoundException("Don't have access");
         }
         if (user.isPresent()) {
             if (user.get().getAccountType().name().equals("EMPLOYER")) {
+                log.error("Access denied for employer to create resume, ID: {}", userId);
                 throw new UserNotFoundException("Don't have access");
             }
         }

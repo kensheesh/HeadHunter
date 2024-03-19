@@ -36,6 +36,18 @@ public class ResumeController {
         }
     }
 
+    @GetMapping("/title/{title}")
+    public ResponseEntity<?> getResumesByTitle(@PathVariable String title,
+                                               @RequestParam int userId) {
+        try {
+            List<ResumeDto> resumeDto = resumeService.getResumesByTitle(title, userId);
+            return ResponseEntity.ok(resumeDto);
+        } catch (ResumeNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<?> getResumesByUserId(@PathVariable int userId) {
