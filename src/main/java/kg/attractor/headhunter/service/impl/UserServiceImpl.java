@@ -8,6 +8,7 @@ import kg.attractor.headhunter.service.UserService;
 import kg.attractor.headhunter.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,64 +22,60 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
+    private final ModelMapper modelMapper;
     private final FileUtil fileUtil;
 
     @Override
     public List<UserDto> getUsers() {
         List<User> users = userDao.getUsers();
-        List<UserDto> dtos = new ArrayList<>();
-        users.forEach(e -> dtos.add(UserDto.builder()
-                .id(e.getId())
-                .name(e.getName())
-                .surname(e.getSurname())
-                .age(e.getAge())
-                .email(e.getEmail())
-                .password(e.getPassword())
-                .phoneNumber(e.getPhoneNumber())
-                .avatar(e.getAvatar())
-                .accountType(e.getAccountType())
-                .build()));
-        log.info("Got {} users", dtos.size());
-        return dtos;
+        return users.stream()
+                .map(user -> modelMapper.map(user, UserDto.class))
+                .collect(Collectors.toList());
     }
 
     @Override
     public UserDto getUserById(int id) throws UserNotFoundException {
         User user = userDao.getUserById(id).orElseThrow(() -> new UserNotFoundException("Can't find user with id: " + id));
-        UserDto dto = UserDto.builder()
-                .id(user.getId())
-                .name(user.getName())
-                .surname(user.getSurname())
-                .age(user.getAge())
-                .email(user.getEmail())
-                .password(user.getPassword())
-                .phoneNumber(user.getPhoneNumber())
-                .avatar(user.getAvatar())
-                .accountType(user.getAccountType())
-                .build();
-        log.info("Got user with ID: {}", id);
-        return dto;
+        return modelMapper.map(user, UserDto.class);
     }
 
     @Override
-    public List<UserDto> getUserByNameForEmployersAndApplicants(String name) throws UserNotFoundException {
-        List<User> users = userDao.getUserByName(name);
+    public List<UserDto> getUsersByName(String name, int userId) throws UserNotFoundException {
+        List<User> users = new ArrayList<>();
+        if (userDao.getUserById(userId).get().getAccountType().name().equals("EMPLOYER")) {
+            users = userDao.getApplicantsByName(name);
+        }
+        if (userDao.getUserById(userId).get().getAccountType().name().equals("APPLICANT")) {
+            users = userDao.getEmployersByName(name);
+        }
+
         if (users.isEmpty()) {
             throw new UserNotFoundException("Can't find user with name: " + name);
         }
-        return users.stream().map(user -> UserDto.builder()
-                .id(user.getId())
-                .name(user.getName())
-                .surname(user.getSurname())
-                .age(user.getAge())
-                .email(user.getEmail())
-                .password(user.getPassword())
-                .phoneNumber(user.getPhoneNumber())
-                .avatar(user.getAvatar())
-                .accountType(user.getAccountType())
-                .build()).collect(Collectors.toList());
+
+        return users.stream()
+                .map(user -> modelMapper.map(user, UserDto.class))
+                .collect(Collectors.toList());
     }
 
+    @Override
+    public List<UserDto> getUsersBySurname(String surname, int userId) throws UserNotFoundException {
+        List<User> users = userDao.getApplicantsBySurname(surname);
+        if (userId > userDao.getUsers().size() || userId < 1) {
+            throw new UserNotFoundException("Don't have access");
+        }
+
+        Optional<User> userForChecking = userDao.getUserById(userId);
+        if (userForChecking.isPresent()) {
+            if (userForChecking.get().getAccountType().name().equals("APPLICANT")) {
+                throw new UserNotFoundException("Don't have access");
+            }
+        }
+
+        return users.stream()
+                .map(user -> modelMapper.map(user, UserDto.class))
+                .collect(Collectors.toList());
+    }
 
     public List<UserDto> getUserByPhoneNumber(String phoneNumber, int userId) throws UserNotFoundException {
         if (userId > userDao.getUsers().size() || userId < 1) {
@@ -96,17 +93,10 @@ public class UserServiceImpl implements UserService {
         if (users.isEmpty()) {
             throw new UserNotFoundException("Can't find user with phoneNumber:" + phoneNumber);
         }
-        return users.stream().map(user -> UserDto.builder()
-                .id(user.getId())
-                .name(user.getName())
-                .surname(user.getSurname())
-                .age(user.getAge())
-                .email(user.getEmail())
-                .password(user.getPassword())
-                .phoneNumber(user.getPhoneNumber())
-                .avatar(user.getAvatar())
-                .accountType(user.getAccountType())
-                .build()).collect(Collectors.toList());
+
+        return users.stream()
+                .map(user -> modelMapper.map(user, UserDto.class))
+                .collect(Collectors.toList());
     }
 
     public UserDto getUserByEmail(String email, int userId) throws UserNotFoundException {
@@ -122,17 +112,7 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = userDao.getUserByEmail(email).orElseThrow(() -> new UserNotFoundException("Can't find user with email:" + email));
-        return UserDto.builder()
-                .id(user.getId())
-                .name(user.getName())
-                .surname(user.getSurname())
-                .age(user.getAge())
-                .email(user.getEmail())
-                .password(user.getPassword())
-                .phoneNumber(user.getPhoneNumber())
-                .avatar(user.getAvatar())
-                .accountType(user.getAccountType())
-                .build();
+        return modelMapper.map(user, UserDto.class);
     }
 
     @Override
@@ -163,19 +143,13 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setName(userDto.getName());
         user.setSurname(userDto.getSurname());
+        user.setAge(userDto.getAge());
         user.setEmail(userDto.getEmail());
         user.setPassword(userDto.getPassword());
         user.setPhoneNumber(userDto.getPhoneNumber());
         user.setAvatar("base_avatar.jpg");
         user.setAccountType(userDto.getAccountType());
-
         userDao.createUser(user);
-    }
-
-
-    @Override
-    public void deleteUserById(int id) {
-        userDao.deleteUserById(id);
     }
 
     @Override

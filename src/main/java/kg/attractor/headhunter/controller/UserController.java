@@ -33,9 +33,21 @@ public class UserController {
     }
 
     @GetMapping("/name/{name}")
-    public ResponseEntity<?> getUserByName(@PathVariable String name) {
+    public ResponseEntity<?> getUserByName(@PathVariable String name,
+                                           @RequestParam int userId) {
         try {
-            List<UserDto> users = userService.getUserByNameForEmployersAndApplicants(name);
+            List<UserDto> users = userService.getUsersByName(name, userId);
+            return ResponseEntity.ok(users);
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("surname/{surname}")
+    public ResponseEntity<?> getUsersBySurname(@PathVariable String surname,
+                                               @RequestParam int userId) {
+        try {
+            List<UserDto> users = userService.getUsersBySurname(surname, userId);
             return ResponseEntity.ok(users);
         } catch (UserNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -80,12 +92,6 @@ public class UserController {
     @PostMapping("/settings")
     public ResponseEntity<?> editUser(@RequestBody UserDto userDto) {
         userService.editUser(userDto);
-        return ResponseEntity.ok().build();
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteUserById(@PathVariable int id) {
-        userService.deleteUserById(id);
         return ResponseEntity.ok().build();
     }
 

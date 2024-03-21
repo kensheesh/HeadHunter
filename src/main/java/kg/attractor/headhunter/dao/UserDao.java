@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,7 @@ import java.util.Optional;
 @Component
 @RequiredArgsConstructor
 public class UserDao {
+    private static final RowMapper<User> USER_ROW_MAPPER = new BeanPropertyRowMapper<>(User.class);
     private final JdbcTemplate template;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -22,7 +24,7 @@ public class UserDao {
         String sql = """
                 select * from users
                 """;
-        return template.query(sql, new BeanPropertyRowMapper<>(User.class));
+        return template.query(sql, USER_ROW_MAPPER);
     }
 
     public Optional<User> getUserById(int id) {
@@ -32,18 +34,35 @@ public class UserDao {
                 """;
         return Optional.ofNullable(
                 DataAccessUtils.singleResult(
-                        template.query(sql, new BeanPropertyRowMapper<>(User.class), id)
+                        template.query(sql, USER_ROW_MAPPER, id)
                 )
         );
     }
 
-    public List<User> getUserByName(String name) {
+    public List<User> getApplicantsByName(String name) {
         String sql = """
                 select * from users
-                where name = ?;
+                where name = ? and ACCOUNTTYPE = 'APPLICANT';
                 """;
-        return template.query(sql, new BeanPropertyRowMapper<>(User.class), name);
+        return template.query(sql, USER_ROW_MAPPER, name);
     }
+
+    public List<User> getApplicantsBySurname(String surname) {
+        String sql = """
+                select * from users
+                where surname = ? and accountType = 'APPLICANT'
+                """;
+        return template.query(sql, USER_ROW_MAPPER, surname);
+    }
+
+    public List<User> getEmployersByName(String name) {
+        String sql = """
+                select * from users
+                where name = ? and accountType = 'EMPLOYER'
+                """;
+        return template.query(sql, USER_ROW_MAPPER, name);
+    }
+
 
 
     public List<User> getUserByPhoneNumber(String phoneNumber) {
@@ -51,7 +70,7 @@ public class UserDao {
                 select * from users
                 where phoneNumber = ?;
                 """;
-        return template.query(sql, new BeanPropertyRowMapper<>(User.class), phoneNumber);
+        return template.query(sql, USER_ROW_MAPPER, phoneNumber);
     }
 
     public Optional<User> getUserByEmail(String email) {
@@ -61,7 +80,7 @@ public class UserDao {
                 """;
         return Optional.ofNullable(
                 DataAccessUtils.singleResult(
-                        template.query(sql, new BeanPropertyRowMapper<>(User.class), email)
+                        template.query(sql, USER_ROW_MAPPER, email)
                 )
         );
     }
@@ -70,7 +89,7 @@ public class UserDao {
         String sql = """
                 select exists(select 1 from users where email = ?);
                 """;
-        return template.queryForObject(sql, Boolean.class, email);
+        return Boolean.TRUE.equals(template.queryForObject(sql, Boolean.class, email));
     }
 
     public void editUser(User user) {
@@ -89,14 +108,6 @@ public class UserDao {
                 user.getId());
     }
 
-    public void deleteUserById(int id) {
-        String sql = """
-                delete from users
-                where id = ?
-                """;
-        template.update(sql, id);
-    }
-
     public void addAvatar(User user) {
         String sql = """
                 UPDATE users
@@ -108,13 +119,13 @@ public class UserDao {
 
     public void createUser(User user) {
         String sql = """
-                insert into users(name, surname, email, password, phoneNumber, avatar, accountType)
-                values (:name, :surname, :email, :password, :phoneNumber, :avatar, :accountType)
+                insert into users(name, surname, age, email, password, phoneNumber, avatar, accountType)
+                values (:name, :surname, :age, :email, :password, :phoneNumber, :avatar, :accountType)
                 """;
-
         namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource()
                 .addValue("name", user.getName())
                 .addValue("surname", user.getSurname())
+                .addValue("age", user.getAvatar())
                 .addValue("email", user.getEmail())
                 .addValue("password", user.getPassword())
                 .addValue("phoneNumber", user.getPhoneNumber())

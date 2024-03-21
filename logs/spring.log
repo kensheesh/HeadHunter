@@ -1,74 +1,1137 @@
-2024-03-19T18:36:18.612+06:00  INFO 9489 --- [main] k.a.headhunter.HeadHunterApplication     : Starting HeadHunterApplication using Java 17.0.8 with PID 9489 (/Users/kenshi/Desktop/homework50/HeadHunter/target/classes started by kenshi in /Users/kenshi/Desktop/homework50/HeadHunter)
-2024-03-19T18:36:18.613+06:00  INFO 9489 --- [main] k.a.headhunter.HeadHunterApplication     : No active profile set, falling back to 1 default profile: "default"
-2024-03-19T18:36:19.053+06:00  INFO 9489 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
-2024-03-19T18:36:19.056+06:00  INFO 9489 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2024-03-19T18:36:19.057+06:00  INFO 9489 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
-2024-03-19T18:36:19.100+06:00  INFO 9489 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2024-03-19T18:36:19.100+06:00  INFO 9489 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 468 ms
-2024-03-19T18:36:19.150+06:00  INFO 9489 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2024-03-19T18:36:19.295+06:00  INFO 9489 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn1: url=jdbc:h2:./db/headHunter user=ROOT
-2024-03-19T18:36:19.296+06:00  INFO 9489 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2024-03-19T18:36:19.323+06:00  INFO 9489 --- [main] liquibase.database                       : Set default schema name to PUBLIC
-2024-03-19T18:36:19.420+06:00  INFO 9489 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/001_create_tables.yaml
-2024-03-19T18:36:19.437+06:00  INFO 9489 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/002_insert_information.sql
-2024-03-19T18:36:19.439+06:00  INFO 9489 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/003_editiing_table.yaml
-2024-03-19T18:36:19.442+06:00  INFO 9489 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/004_editing_table.yaml
-2024-03-19T18:36:19.586+06:00  INFO 9489 --- [main] liquibase.changelog                      : Reading from PUBLIC.DATABASECHANGELOG
-2024-03-19T18:36:19.616+06:00  INFO 9489 --- [main] liquibase.ui                             : Database is up to date, no changesets to execute
-2024-03-19T18:36:19.617+06:00  INFO 9489 --- [main] liquibase.changelog                      : Reading from PUBLIC.DATABASECHANGELOG
-2024-03-19T18:36:19.621+06:00  INFO 9489 --- [main] liquibase.util                           : UPDATE SUMMARY
-2024-03-19T18:36:19.621+06:00  INFO 9489 --- [main] liquibase.util                           : Run:                          0
-2024-03-19T18:36:19.621+06:00  INFO 9489 --- [main] liquibase.util                           : Previously run:              13
-2024-03-19T18:36:19.621+06:00  INFO 9489 --- [main] liquibase.util                           : Filtered out:                 0
-2024-03-19T18:36:19.621+06:00  INFO 9489 --- [main] liquibase.util                           : -------------------------------
-2024-03-19T18:36:19.621+06:00  INFO 9489 --- [main] liquibase.util                           : Total change sets:           13
-2024-03-19T18:36:19.621+06:00  INFO 9489 --- [main] liquibase.util                           : Update summary generated
-2024-03-19T18:36:19.629+06:00  INFO 9489 --- [main] liquibase.lockservice                    : Successfully released change log lock
-2024-03-19T18:36:19.629+06:00  INFO 9489 --- [main] liquibase.command                        : Command execution complete
-2024-03-19T18:36:19.842+06:00  INFO 9489 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
-2024-03-19T18:36:19.848+06:00  INFO 9489 --- [main] k.a.headhunter.HeadHunterApplication     : Started HeadHunterApplication in 1.443 seconds (process running for 1.698)
-2024-03-19T18:36:31.775+06:00  INFO 9489 --- [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2024-03-19T18:36:31.777+06:00  INFO 9489 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2024-03-19T18:36:31.781+06:00  INFO 9489 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
-2024-03-19T18:44:25.071+06:00  INFO 9489 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
-2024-03-19T18:44:25.074+06:00  INFO 9489 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
-2024-03-19T18:44:28.859+06:00  INFO 9615 --- [main] k.a.headhunter.HeadHunterApplication     : Starting HeadHunterApplication using Java 17.0.8 with PID 9615 (/Users/kenshi/Desktop/homework50/HeadHunter/target/classes started by kenshi in /Users/kenshi/Desktop/homework50/HeadHunter)
-2024-03-19T18:44:28.860+06:00  INFO 9615 --- [main] k.a.headhunter.HeadHunterApplication     : No active profile set, falling back to 1 default profile: "default"
-2024-03-19T18:44:29.294+06:00  INFO 9615 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
-2024-03-19T18:44:29.298+06:00  INFO 9615 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2024-03-19T18:44:29.298+06:00  INFO 9615 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
-2024-03-19T18:44:29.338+06:00  INFO 9615 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2024-03-19T18:44:29.338+06:00  INFO 9615 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 459 ms
-2024-03-19T18:44:29.398+06:00  INFO 9615 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2024-03-19T18:44:29.549+06:00  INFO 9615 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn1: url=jdbc:h2:./db/headHunter user=ROOT
-2024-03-19T18:44:29.550+06:00  INFO 9615 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2024-03-19T18:44:29.581+06:00  INFO 9615 --- [main] liquibase.database                       : Set default schema name to PUBLIC
-2024-03-19T18:44:29.681+06:00  INFO 9615 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/001_create_tables.yaml
-2024-03-19T18:44:29.698+06:00  INFO 9615 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/002_insert_information.sql
-2024-03-19T18:44:29.701+06:00  INFO 9615 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/003_editiing_table.yaml
-2024-03-19T18:44:29.703+06:00  INFO 9615 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/004_editing_table.yaml
-2024-03-19T18:44:29.841+06:00  INFO 9615 --- [main] liquibase.changelog                      : Reading from PUBLIC.DATABASECHANGELOG
-2024-03-19T18:44:29.869+06:00  INFO 9615 --- [main] liquibase.ui                             : Database is up to date, no changesets to execute
-2024-03-19T18:44:29.870+06:00  INFO 9615 --- [main] liquibase.changelog                      : Reading from PUBLIC.DATABASECHANGELOG
-2024-03-19T18:44:29.874+06:00  INFO 9615 --- [main] liquibase.util                           : UPDATE SUMMARY
-2024-03-19T18:44:29.874+06:00  INFO 9615 --- [main] liquibase.util                           : Run:                          0
-2024-03-19T18:44:29.874+06:00  INFO 9615 --- [main] liquibase.util                           : Previously run:              13
-2024-03-19T18:44:29.874+06:00  INFO 9615 --- [main] liquibase.util                           : Filtered out:                 0
-2024-03-19T18:44:29.874+06:00  INFO 9615 --- [main] liquibase.util                           : -------------------------------
-2024-03-19T18:44:29.874+06:00  INFO 9615 --- [main] liquibase.util                           : Total change sets:           13
-2024-03-19T18:44:29.874+06:00  INFO 9615 --- [main] liquibase.util                           : Update summary generated
-2024-03-19T18:44:29.882+06:00  INFO 9615 --- [main] liquibase.lockservice                    : Successfully released change log lock
-2024-03-19T18:44:29.882+06:00  INFO 9615 --- [main] liquibase.command                        : Command execution complete
-2024-03-19T18:44:30.092+06:00  INFO 9615 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
-2024-03-19T18:44:30.098+06:00  INFO 9615 --- [main] k.a.headhunter.HeadHunterApplication     : Started HeadHunterApplication in 1.515 seconds (process running for 1.769)
-2024-03-19T18:44:45.542+06:00  INFO 9615 --- [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2024-03-19T18:44:45.542+06:00  INFO 9615 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2024-03-19T18:44:45.544+06:00  INFO 9615 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
-2024-03-19T18:44:45.567+06:00  WARN 9615 --- [http-nio-8080-exec-2] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'int'; For input string: "titleEngineer"]
-2024-03-19T18:44:51.289+06:00  WARN 9615 --- [http-nio-8080-exec-4] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'int'; For input string: "titleEngineer"]
-2024-03-19T18:44:56.396+06:00  WARN 9615 --- [http-nio-8080-exec-6] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'int'; For input string: "titleEngineer"]
-2024-03-19T18:45:17.546+06:00  WARN 9615 --- [http-nio-8080-exec-7] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'int'; For input string: "titleEngineer"]
-2024-03-19T18:45:19.770+06:00  WARN 9615 --- [http-nio-8080-exec-10] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'int'; For input string: "titleEngineer"]
-2024-03-19T18:45:20.478+06:00  WARN 9615 --- [http-nio-8080-exec-1] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'int'; For input string: "titleEngineer"]
-2024-03-19T18:45:51.540+06:00 ERROR 9615 --- [http-nio-8080-exec-3] k.a.h.service.impl.ResumeServiceImpl     : Access denied for applicant with ID: 3
-2024-03-19T18:45:54.474+06:00 ERROR 9615 --- [http-nio-8080-exec-5] k.a.h.service.impl.ResumeServiceImpl     : Access denied for applicant with ID: 1
+2024-03-20T00:01:22.716+06:00  WARN 9615 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=9m27s704ms).
+2024-03-20T00:16:43.700+06:00  WARN 9615 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m20s985ms).
+2024-03-20T00:57:06.646+06:00  WARN 9615 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=40m22s946ms).
+2024-03-20T01:06:49.332+06:00  WARN 9615 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=9m42s686ms).
+2024-03-20T01:09:54.671+06:00  WARN 9615 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=3m5s339ms).
+2024-03-20T01:58:47.178+06:00  WARN 9615 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=42m52s498ms).
+2024-03-20T03:16:02.997+06:00  WARN 9615 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h17m15s827ms).
+2024-03-20T04:33:39.551+06:00  WARN 9615 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h17m36s555ms).
+2024-03-20T06:09:10.588+06:00  WARN 9615 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h35m31s36ms).
+2024-03-20T07:15:35.995+06:00  WARN 9615 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h6m25s406ms).
+2024-03-20T08:21:05.912+06:00  WARN 9615 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h5m29s918ms).
+2024-03-20T09:40:02.490+06:00  WARN 9615 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h18m56s579ms).
+2024-03-20T10:23:00.700+06:00  WARN 9615 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=42m58s210ms).
+2024-03-20T10:38:27.037+06:00  WARN 9615 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m26s335ms).
+2024-03-20T11:12:48.798+06:00  WARN 9615 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=18m21s657ms).
+2024-03-20T12:11:56.290+06:00  WARN 9615 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=59m7s491ms).
+2024-03-20T12:13:16.426+06:00  INFO 9615 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-03-20T12:13:16.429+06:00  INFO 9615 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-03-20T13:05:47.272+06:00  INFO 11909 --- [main] k.a.headhunter.HeadHunterApplication     : Starting HeadHunterApplication using Java 17.0.8 with PID 11909 (/Users/kenshi/Desktop/homework50/HeadHunter/target/classes started by kenshi in /Users/kenshi/Desktop/homework50/HeadHunter)
+2024-03-20T13:05:47.274+06:00  INFO 11909 --- [main] k.a.headhunter.HeadHunterApplication     : No active profile set, falling back to 1 default profile: "default"
+2024-03-20T13:05:47.769+06:00  INFO 11909 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-03-20T13:05:47.773+06:00  INFO 11909 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-03-20T13:05:47.773+06:00  INFO 11909 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2024-03-20T13:05:47.824+06:00  INFO 11909 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-03-20T13:05:47.824+06:00  INFO 11909 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 527 ms
+2024-03-20T13:05:47.878+06:00  INFO 11909 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-03-20T13:05:48.015+06:00  INFO 11909 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn1: url=jdbc:h2:./db/headHunter user=ROOT
+2024-03-20T13:05:48.015+06:00  INFO 11909 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-03-20T13:05:48.042+06:00  INFO 11909 --- [main] liquibase.database                       : Set default schema name to PUBLIC
+2024-03-20T13:05:48.137+06:00  INFO 11909 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/001_create_tables.yaml
+2024-03-20T13:05:48.157+06:00  INFO 11909 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/002_insert_information.sql
+2024-03-20T13:05:48.159+06:00  INFO 11909 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/003_editiing_table.yaml
+2024-03-20T13:05:48.162+06:00  INFO 11909 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/004_editing_table.yaml
+2024-03-20T13:05:48.177+06:00  INFO 11909 --- [main] liquibase.changelog                      : Creating database history table with name: PUBLIC.DATABASECHANGELOG
+2024-03-20T13:05:48.297+06:00  INFO 11909 --- [main] liquibase.changelog                      : Reading from PUBLIC.DATABASECHANGELOG
+2024-03-20T13:05:48.356+06:00  INFO 11909 --- [main] liquibase.lockservice                    : Successfully acquired change log lock
+2024-03-20T13:05:48.357+06:00  INFO 11909 --- [main] liquibase.command                        : Using deploymentId: 0918348357
+2024-03-20T13:05:48.357+06:00  INFO 11909 --- [main] liquibase.changelog                      : Reading from PUBLIC.DATABASECHANGELOG
+2024-03-20T13:05:48.377+06:00  INFO 11909 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/001_create_tables.yaml::create-user-table::Nursultan
+2024-03-20T13:05:48.380+06:00  INFO 11909 --- [main] liquibase.changelog                      : Table users created
+2024-03-20T13:05:48.380+06:00  INFO 11909 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/001_create_tables.yaml::create-user-table::Nursultan ran successfully in 2ms
+2024-03-20T13:05:48.383+06:00  INFO 11909 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/001_create_tables.yaml::create-categories-table::Nursultan
+2024-03-20T13:05:48.384+06:00  INFO 11909 --- [main] liquibase.changelog                      : Table categories created
+2024-03-20T13:05:48.386+06:00  INFO 11909 --- [main] liquibase.changelog                      : Foreign key constraint added to categories (parentId)
+2024-03-20T13:05:48.386+06:00  INFO 11909 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/001_create_tables.yaml::create-categories-table::Nursultan ran successfully in 3ms
+2024-03-20T13:05:48.388+06:00  INFO 11909 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/001_create_tables.yaml::create-vacancies-table::Nursultan
+2024-03-20T13:05:48.389+06:00  INFO 11909 --- [main] liquibase.changelog                      : Table vacancies created
+2024-03-20T13:05:48.390+06:00  INFO 11909 --- [main] liquibase.changelog                      : Foreign key constraint added to vacancies (categoryId)
+2024-03-20T13:05:48.391+06:00  INFO 11909 --- [main] liquibase.changelog                      : Foreign key constraint added to vacancies (authorId)
+2024-03-20T13:05:48.391+06:00  INFO 11909 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/001_create_tables.yaml::create-vacancies-table::Nursultan ran successfully in 3ms
+2024-03-20T13:05:48.392+06:00  INFO 11909 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/001_create_tables.yaml::create-resumes-table::Nursultan
+2024-03-20T13:05:48.393+06:00  INFO 11909 --- [main] liquibase.changelog                      : Table resumes created
+2024-03-20T13:05:48.394+06:00  INFO 11909 --- [main] liquibase.changelog                      : Foreign key constraint added to resumes (categoryId)
+2024-03-20T13:05:48.395+06:00  INFO 11909 --- [main] liquibase.changelog                      : Foreign key constraint added to resumes (userId)
+2024-03-20T13:05:48.395+06:00  INFO 11909 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/001_create_tables.yaml::create-resumes-table::Nursultan ran successfully in 3ms
+2024-03-20T13:05:48.397+06:00  INFO 11909 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/001_create_tables.yaml::create-respondedApplicants-table::Nursultan
+2024-03-20T13:05:48.397+06:00  INFO 11909 --- [main] liquibase.changelog                      : Table respondedApplicants created
+2024-03-20T13:05:48.398+06:00  INFO 11909 --- [main] liquibase.changelog                      : Foreign key constraint added to respondedApplicants (resumeId)
+2024-03-20T13:05:48.399+06:00  INFO 11909 --- [main] liquibase.changelog                      : Foreign key constraint added to respondedApplicants (vacancyId)
+2024-03-20T13:05:48.399+06:00  INFO 11909 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/001_create_tables.yaml::create-respondedApplicants-table::Nursultan ran successfully in 2ms
+2024-03-20T13:05:48.400+06:00  INFO 11909 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/001_create_tables.yaml::create-contactTypes-table::Nursultan
+2024-03-20T13:05:48.401+06:00  INFO 11909 --- [main] liquibase.changelog                      : Table contactTypes created
+2024-03-20T13:05:48.401+06:00  INFO 11909 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/001_create_tables.yaml::create-contactTypes-table::Nursultan ran successfully in 1ms
+2024-03-20T13:05:48.402+06:00  INFO 11909 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/001_create_tables.yaml::create-contactsInfo-table::Nursultan
+2024-03-20T13:05:48.404+06:00  INFO 11909 --- [main] liquibase.changelog                      : Table contactsInfo created
+2024-03-20T13:05:48.405+06:00  INFO 11909 --- [main] liquibase.changelog                      : Foreign key constraint added to contactsInfo (ContactTypeId)
+2024-03-20T13:05:48.405+06:00  INFO 11909 --- [main] liquibase.changelog                      : Foreign key constraint added to contactsInfo (resumeId)
+2024-03-20T13:05:48.405+06:00  INFO 11909 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/001_create_tables.yaml::create-contactsInfo-table::Nursultan ran successfully in 3ms
+2024-03-20T13:05:48.406+06:00  INFO 11909 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/001_create_tables.yaml::create-messages-table::Nursultan
+2024-03-20T13:05:48.407+06:00  INFO 11909 --- [main] liquibase.changelog                      : Table messages created
+2024-03-20T13:05:48.408+06:00  INFO 11909 --- [main] liquibase.changelog                      : Foreign key constraint added to messages (respondedApplicantsId)
+2024-03-20T13:05:48.408+06:00  INFO 11909 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/001_create_tables.yaml::create-messages-table::Nursultan ran successfully in 2ms
+2024-03-20T13:05:48.409+06:00  INFO 11909 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/001_create_tables.yaml::create-workExperienceInfo-table::Nursultan
+2024-03-20T13:05:48.410+06:00  INFO 11909 --- [main] liquibase.changelog                      : Table workExperienceInfo created
+2024-03-20T13:05:48.410+06:00  INFO 11909 --- [main] liquibase.changelog                      : Foreign key constraint added to workExperienceInfo (resumeId)
+2024-03-20T13:05:48.411+06:00  INFO 11909 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/001_create_tables.yaml::create-workExperienceInfo-table::Nursultan ran successfully in 2ms
+2024-03-20T13:05:48.411+06:00  INFO 11909 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/001_create_tables.yaml::create-educationInfo-table::Nursultan
+2024-03-20T13:05:48.412+06:00  INFO 11909 --- [main] liquibase.changelog                      : Table educationInfo created
+2024-03-20T13:05:48.413+06:00  INFO 11909 --- [main] liquibase.changelog                      : Foreign key constraint added to educationInfo (resumeId)
+2024-03-20T13:05:48.413+06:00  INFO 11909 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/001_create_tables.yaml::create-educationInfo-table::Nursultan ran successfully in 2ms
+2024-03-20T13:05:48.414+06:00  INFO 11909 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/002_insert_information.sql::raw::includeAll
+2024-03-20T13:05:48.443+06:00  INFO 11909 --- [main] liquibase.changelog                      : Custom SQL executed
+2024-03-20T13:05:48.444+06:00  INFO 11909 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/002_insert_information.sql::raw::includeAll ran successfully in 30ms
+2024-03-20T13:05:48.445+06:00  INFO 11909 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/003_editiing_table.yaml::modify-fk-for-cascade-delete-all::Nursultan
+2024-03-20T13:05:48.446+06:00  INFO 11909 --- [main] liquibase.changelog                      : Foreign key fk_respondedApplicants_resumeId dropped
+2024-03-20T13:05:48.447+06:00  INFO 11909 --- [main] liquibase.changelog                      : Foreign key constraint added to respondedApplicants (resumeId)
+2024-03-20T13:05:48.447+06:00  INFO 11909 --- [main] liquibase.changelog                      : Foreign key fk_contactsInfo_resumeId dropped
+2024-03-20T13:05:48.448+06:00  INFO 11909 --- [main] liquibase.changelog                      : Foreign key constraint added to contactsInfo (resumeId)
+2024-03-20T13:05:48.448+06:00  INFO 11909 --- [main] liquibase.changelog                      : Foreign key fk_workExperienceInfo_resumeId dropped
+2024-03-20T13:05:48.449+06:00  INFO 11909 --- [main] liquibase.changelog                      : Foreign key constraint added to workExperienceInfo (resumeId)
+2024-03-20T13:05:48.452+06:00  INFO 11909 --- [main] liquibase.changelog                      : Foreign key fk_educationInfo_resumeId dropped
+2024-03-20T13:05:48.453+06:00  INFO 11909 --- [main] liquibase.changelog                      : Foreign key constraint added to educationInfo (resumeId)
+2024-03-20T13:05:48.453+06:00  INFO 11909 --- [main] liquibase.changelog                      : Foreign key FK_MESSAGES_RESPONDEDAPPLICANTSID dropped
+2024-03-20T13:05:48.454+06:00  INFO 11909 --- [main] liquibase.changelog                      : Foreign key constraint added to messages (respondedApplicantsId)
+2024-03-20T13:05:48.455+06:00  INFO 11909 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/003_editiing_table.yaml::modify-fk-for-cascade-delete-all::Nursultan ran successfully in 9ms
+2024-03-20T13:05:48.456+06:00  INFO 11909 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/004_editing_table.yaml::modify-fk-for-cascade-delete-all-2.0::Nursultan
+2024-03-20T13:05:48.456+06:00  INFO 11909 --- [main] liquibase.changelog                      : Foreign key fk_vacancies_authorId dropped
+2024-03-20T13:05:48.457+06:00  INFO 11909 --- [main] liquibase.changelog                      : Foreign key constraint added to vacancies (authorId)
+2024-03-20T13:05:48.457+06:00  INFO 11909 --- [main] liquibase.changelog                      : Foreign key fk_resumes_userId dropped
+2024-03-20T13:05:48.458+06:00  INFO 11909 --- [main] liquibase.changelog                      : Foreign key constraint added to resumes (userId)
+2024-03-20T13:05:48.458+06:00  INFO 11909 --- [main] liquibase.changelog                      : Foreign key fk_respondedApplicants_resumeId dropped
+2024-03-20T13:05:48.459+06:00  INFO 11909 --- [main] liquibase.changelog                      : Foreign key constraint added to respondedApplicants (resumeId)
+2024-03-20T13:05:48.460+06:00  INFO 11909 --- [main] liquibase.changelog                      : Foreign key fk_respondedApplicants_vacancyId dropped
+2024-03-20T13:05:48.460+06:00  INFO 11909 --- [main] liquibase.changelog                      : Foreign key constraint added to respondedApplicants (vacancyId)
+2024-03-20T13:05:48.461+06:00  INFO 11909 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/004_editing_table.yaml::modify-fk-for-cascade-delete-all-2.0::Nursultan ran successfully in 5ms
+2024-03-20T13:05:48.464+06:00  INFO 11909 --- [main] liquibase.util                           : UPDATE SUMMARY
+2024-03-20T13:05:48.464+06:00  INFO 11909 --- [main] liquibase.util                           : Run:                         13
+2024-03-20T13:05:48.464+06:00  INFO 11909 --- [main] liquibase.util                           : Previously run:               0
+2024-03-20T13:05:48.464+06:00  INFO 11909 --- [main] liquibase.util                           : Filtered out:                 0
+2024-03-20T13:05:48.464+06:00  INFO 11909 --- [main] liquibase.util                           : -------------------------------
+2024-03-20T13:05:48.464+06:00  INFO 11909 --- [main] liquibase.util                           : Total change sets:           13
+2024-03-20T13:05:48.465+06:00  INFO 11909 --- [main] liquibase.util                           : Update summary generated
+2024-03-20T13:05:48.465+06:00  INFO 11909 --- [main] liquibase.command                        : Update command completed successfully.
+2024-03-20T13:05:48.465+06:00  INFO 11909 --- [main] liquibase.ui                             : Liquibase: Update has been successful. Rows affected: 20
+2024-03-20T13:05:48.466+06:00  INFO 11909 --- [main] liquibase.lockservice                    : Successfully released change log lock
+2024-03-20T13:05:48.466+06:00  INFO 11909 --- [main] liquibase.command                        : Command execution complete
+2024-03-20T13:05:48.689+06:00  INFO 11909 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2024-03-20T13:05:48.695+06:00  INFO 11909 --- [main] k.a.headhunter.HeadHunterApplication     : Started HeadHunterApplication in 1.693 seconds (process running for 2.044)
+2024-03-20T13:07:46.662+06:00  INFO 11909 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-03-20T13:07:46.664+06:00  INFO 11909 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-03-20T13:12:08.568+06:00  INFO 12211 --- [main] k.a.headhunter.HeadHunterApplication     : Starting HeadHunterApplication using Java 17.0.8 with PID 12211 (/Users/kenshi/Desktop/homework50/HeadHunter/target/classes started by kenshi in /Users/kenshi/Desktop/homework50/HeadHunter)
+2024-03-20T13:12:08.571+06:00  INFO 12211 --- [main] k.a.headhunter.HeadHunterApplication     : No active profile set, falling back to 1 default profile: "default"
+2024-03-20T13:12:09.069+06:00  INFO 12211 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-03-20T13:12:09.074+06:00  INFO 12211 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-03-20T13:12:09.074+06:00  INFO 12211 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2024-03-20T13:12:09.129+06:00  INFO 12211 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-03-20T13:12:09.130+06:00  INFO 12211 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 536 ms
+2024-03-20T13:12:09.188+06:00  INFO 12211 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-03-20T13:12:09.328+06:00  INFO 12211 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn1: url=jdbc:h2:./db/headHunter user=ROOT
+2024-03-20T13:12:09.329+06:00  INFO 12211 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-03-20T13:12:09.356+06:00  INFO 12211 --- [main] liquibase.database                       : Set default schema name to PUBLIC
+2024-03-20T13:12:09.451+06:00  INFO 12211 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/001_create_tables.yaml
+2024-03-20T13:12:09.468+06:00  INFO 12211 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/002_insert_information.sql
+2024-03-20T13:12:09.470+06:00  INFO 12211 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/003_editiing_table.yaml
+2024-03-20T13:12:09.472+06:00  INFO 12211 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/004_editing_table.yaml
+2024-03-20T13:12:09.487+06:00  INFO 12211 --- [main] liquibase.changelog                      : Creating database history table with name: PUBLIC.DATABASECHANGELOG
+2024-03-20T13:12:09.616+06:00  INFO 12211 --- [main] liquibase.changelog                      : Reading from PUBLIC.DATABASECHANGELOG
+2024-03-20T13:12:09.675+06:00  INFO 12211 --- [main] liquibase.lockservice                    : Successfully acquired change log lock
+2024-03-20T13:12:09.676+06:00  INFO 12211 --- [main] liquibase.command                        : Using deploymentId: 0918729676
+2024-03-20T13:12:09.676+06:00  INFO 12211 --- [main] liquibase.changelog                      : Reading from PUBLIC.DATABASECHANGELOG
+2024-03-20T13:12:09.697+06:00  INFO 12211 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/001_create_tables.yaml::create-user-table::Nursultan
+2024-03-20T13:12:09.700+06:00  INFO 12211 --- [main] liquibase.changelog                      : Table users created
+2024-03-20T13:12:09.700+06:00  INFO 12211 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/001_create_tables.yaml::create-user-table::Nursultan ran successfully in 3ms
+2024-03-20T13:12:09.702+06:00  INFO 12211 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/001_create_tables.yaml::create-categories-table::Nursultan
+2024-03-20T13:12:09.703+06:00  INFO 12211 --- [main] liquibase.changelog                      : Table categories created
+2024-03-20T13:12:09.706+06:00  INFO 12211 --- [main] liquibase.changelog                      : Foreign key constraint added to categories (parentId)
+2024-03-20T13:12:09.706+06:00  INFO 12211 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/001_create_tables.yaml::create-categories-table::Nursultan ran successfully in 3ms
+2024-03-20T13:12:09.708+06:00  INFO 12211 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/001_create_tables.yaml::create-vacancies-table::Nursultan
+2024-03-20T13:12:09.709+06:00  INFO 12211 --- [main] liquibase.changelog                      : Table vacancies created
+2024-03-20T13:12:09.710+06:00  INFO 12211 --- [main] liquibase.changelog                      : Foreign key constraint added to vacancies (categoryId)
+2024-03-20T13:12:09.711+06:00  INFO 12211 --- [main] liquibase.changelog                      : Foreign key constraint added to vacancies (authorId)
+2024-03-20T13:12:09.711+06:00  INFO 12211 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/001_create_tables.yaml::create-vacancies-table::Nursultan ran successfully in 3ms
+2024-03-20T13:12:09.712+06:00  INFO 12211 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/001_create_tables.yaml::create-resumes-table::Nursultan
+2024-03-20T13:12:09.713+06:00  INFO 12211 --- [main] liquibase.changelog                      : Table resumes created
+2024-03-20T13:12:09.714+06:00  INFO 12211 --- [main] liquibase.changelog                      : Foreign key constraint added to resumes (categoryId)
+2024-03-20T13:12:09.715+06:00  INFO 12211 --- [main] liquibase.changelog                      : Foreign key constraint added to resumes (userId)
+2024-03-20T13:12:09.715+06:00  INFO 12211 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/001_create_tables.yaml::create-resumes-table::Nursultan ran successfully in 3ms
+2024-03-20T13:12:09.716+06:00  INFO 12211 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/001_create_tables.yaml::create-respondedApplicants-table::Nursultan
+2024-03-20T13:12:09.717+06:00  INFO 12211 --- [main] liquibase.changelog                      : Table respondedApplicants created
+2024-03-20T13:12:09.718+06:00  INFO 12211 --- [main] liquibase.changelog                      : Foreign key constraint added to respondedApplicants (resumeId)
+2024-03-20T13:12:09.718+06:00  INFO 12211 --- [main] liquibase.changelog                      : Foreign key constraint added to respondedApplicants (vacancyId)
+2024-03-20T13:12:09.718+06:00  INFO 12211 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/001_create_tables.yaml::create-respondedApplicants-table::Nursultan ran successfully in 2ms
+2024-03-20T13:12:09.719+06:00  INFO 12211 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/001_create_tables.yaml::create-contactTypes-table::Nursultan
+2024-03-20T13:12:09.720+06:00  INFO 12211 --- [main] liquibase.changelog                      : Table contactTypes created
+2024-03-20T13:12:09.720+06:00  INFO 12211 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/001_create_tables.yaml::create-contactTypes-table::Nursultan ran successfully in 0ms
+2024-03-20T13:12:09.722+06:00  INFO 12211 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/001_create_tables.yaml::create-contactsInfo-table::Nursultan
+2024-03-20T13:12:09.724+06:00  INFO 12211 --- [main] liquibase.changelog                      : Table contactsInfo created
+2024-03-20T13:12:09.725+06:00  INFO 12211 --- [main] liquibase.changelog                      : Foreign key constraint added to contactsInfo (ContactTypeId)
+2024-03-20T13:12:09.726+06:00  INFO 12211 --- [main] liquibase.changelog                      : Foreign key constraint added to contactsInfo (resumeId)
+2024-03-20T13:12:09.726+06:00  INFO 12211 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/001_create_tables.yaml::create-contactsInfo-table::Nursultan ran successfully in 4ms
+2024-03-20T13:12:09.727+06:00  INFO 12211 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/001_create_tables.yaml::create-messages-table::Nursultan
+2024-03-20T13:12:09.728+06:00  INFO 12211 --- [main] liquibase.changelog                      : Table messages created
+2024-03-20T13:12:09.728+06:00  INFO 12211 --- [main] liquibase.changelog                      : Foreign key constraint added to messages (respondedApplicantsId)
+2024-03-20T13:12:09.728+06:00  INFO 12211 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/001_create_tables.yaml::create-messages-table::Nursultan ran successfully in 1ms
+2024-03-20T13:12:09.729+06:00  INFO 12211 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/001_create_tables.yaml::create-workExperienceInfo-table::Nursultan
+2024-03-20T13:12:09.730+06:00  INFO 12211 --- [main] liquibase.changelog                      : Table workExperienceInfo created
+2024-03-20T13:12:09.731+06:00  INFO 12211 --- [main] liquibase.changelog                      : Foreign key constraint added to workExperienceInfo (resumeId)
+2024-03-20T13:12:09.731+06:00  INFO 12211 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/001_create_tables.yaml::create-workExperienceInfo-table::Nursultan ran successfully in 2ms
+2024-03-20T13:12:09.732+06:00  INFO 12211 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/001_create_tables.yaml::create-educationInfo-table::Nursultan
+2024-03-20T13:12:09.733+06:00  INFO 12211 --- [main] liquibase.changelog                      : Table educationInfo created
+2024-03-20T13:12:09.735+06:00  INFO 12211 --- [main] liquibase.changelog                      : Foreign key constraint added to educationInfo (resumeId)
+2024-03-20T13:12:09.736+06:00  INFO 12211 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/001_create_tables.yaml::create-educationInfo-table::Nursultan ran successfully in 4ms
+2024-03-20T13:12:09.737+06:00  INFO 12211 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/002_insert_information.sql::raw::includeAll
+2024-03-20T13:12:09.763+06:00  INFO 12211 --- [main] liquibase.changelog                      : Custom SQL executed
+2024-03-20T13:12:09.763+06:00  INFO 12211 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/002_insert_information.sql::raw::includeAll ran successfully in 26ms
+2024-03-20T13:12:09.764+06:00  INFO 12211 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/003_editiing_table.yaml::modify-fk-for-cascade-delete-all::Nursultan
+2024-03-20T13:12:09.768+06:00  INFO 12211 --- [main] liquibase.changelog                      : Foreign key fk_respondedApplicants_resumeId dropped
+2024-03-20T13:12:09.769+06:00  INFO 12211 --- [main] liquibase.changelog                      : Foreign key constraint added to respondedApplicants (resumeId)
+2024-03-20T13:12:09.769+06:00  INFO 12211 --- [main] liquibase.changelog                      : Foreign key fk_contactsInfo_resumeId dropped
+2024-03-20T13:12:09.770+06:00  INFO 12211 --- [main] liquibase.changelog                      : Foreign key constraint added to contactsInfo (resumeId)
+2024-03-20T13:12:09.770+06:00  INFO 12211 --- [main] liquibase.changelog                      : Foreign key fk_workExperienceInfo_resumeId dropped
+2024-03-20T13:12:09.771+06:00  INFO 12211 --- [main] liquibase.changelog                      : Foreign key constraint added to workExperienceInfo (resumeId)
+2024-03-20T13:12:09.771+06:00  INFO 12211 --- [main] liquibase.changelog                      : Foreign key fk_educationInfo_resumeId dropped
+2024-03-20T13:12:09.772+06:00  INFO 12211 --- [main] liquibase.changelog                      : Foreign key constraint added to educationInfo (resumeId)
+2024-03-20T13:12:09.772+06:00  INFO 12211 --- [main] liquibase.changelog                      : Foreign key FK_MESSAGES_RESPONDEDAPPLICANTSID dropped
+2024-03-20T13:12:09.773+06:00  INFO 12211 --- [main] liquibase.changelog                      : Foreign key constraint added to messages (respondedApplicantsId)
+2024-03-20T13:12:09.773+06:00  INFO 12211 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/003_editiing_table.yaml::modify-fk-for-cascade-delete-all::Nursultan ran successfully in 9ms
+2024-03-20T13:12:09.774+06:00  INFO 12211 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/004_editing_table.yaml::modify-fk-for-cascade-delete-all-2.0::Nursultan
+2024-03-20T13:12:09.775+06:00  INFO 12211 --- [main] liquibase.changelog                      : Foreign key fk_vacancies_authorId dropped
+2024-03-20T13:12:09.776+06:00  INFO 12211 --- [main] liquibase.changelog                      : Foreign key constraint added to vacancies (authorId)
+2024-03-20T13:12:09.776+06:00  INFO 12211 --- [main] liquibase.changelog                      : Foreign key fk_resumes_userId dropped
+2024-03-20T13:12:09.777+06:00  INFO 12211 --- [main] liquibase.changelog                      : Foreign key constraint added to resumes (userId)
+2024-03-20T13:12:09.777+06:00  INFO 12211 --- [main] liquibase.changelog                      : Foreign key fk_respondedApplicants_resumeId dropped
+2024-03-20T13:12:09.778+06:00  INFO 12211 --- [main] liquibase.changelog                      : Foreign key constraint added to respondedApplicants (resumeId)
+2024-03-20T13:12:09.778+06:00  INFO 12211 --- [main] liquibase.changelog                      : Foreign key fk_respondedApplicants_vacancyId dropped
+2024-03-20T13:12:09.779+06:00  INFO 12211 --- [main] liquibase.changelog                      : Foreign key constraint added to respondedApplicants (vacancyId)
+2024-03-20T13:12:09.779+06:00  INFO 12211 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/004_editing_table.yaml::modify-fk-for-cascade-delete-all-2.0::Nursultan ran successfully in 4ms
+2024-03-20T13:12:09.781+06:00  INFO 12211 --- [main] liquibase.util                           : UPDATE SUMMARY
+2024-03-20T13:12:09.781+06:00  INFO 12211 --- [main] liquibase.util                           : Run:                         13
+2024-03-20T13:12:09.781+06:00  INFO 12211 --- [main] liquibase.util                           : Previously run:               0
+2024-03-20T13:12:09.781+06:00  INFO 12211 --- [main] liquibase.util                           : Filtered out:                 0
+2024-03-20T13:12:09.781+06:00  INFO 12211 --- [main] liquibase.util                           : -------------------------------
+2024-03-20T13:12:09.781+06:00  INFO 12211 --- [main] liquibase.util                           : Total change sets:           13
+2024-03-20T13:12:09.782+06:00  INFO 12211 --- [main] liquibase.util                           : Update summary generated
+2024-03-20T13:12:09.782+06:00  INFO 12211 --- [main] liquibase.command                        : Update command completed successfully.
+2024-03-20T13:12:09.783+06:00  INFO 12211 --- [main] liquibase.ui                             : Liquibase: Update has been successful. Rows affected: 20
+2024-03-20T13:12:09.783+06:00  INFO 12211 --- [main] liquibase.lockservice                    : Successfully released change log lock
+2024-03-20T13:12:09.783+06:00  INFO 12211 --- [main] liquibase.command                        : Command execution complete
+2024-03-20T13:12:10.004+06:00  INFO 12211 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2024-03-20T13:12:10.010+06:00  INFO 12211 --- [main] k.a.headhunter.HeadHunterApplication     : Started HeadHunterApplication in 1.684 seconds (process running for 1.998)
+2024-03-20T13:19:17.045+06:00  INFO 12211 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-03-20T13:19:17.047+06:00  INFO 12211 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-03-20T13:19:20.510+06:00  INFO 12491 --- [main] k.a.headhunter.HeadHunterApplication     : Starting HeadHunterApplication using Java 17.0.8 with PID 12491 (/Users/kenshi/Desktop/homework50/HeadHunter/target/classes started by kenshi in /Users/kenshi/Desktop/homework50/HeadHunter)
+2024-03-20T13:19:20.512+06:00  INFO 12491 --- [main] k.a.headhunter.HeadHunterApplication     : No active profile set, falling back to 1 default profile: "default"
+2024-03-20T13:19:21.046+06:00  INFO 12491 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-03-20T13:19:21.050+06:00  INFO 12491 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-03-20T13:19:21.050+06:00  INFO 12491 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2024-03-20T13:19:21.120+06:00  INFO 12491 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-03-20T13:19:21.120+06:00  INFO 12491 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 588 ms
+2024-03-20T13:19:21.199+06:00  INFO 12491 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-03-20T13:19:21.377+06:00  INFO 12491 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn1: url=jdbc:h2:./db/headHunter user=ROOT
+2024-03-20T13:19:21.378+06:00  INFO 12491 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-03-20T13:19:21.413+06:00  INFO 12491 --- [main] liquibase.database                       : Set default schema name to PUBLIC
+2024-03-20T13:19:21.555+06:00  INFO 12491 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/001_create_tables.yaml
+2024-03-20T13:19:21.578+06:00  INFO 12491 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/002_insert_information.sql
+2024-03-20T13:19:21.580+06:00  INFO 12491 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/003_editiing_table.yaml
+2024-03-20T13:19:21.583+06:00  INFO 12491 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/004_editing_table.yaml
+2024-03-20T13:19:21.750+06:00  INFO 12491 --- [main] liquibase.changelog                      : Reading from PUBLIC.DATABASECHANGELOG
+2024-03-20T13:19:21.782+06:00  INFO 12491 --- [main] liquibase.ui                             : Database is up to date, no changesets to execute
+2024-03-20T13:19:21.782+06:00  INFO 12491 --- [main] liquibase.changelog                      : Reading from PUBLIC.DATABASECHANGELOG
+2024-03-20T13:19:21.787+06:00  INFO 12491 --- [main] liquibase.util                           : UPDATE SUMMARY
+2024-03-20T13:19:21.787+06:00  INFO 12491 --- [main] liquibase.util                           : Run:                          0
+2024-03-20T13:19:21.787+06:00  INFO 12491 --- [main] liquibase.util                           : Previously run:              13
+2024-03-20T13:19:21.787+06:00  INFO 12491 --- [main] liquibase.util                           : Filtered out:                 0
+2024-03-20T13:19:21.787+06:00  INFO 12491 --- [main] liquibase.util                           : -------------------------------
+2024-03-20T13:19:21.787+06:00  INFO 12491 --- [main] liquibase.util                           : Total change sets:           13
+2024-03-20T13:19:21.787+06:00  INFO 12491 --- [main] liquibase.util                           : Update summary generated
+2024-03-20T13:19:21.797+06:00  INFO 12491 --- [main] liquibase.lockservice                    : Successfully released change log lock
+2024-03-20T13:19:21.797+06:00  INFO 12491 --- [main] liquibase.command                        : Command execution complete
+2024-03-20T13:19:22.068+06:00  INFO 12491 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2024-03-20T13:19:22.076+06:00  INFO 12491 --- [main] k.a.headhunter.HeadHunterApplication     : Started HeadHunterApplication in 1.808 seconds (process running for 2.21)
+2024-03-20T13:19:23.229+06:00  INFO 12491 --- [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-03-20T13:19:23.229+06:00  INFO 12491 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-03-20T13:19:23.230+06:00  INFO 12491 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2024-03-20T13:19:33.853+06:00  INFO 12491 --- [http-nio-8080-exec-5] k.a.h.service.impl.UserServiceImpl       : Got 7 users
+2024-03-20T13:22:27.988+06:00  INFO 12491 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-03-20T13:22:27.990+06:00  INFO 12491 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-03-20T13:23:12.551+06:00  INFO 12519 --- [main] k.a.headhunter.HeadHunterApplication     : Starting HeadHunterApplication using Java 17.0.8 with PID 12519 (/Users/kenshi/Desktop/homework50/HeadHunter/target/classes started by kenshi in /Users/kenshi/Desktop/homework50/HeadHunter)
+2024-03-20T13:23:12.553+06:00  INFO 12519 --- [main] k.a.headhunter.HeadHunterApplication     : No active profile set, falling back to 1 default profile: "default"
+2024-03-20T13:23:13.060+06:00  INFO 12519 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-03-20T13:23:13.063+06:00  INFO 12519 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-03-20T13:23:13.063+06:00  INFO 12519 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2024-03-20T13:23:13.109+06:00  INFO 12519 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-03-20T13:23:13.109+06:00  INFO 12519 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 529 ms
+2024-03-20T13:23:13.167+06:00  INFO 12519 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-03-20T13:23:13.328+06:00  INFO 12519 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn1: url=jdbc:h2:./db/headHunter user=ROOT
+2024-03-20T13:23:13.328+06:00  INFO 12519 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-03-20T13:23:13.354+06:00  INFO 12519 --- [main] liquibase.database                       : Set default schema name to PUBLIC
+2024-03-20T13:23:13.456+06:00  INFO 12519 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/001_create_tables.yaml
+2024-03-20T13:23:13.477+06:00  INFO 12519 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/002_insert_information.sql
+2024-03-20T13:23:13.479+06:00  INFO 12519 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/003_editiing_table.yaml
+2024-03-20T13:23:13.482+06:00  INFO 12519 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/004_editing_table.yaml
+2024-03-20T13:23:13.619+06:00  INFO 12519 --- [main] liquibase.changelog                      : Reading from PUBLIC.DATABASECHANGELOG
+2024-03-20T13:23:13.648+06:00  INFO 12519 --- [main] liquibase.ui                             : Database is up to date, no changesets to execute
+2024-03-20T13:23:13.648+06:00  INFO 12519 --- [main] liquibase.changelog                      : Reading from PUBLIC.DATABASECHANGELOG
+2024-03-20T13:23:13.652+06:00  INFO 12519 --- [main] liquibase.util                           : UPDATE SUMMARY
+2024-03-20T13:23:13.652+06:00  INFO 12519 --- [main] liquibase.util                           : Run:                          0
+2024-03-20T13:23:13.652+06:00  INFO 12519 --- [main] liquibase.util                           : Previously run:              13
+2024-03-20T13:23:13.652+06:00  INFO 12519 --- [main] liquibase.util                           : Filtered out:                 0
+2024-03-20T13:23:13.652+06:00  INFO 12519 --- [main] liquibase.util                           : -------------------------------
+2024-03-20T13:23:13.652+06:00  INFO 12519 --- [main] liquibase.util                           : Total change sets:           13
+2024-03-20T13:23:13.652+06:00  INFO 12519 --- [main] liquibase.util                           : Update summary generated
+2024-03-20T13:23:13.660+06:00  INFO 12519 --- [main] liquibase.lockservice                    : Successfully released change log lock
+2024-03-20T13:23:13.661+06:00  INFO 12519 --- [main] liquibase.command                        : Command execution complete
+2024-03-20T13:23:13.891+06:00  INFO 12519 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2024-03-20T13:23:13.897+06:00  INFO 12519 --- [main] k.a.headhunter.HeadHunterApplication     : Started HeadHunterApplication in 1.612 seconds (process running for 1.882)
+2024-03-20T13:23:21.958+06:00  INFO 12519 --- [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-03-20T13:23:21.958+06:00  INFO 12519 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-03-20T13:23:21.960+06:00  INFO 12519 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2024-03-20T13:23:21.986+06:00  INFO 12519 --- [http-nio-8080-exec-2] k.a.h.service.impl.UserServiceImpl       : Got 7 users
+2024-03-20T13:23:25.509+06:00  INFO 12519 --- [http-nio-8080-exec-4] k.a.h.service.impl.UserServiceImpl       : Got user with ID: 1
+2024-03-20T13:23:29.858+06:00  INFO 12519 --- [http-nio-8080-exec-5] k.a.h.service.impl.UserServiceImpl       : Got user with ID: 2
+2024-03-20T13:23:30.304+06:00  INFO 12519 --- [http-nio-8080-exec-6] k.a.h.service.impl.UserServiceImpl       : Got user with ID: 3
+2024-03-20T13:23:30.773+06:00  INFO 12519 --- [http-nio-8080-exec-7] k.a.h.service.impl.UserServiceImpl       : Got user with ID: 4
+2024-03-20T13:23:31.248+06:00  INFO 12519 --- [http-nio-8080-exec-8] k.a.h.service.impl.UserServiceImpl       : Got user with ID: 5
+2024-03-20T13:23:31.687+06:00  INFO 12519 --- [http-nio-8080-exec-9] k.a.h.service.impl.UserServiceImpl       : Got user with ID: 6
+2024-03-20T13:23:32.494+06:00 ERROR 12519 --- [http-nio-8080-exec-10] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: org.springframework.dao.EmptyResultDataAccessException: Incorrect result size: expected 1, actual 0] with root cause
+
+org.springframework.dao.EmptyResultDataAccessException: Incorrect result size: expected 1, actual 0
+	at org.springframework.dao.support.DataAccessUtils.nullableSingleResult(DataAccessUtils.java:98) ~[spring-tx-6.0.17.jar:6.0.17]
+	at org.springframework.jdbc.core.JdbcTemplate.queryForObject(JdbcTemplate.java:887) ~[spring-jdbc-6.0.17.jar:6.0.17]
+	at kg.attractor.headhunter.dao.UserDao.getUserById(UserDao.java:31) ~[classes/:na]
+	at kg.attractor.headhunter.service.impl.UserServiceImpl.getUserById(UserServiceImpl.java:47) ~[classes/:na]
+	at kg.attractor.headhunter.controller.UserController.getUserById(UserController.java:28) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:150) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:887) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:798) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1081) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:974) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564) ~[tomcat-embed-core-10.1.19.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.19.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at java.base/java.lang.Thread.run(Thread.java:833) ~[na:na]
+
+2024-03-20T13:23:35.714+06:00 ERROR 12519 --- [http-nio-8080-exec-1] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: org.springframework.dao.EmptyResultDataAccessException: Incorrect result size: expected 1, actual 0] with root cause
+
+org.springframework.dao.EmptyResultDataAccessException: Incorrect result size: expected 1, actual 0
+	at org.springframework.dao.support.DataAccessUtils.nullableSingleResult(DataAccessUtils.java:98) ~[spring-tx-6.0.17.jar:6.0.17]
+	at org.springframework.jdbc.core.JdbcTemplate.queryForObject(JdbcTemplate.java:887) ~[spring-jdbc-6.0.17.jar:6.0.17]
+	at kg.attractor.headhunter.dao.UserDao.getUserById(UserDao.java:31) ~[classes/:na]
+	at kg.attractor.headhunter.service.impl.UserServiceImpl.getUserById(UserServiceImpl.java:47) ~[classes/:na]
+	at kg.attractor.headhunter.controller.UserController.getUserById(UserController.java:28) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:150) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:887) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:798) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1081) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:974) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564) ~[tomcat-embed-core-10.1.19.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.19.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at java.base/java.lang.Thread.run(Thread.java:833) ~[na:na]
+
+2024-03-20T13:23:37.425+06:00 ERROR 12519 --- [http-nio-8080-exec-4] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: org.springframework.dao.EmptyResultDataAccessException: Incorrect result size: expected 1, actual 0] with root cause
+
+org.springframework.dao.EmptyResultDataAccessException: Incorrect result size: expected 1, actual 0
+	at org.springframework.dao.support.DataAccessUtils.nullableSingleResult(DataAccessUtils.java:98) ~[spring-tx-6.0.17.jar:6.0.17]
+	at org.springframework.jdbc.core.JdbcTemplate.queryForObject(JdbcTemplate.java:887) ~[spring-jdbc-6.0.17.jar:6.0.17]
+	at kg.attractor.headhunter.dao.UserDao.getUserById(UserDao.java:31) ~[classes/:na]
+	at kg.attractor.headhunter.service.impl.UserServiceImpl.getUserById(UserServiceImpl.java:47) ~[classes/:na]
+	at kg.attractor.headhunter.controller.UserController.getUserById(UserController.java:28) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:150) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:887) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:798) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1081) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:974) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564) ~[tomcat-embed-core-10.1.19.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.19.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at java.base/java.lang.Thread.run(Thread.java:833) ~[na:na]
+
+2024-03-20T13:23:38.696+06:00 ERROR 12519 --- [http-nio-8080-exec-6] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: org.springframework.dao.EmptyResultDataAccessException: Incorrect result size: expected 1, actual 0] with root cause
+
+org.springframework.dao.EmptyResultDataAccessException: Incorrect result size: expected 1, actual 0
+	at org.springframework.dao.support.DataAccessUtils.nullableSingleResult(DataAccessUtils.java:98) ~[spring-tx-6.0.17.jar:6.0.17]
+	at org.springframework.jdbc.core.JdbcTemplate.queryForObject(JdbcTemplate.java:887) ~[spring-jdbc-6.0.17.jar:6.0.17]
+	at kg.attractor.headhunter.dao.UserDao.getUserById(UserDao.java:31) ~[classes/:na]
+	at kg.attractor.headhunter.service.impl.UserServiceImpl.getUserById(UserServiceImpl.java:47) ~[classes/:na]
+	at kg.attractor.headhunter.controller.UserController.getUserById(UserController.java:28) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:150) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:887) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:798) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1081) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:974) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564) ~[tomcat-embed-core-10.1.19.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.19.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at java.base/java.lang.Thread.run(Thread.java:833) ~[na:na]
+
+2024-03-20T13:23:44.921+06:00  INFO 12519 --- [http-nio-8080-exec-8] k.a.h.service.impl.UserServiceImpl       : Got user with ID: 1
+2024-03-20T13:23:46.021+06:00 ERROR 12519 --- [http-nio-8080-exec-9] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: org.springframework.dao.EmptyResultDataAccessException: Incorrect result size: expected 1, actual 0] with root cause
+
+org.springframework.dao.EmptyResultDataAccessException: Incorrect result size: expected 1, actual 0
+	at org.springframework.dao.support.DataAccessUtils.nullableSingleResult(DataAccessUtils.java:98) ~[spring-tx-6.0.17.jar:6.0.17]
+	at org.springframework.jdbc.core.JdbcTemplate.queryForObject(JdbcTemplate.java:887) ~[spring-jdbc-6.0.17.jar:6.0.17]
+	at kg.attractor.headhunter.dao.UserDao.getUserById(UserDao.java:31) ~[classes/:na]
+	at kg.attractor.headhunter.service.impl.UserServiceImpl.getUserById(UserServiceImpl.java:47) ~[classes/:na]
+	at kg.attractor.headhunter.controller.UserController.getUserById(UserController.java:28) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:150) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:887) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:798) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1081) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:974) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564) ~[tomcat-embed-core-10.1.19.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.19.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at java.base/java.lang.Thread.run(Thread.java:833) ~[na:na]
+
+2024-03-20T13:23:47.699+06:00 ERROR 12519 --- [http-nio-8080-exec-2] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: org.springframework.dao.EmptyResultDataAccessException: Incorrect result size: expected 1, actual 0] with root cause
+
+org.springframework.dao.EmptyResultDataAccessException: Incorrect result size: expected 1, actual 0
+	at org.springframework.dao.support.DataAccessUtils.nullableSingleResult(DataAccessUtils.java:98) ~[spring-tx-6.0.17.jar:6.0.17]
+	at org.springframework.jdbc.core.JdbcTemplate.queryForObject(JdbcTemplate.java:887) ~[spring-jdbc-6.0.17.jar:6.0.17]
+	at kg.attractor.headhunter.dao.UserDao.getUserById(UserDao.java:31) ~[classes/:na]
+	at kg.attractor.headhunter.service.impl.UserServiceImpl.getUserById(UserServiceImpl.java:47) ~[classes/:na]
+	at kg.attractor.headhunter.controller.UserController.getUserById(UserController.java:28) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:150) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:887) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:798) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1081) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:974) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564) ~[tomcat-embed-core-10.1.19.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.19.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at java.base/java.lang.Thread.run(Thread.java:833) ~[na:na]
+
+2024-03-20T13:31:54.038+06:00  INFO 12519 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-03-20T13:31:54.076+06:00  INFO 12519 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-03-20T13:31:58.151+06:00  INFO 12623 --- [main] k.a.headhunter.HeadHunterApplication     : Starting HeadHunterApplication using Java 17.0.8 with PID 12623 (/Users/kenshi/Desktop/homework50/HeadHunter/target/classes started by kenshi in /Users/kenshi/Desktop/homework50/HeadHunter)
+2024-03-20T13:31:58.153+06:00  INFO 12623 --- [main] k.a.headhunter.HeadHunterApplication     : No active profile set, falling back to 1 default profile: "default"
+2024-03-20T13:31:58.657+06:00  INFO 12623 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-03-20T13:31:58.661+06:00  INFO 12623 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-03-20T13:31:58.661+06:00  INFO 12623 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2024-03-20T13:31:58.698+06:00  INFO 12623 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-03-20T13:31:58.698+06:00  INFO 12623 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 518 ms
+2024-03-20T13:31:58.764+06:00  INFO 12623 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-03-20T13:31:58.909+06:00  INFO 12623 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn1: url=jdbc:h2:./db/headHunter user=ROOT
+2024-03-20T13:31:58.910+06:00  INFO 12623 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-03-20T13:31:58.934+06:00  INFO 12623 --- [main] liquibase.database                       : Set default schema name to PUBLIC
+2024-03-20T13:31:59.031+06:00  INFO 12623 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/001_create_tables.yaml
+2024-03-20T13:31:59.048+06:00  INFO 12623 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/002_insert_information.sql
+2024-03-20T13:31:59.050+06:00  INFO 12623 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/003_editiing_table.yaml
+2024-03-20T13:31:59.053+06:00  INFO 12623 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/004_editing_table.yaml
+2024-03-20T13:31:59.188+06:00  INFO 12623 --- [main] liquibase.changelog                      : Reading from PUBLIC.DATABASECHANGELOG
+2024-03-20T13:31:59.218+06:00  INFO 12623 --- [main] liquibase.ui                             : Database is up to date, no changesets to execute
+2024-03-20T13:31:59.218+06:00  INFO 12623 --- [main] liquibase.changelog                      : Reading from PUBLIC.DATABASECHANGELOG
+2024-03-20T13:31:59.222+06:00  INFO 12623 --- [main] liquibase.util                           : UPDATE SUMMARY
+2024-03-20T13:31:59.222+06:00  INFO 12623 --- [main] liquibase.util                           : Run:                          0
+2024-03-20T13:31:59.222+06:00  INFO 12623 --- [main] liquibase.util                           : Previously run:              13
+2024-03-20T13:31:59.222+06:00  INFO 12623 --- [main] liquibase.util                           : Filtered out:                 0
+2024-03-20T13:31:59.222+06:00  INFO 12623 --- [main] liquibase.util                           : -------------------------------
+2024-03-20T13:31:59.222+06:00  INFO 12623 --- [main] liquibase.util                           : Total change sets:           13
+2024-03-20T13:31:59.222+06:00  INFO 12623 --- [main] liquibase.util                           : Update summary generated
+2024-03-20T13:31:59.230+06:00  INFO 12623 --- [main] liquibase.lockservice                    : Successfully released change log lock
+2024-03-20T13:31:59.230+06:00  INFO 12623 --- [main] liquibase.command                        : Command execution complete
+2024-03-20T13:31:59.247+06:00  WARN 12623 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'userController' defined in file [/Users/kenshi/Desktop/homework50/HeadHunter/target/classes/kg/attractor/headhunter/controller/UserController.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'userServiceImpl' defined in file [/Users/kenshi/Desktop/homework50/HeadHunter/target/classes/kg/attractor/headhunter/service/impl/UserServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 1: No qualifying bean of type 'org.modelmapper.ModelMapper' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+2024-03-20T13:31:59.247+06:00  INFO 12623 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-03-20T13:31:59.276+06:00  INFO 12623 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-03-20T13:31:59.277+06:00  INFO 12623 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2024-03-20T13:31:59.283+06:00  INFO 12623 --- [main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2024-03-20T13:31:59.291+06:00 ERROR 12623 --- [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 1 of constructor in kg.attractor.headhunter.service.impl.UserServiceImpl required a bean of type 'org.modelmapper.ModelMapper' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'org.modelmapper.ModelMapper' in your configuration.
+
+2024-03-20T13:33:24.006+06:00  INFO 12648 --- [main] k.a.headhunter.HeadHunterApplication     : Starting HeadHunterApplication using Java 17.0.8 with PID 12648 (/Users/kenshi/Desktop/homework50/HeadHunter/target/classes started by kenshi in /Users/kenshi/Desktop/homework50/HeadHunter)
+2024-03-20T13:33:24.007+06:00  INFO 12648 --- [main] k.a.headhunter.HeadHunterApplication     : No active profile set, falling back to 1 default profile: "default"
+2024-03-20T13:33:24.503+06:00  INFO 12648 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-03-20T13:33:24.507+06:00  INFO 12648 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-03-20T13:33:24.507+06:00  INFO 12648 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2024-03-20T13:33:24.551+06:00  INFO 12648 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-03-20T13:33:24.551+06:00  INFO 12648 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 518 ms
+2024-03-20T13:33:24.608+06:00  INFO 12648 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-03-20T13:33:24.764+06:00  INFO 12648 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn1: url=jdbc:h2:./db/headHunter user=ROOT
+2024-03-20T13:33:24.765+06:00  INFO 12648 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-03-20T13:33:24.790+06:00  INFO 12648 --- [main] liquibase.database                       : Set default schema name to PUBLIC
+2024-03-20T13:33:24.885+06:00  INFO 12648 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/001_create_tables.yaml
+2024-03-20T13:33:24.905+06:00  INFO 12648 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/002_insert_information.sql
+2024-03-20T13:33:24.907+06:00  INFO 12648 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/003_editiing_table.yaml
+2024-03-20T13:33:24.909+06:00  INFO 12648 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/004_editing_table.yaml
+2024-03-20T13:33:25.056+06:00  INFO 12648 --- [main] liquibase.changelog                      : Reading from PUBLIC.DATABASECHANGELOG
+2024-03-20T13:33:25.086+06:00  INFO 12648 --- [main] liquibase.ui                             : Database is up to date, no changesets to execute
+2024-03-20T13:33:25.087+06:00  INFO 12648 --- [main] liquibase.changelog                      : Reading from PUBLIC.DATABASECHANGELOG
+2024-03-20T13:33:25.091+06:00  INFO 12648 --- [main] liquibase.util                           : UPDATE SUMMARY
+2024-03-20T13:33:25.091+06:00  INFO 12648 --- [main] liquibase.util                           : Run:                          0
+2024-03-20T13:33:25.091+06:00  INFO 12648 --- [main] liquibase.util                           : Previously run:              13
+2024-03-20T13:33:25.091+06:00  INFO 12648 --- [main] liquibase.util                           : Filtered out:                 0
+2024-03-20T13:33:25.091+06:00  INFO 12648 --- [main] liquibase.util                           : -------------------------------
+2024-03-20T13:33:25.091+06:00  INFO 12648 --- [main] liquibase.util                           : Total change sets:           13
+2024-03-20T13:33:25.091+06:00  INFO 12648 --- [main] liquibase.util                           : Update summary generated
+2024-03-20T13:33:25.099+06:00  INFO 12648 --- [main] liquibase.lockservice                    : Successfully released change log lock
+2024-03-20T13:33:25.099+06:00  INFO 12648 --- [main] liquibase.command                        : Command execution complete
+2024-03-20T13:33:25.324+06:00  INFO 12648 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2024-03-20T13:33:25.330+06:00  INFO 12648 --- [main] k.a.headhunter.HeadHunterApplication     : Started HeadHunterApplication in 1.592 seconds (process running for 1.848)
+2024-03-20T13:33:29.075+06:00  INFO 12648 --- [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-03-20T13:33:29.076+06:00  INFO 12648 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-03-20T13:33:29.077+06:00  INFO 12648 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2024-03-20T13:34:34.572+06:00  INFO 12648 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-03-20T13:34:34.574+06:00  INFO 12648 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-03-20T13:34:37.569+06:00  INFO 12669 --- [main] k.a.headhunter.HeadHunterApplication     : Starting HeadHunterApplication using Java 17.0.8 with PID 12669 (/Users/kenshi/Desktop/homework50/HeadHunter/target/classes started by kenshi in /Users/kenshi/Desktop/homework50/HeadHunter)
+2024-03-20T13:34:37.572+06:00  INFO 12669 --- [main] k.a.headhunter.HeadHunterApplication     : No active profile set, falling back to 1 default profile: "default"
+2024-03-20T13:34:38.069+06:00  INFO 12669 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-03-20T13:34:38.072+06:00  INFO 12669 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-03-20T13:34:38.073+06:00  INFO 12669 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2024-03-20T13:34:38.113+06:00  INFO 12669 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-03-20T13:34:38.113+06:00  INFO 12669 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 516 ms
+2024-03-20T13:34:38.170+06:00  INFO 12669 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-03-20T13:34:38.315+06:00  INFO 12669 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn1: url=jdbc:h2:./db/headHunter user=ROOT
+2024-03-20T13:34:38.315+06:00  INFO 12669 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-03-20T13:34:38.341+06:00  INFO 12669 --- [main] liquibase.database                       : Set default schema name to PUBLIC
+2024-03-20T13:34:38.439+06:00  INFO 12669 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/001_create_tables.yaml
+2024-03-20T13:34:38.457+06:00  INFO 12669 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/002_insert_information.sql
+2024-03-20T13:34:38.459+06:00  INFO 12669 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/003_editiing_table.yaml
+2024-03-20T13:34:38.462+06:00  INFO 12669 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/004_editing_table.yaml
+2024-03-20T13:34:38.512+06:00  INFO 12669 --- [main] liquibase.changelog                      : Reading from PUBLIC.DATABASECHANGELOG
+2024-03-20T13:34:38.542+06:00  INFO 12669 --- [main] liquibase.ui                             : Database is up to date, no changesets to execute
+2024-03-20T13:34:38.543+06:00  INFO 12669 --- [main] liquibase.changelog                      : Reading from PUBLIC.DATABASECHANGELOG
+2024-03-20T13:34:38.547+06:00  INFO 12669 --- [main] liquibase.util                           : UPDATE SUMMARY
+2024-03-20T13:34:38.547+06:00  INFO 12669 --- [main] liquibase.util                           : Run:                          0
+2024-03-20T13:34:38.547+06:00  INFO 12669 --- [main] liquibase.util                           : Previously run:              13
+2024-03-20T13:34:38.547+06:00  INFO 12669 --- [main] liquibase.util                           : Filtered out:                 0
+2024-03-20T13:34:38.547+06:00  INFO 12669 --- [main] liquibase.util                           : -------------------------------
+2024-03-20T13:34:38.547+06:00  INFO 12669 --- [main] liquibase.util                           : Total change sets:           13
+2024-03-20T13:34:38.548+06:00  INFO 12669 --- [main] liquibase.util                           : Update summary generated
+2024-03-20T13:34:38.556+06:00  INFO 12669 --- [main] liquibase.lockservice                    : Successfully released change log lock
+2024-03-20T13:34:38.556+06:00  INFO 12669 --- [main] liquibase.command                        : Command execution complete
+2024-03-20T13:34:38.793+06:00  INFO 12669 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2024-03-20T13:34:38.799+06:00  INFO 12669 --- [main] k.a.headhunter.HeadHunterApplication     : Started HeadHunterApplication in 1.486 seconds (process running for 1.789)
+2024-03-20T13:34:40.777+06:00  INFO 12669 --- [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-03-20T13:34:40.778+06:00  INFO 12669 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-03-20T13:34:40.779+06:00  INFO 12669 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2024-03-20T13:35:42.105+06:00  INFO 12669 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-03-20T13:35:42.106+06:00  INFO 12669 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-03-20T13:35:44.746+06:00  INFO 12680 --- [main] k.a.headhunter.HeadHunterApplication     : Starting HeadHunterApplication using Java 17.0.8 with PID 12680 (/Users/kenshi/Desktop/homework50/HeadHunter/target/classes started by kenshi in /Users/kenshi/Desktop/homework50/HeadHunter)
+2024-03-20T13:35:44.747+06:00  INFO 12680 --- [main] k.a.headhunter.HeadHunterApplication     : No active profile set, falling back to 1 default profile: "default"
+2024-03-20T13:35:45.202+06:00  INFO 12680 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-03-20T13:35:45.205+06:00  INFO 12680 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-03-20T13:35:45.206+06:00  INFO 12680 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2024-03-20T13:35:45.246+06:00  INFO 12680 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-03-20T13:35:45.247+06:00  INFO 12680 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 478 ms
+2024-03-20T13:35:45.299+06:00  INFO 12680 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-03-20T13:35:45.444+06:00  INFO 12680 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn1: url=jdbc:h2:./db/headHunter user=ROOT
+2024-03-20T13:35:45.445+06:00  INFO 12680 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-03-20T13:35:45.473+06:00  INFO 12680 --- [main] liquibase.database                       : Set default schema name to PUBLIC
+2024-03-20T13:35:45.569+06:00  INFO 12680 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/001_create_tables.yaml
+2024-03-20T13:35:45.587+06:00  INFO 12680 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/002_insert_information.sql
+2024-03-20T13:35:45.589+06:00  INFO 12680 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/003_editiing_table.yaml
+2024-03-20T13:35:45.591+06:00  INFO 12680 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/004_editing_table.yaml
+2024-03-20T13:35:45.728+06:00  INFO 12680 --- [main] liquibase.changelog                      : Reading from PUBLIC.DATABASECHANGELOG
+2024-03-20T13:35:45.759+06:00  INFO 12680 --- [main] liquibase.ui                             : Database is up to date, no changesets to execute
+2024-03-20T13:35:45.760+06:00  INFO 12680 --- [main] liquibase.changelog                      : Reading from PUBLIC.DATABASECHANGELOG
+2024-03-20T13:35:45.763+06:00  INFO 12680 --- [main] liquibase.util                           : UPDATE SUMMARY
+2024-03-20T13:35:45.763+06:00  INFO 12680 --- [main] liquibase.util                           : Run:                          0
+2024-03-20T13:35:45.763+06:00  INFO 12680 --- [main] liquibase.util                           : Previously run:              13
+2024-03-20T13:35:45.763+06:00  INFO 12680 --- [main] liquibase.util                           : Filtered out:                 0
+2024-03-20T13:35:45.763+06:00  INFO 12680 --- [main] liquibase.util                           : -------------------------------
+2024-03-20T13:35:45.763+06:00  INFO 12680 --- [main] liquibase.util                           : Total change sets:           13
+2024-03-20T13:35:45.764+06:00  INFO 12680 --- [main] liquibase.util                           : Update summary generated
+2024-03-20T13:35:45.771+06:00  INFO 12680 --- [main] liquibase.lockservice                    : Successfully released change log lock
+2024-03-20T13:35:45.771+06:00  INFO 12680 --- [main] liquibase.command                        : Command execution complete
+2024-03-20T13:35:45.996+06:00  INFO 12680 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2024-03-20T13:35:46.001+06:00  INFO 12680 --- [main] k.a.headhunter.HeadHunterApplication     : Started HeadHunterApplication in 1.459 seconds (process running for 1.698)
+2024-03-20T13:35:56.502+06:00  INFO 12680 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-03-20T13:35:56.502+06:00  INFO 12680 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-03-20T13:35:56.503+06:00  INFO 12680 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2024-03-20T13:38:36.345+06:00  WARN 12680 --- [http-nio-8080-exec-8] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required request parameter 'userId' for method parameter type int is not present]
+2024-03-20T13:38:45.858+06:00  WARN 12680 --- [http-nio-8080-exec-10] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required request parameter 'userId' for method parameter type int is not present]
+2024-03-20T13:43:43.341+06:00  WARN 12680 --- [http-nio-8080-exec-7] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'int'; For input string: "asdf"]
+2024-03-20T13:50:19.255+06:00  WARN 12680 --- [http-nio-8080-exec-7] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'int'; For input string: "афыва"]
+2024-03-20T13:51:29.057+06:00  INFO 12680 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-03-20T13:51:29.094+06:00  INFO 12680 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-03-20T13:51:34.144+06:00  INFO 12865 --- [main] k.a.headhunter.HeadHunterApplication     : Starting HeadHunterApplication using Java 17.0.8 with PID 12865 (/Users/kenshi/Desktop/homework50/HeadHunter/target/classes started by kenshi in /Users/kenshi/Desktop/homework50/HeadHunter)
+2024-03-20T13:51:34.145+06:00  INFO 12865 --- [main] k.a.headhunter.HeadHunterApplication     : No active profile set, falling back to 1 default profile: "default"
+2024-03-20T13:51:34.642+06:00  INFO 12865 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-03-20T13:51:34.646+06:00  INFO 12865 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-03-20T13:51:34.646+06:00  INFO 12865 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2024-03-20T13:51:34.698+06:00  INFO 12865 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-03-20T13:51:34.698+06:00  INFO 12865 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 525 ms
+2024-03-20T13:51:34.766+06:00  INFO 12865 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-03-20T13:51:34.922+06:00  INFO 12865 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn1: url=jdbc:h2:./db/headHunter user=ROOT
+2024-03-20T13:51:34.923+06:00  INFO 12865 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-03-20T13:51:34.947+06:00  INFO 12865 --- [main] liquibase.database                       : Set default schema name to PUBLIC
+2024-03-20T13:51:35.051+06:00  INFO 12865 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/001_create_tables.yaml
+2024-03-20T13:51:35.072+06:00  INFO 12865 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/002_insert_information.sql
+2024-03-20T13:51:35.075+06:00  INFO 12865 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/003_editiing_table.yaml
+2024-03-20T13:51:35.078+06:00  INFO 12865 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/004_editing_table.yaml
+2024-03-20T13:51:35.219+06:00  INFO 12865 --- [main] liquibase.changelog                      : Reading from PUBLIC.DATABASECHANGELOG
+2024-03-20T13:51:35.250+06:00  INFO 12865 --- [main] liquibase.ui                             : Database is up to date, no changesets to execute
+2024-03-20T13:51:35.251+06:00  INFO 12865 --- [main] liquibase.changelog                      : Reading from PUBLIC.DATABASECHANGELOG
+2024-03-20T13:51:35.255+06:00  INFO 12865 --- [main] liquibase.util                           : UPDATE SUMMARY
+2024-03-20T13:51:35.255+06:00  INFO 12865 --- [main] liquibase.util                           : Run:                          0
+2024-03-20T13:51:35.255+06:00  INFO 12865 --- [main] liquibase.util                           : Previously run:              13
+2024-03-20T13:51:35.255+06:00  INFO 12865 --- [main] liquibase.util                           : Filtered out:                 0
+2024-03-20T13:51:35.255+06:00  INFO 12865 --- [main] liquibase.util                           : -------------------------------
+2024-03-20T13:51:35.255+06:00  INFO 12865 --- [main] liquibase.util                           : Total change sets:           13
+2024-03-20T13:51:35.256+06:00  INFO 12865 --- [main] liquibase.util                           : Update summary generated
+2024-03-20T13:51:35.263+06:00  INFO 12865 --- [main] liquibase.lockservice                    : Successfully released change log lock
+2024-03-20T13:51:35.264+06:00  INFO 12865 --- [main] liquibase.command                        : Command execution complete
+2024-03-20T13:51:35.492+06:00  INFO 12865 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2024-03-20T13:51:35.498+06:00  INFO 12865 --- [main] k.a.headhunter.HeadHunterApplication     : Started HeadHunterApplication in 1.613 seconds (process running for 1.922)
+2024-03-20T13:52:19.144+06:00  INFO 12865 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-03-20T13:52:19.146+06:00  INFO 12865 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-03-20T13:52:19.148+06:00  INFO 12865 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2024-03-20T14:35:52.396+06:00  INFO 12865 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-03-20T14:35:52.400+06:00  INFO 12865 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-03-20T14:35:56.667+06:00  INFO 13314 --- [main] k.a.headhunter.HeadHunterApplication     : Starting HeadHunterApplication using Java 17.0.8 with PID 13314 (/Users/kenshi/Desktop/homework50/HeadHunter/target/classes started by kenshi in /Users/kenshi/Desktop/homework50/HeadHunter)
+2024-03-20T14:35:56.670+06:00  INFO 13314 --- [main] k.a.headhunter.HeadHunterApplication     : No active profile set, falling back to 1 default profile: "default"
+2024-03-20T14:35:57.397+06:00  INFO 13314 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-03-20T14:35:57.403+06:00  INFO 13314 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-03-20T14:35:57.403+06:00  INFO 13314 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2024-03-20T14:35:57.466+06:00  INFO 13314 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-03-20T14:35:57.466+06:00  INFO 13314 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 772 ms
+2024-03-20T14:35:57.527+06:00  INFO 13314 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-03-20T14:35:57.678+06:00  INFO 13314 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn1: url=jdbc:h2:./db/headHunter user=ROOT
+2024-03-20T14:35:57.678+06:00  INFO 13314 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-03-20T14:35:57.711+06:00  INFO 13314 --- [main] liquibase.database                       : Set default schema name to PUBLIC
+2024-03-20T14:35:57.811+06:00  INFO 13314 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/001_create_tables.yaml
+2024-03-20T14:35:57.831+06:00  INFO 13314 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/002_insert_information.sql
+2024-03-20T14:35:57.833+06:00  INFO 13314 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/003_editiing_table.yaml
+2024-03-20T14:35:57.836+06:00  INFO 13314 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/004_editing_table.yaml
+2024-03-20T14:35:57.973+06:00  INFO 13314 --- [main] liquibase.changelog                      : Reading from PUBLIC.DATABASECHANGELOG
+2024-03-20T14:35:58.003+06:00  INFO 13314 --- [main] liquibase.ui                             : Database is up to date, no changesets to execute
+2024-03-20T14:35:58.004+06:00  INFO 13314 --- [main] liquibase.changelog                      : Reading from PUBLIC.DATABASECHANGELOG
+2024-03-20T14:35:58.007+06:00  INFO 13314 --- [main] liquibase.util                           : UPDATE SUMMARY
+2024-03-20T14:35:58.007+06:00  INFO 13314 --- [main] liquibase.util                           : Run:                          0
+2024-03-20T14:35:58.007+06:00  INFO 13314 --- [main] liquibase.util                           : Previously run:              13
+2024-03-20T14:35:58.007+06:00  INFO 13314 --- [main] liquibase.util                           : Filtered out:                 0
+2024-03-20T14:35:58.007+06:00  INFO 13314 --- [main] liquibase.util                           : -------------------------------
+2024-03-20T14:35:58.007+06:00  INFO 13314 --- [main] liquibase.util                           : Total change sets:           13
+2024-03-20T14:35:58.008+06:00  INFO 13314 --- [main] liquibase.util                           : Update summary generated
+2024-03-20T14:35:58.015+06:00  INFO 13314 --- [main] liquibase.lockservice                    : Successfully released change log lock
+2024-03-20T14:35:58.016+06:00  INFO 13314 --- [main] liquibase.command                        : Command execution complete
+2024-03-20T14:35:58.246+06:00  INFO 13314 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2024-03-20T14:35:58.252+06:00  INFO 13314 --- [main] k.a.headhunter.HeadHunterApplication     : Started HeadHunterApplication in 1.908 seconds (process running for 2.247)
+2024-03-20T14:36:01.245+06:00  INFO 13314 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-03-20T14:36:01.246+06:00  INFO 13314 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-03-20T14:36:01.248+06:00  INFO 13314 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2024-03-20T14:36:13.265+06:00  WARN 13314 --- [http-nio-8080-exec-4] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required request parameter 'userId' for method parameter type int is not present]
+2024-03-20T14:39:15.015+06:00  INFO 13314 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-03-20T14:39:15.016+06:00  INFO 13314 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-03-20T14:39:25.005+06:00  INFO 13344 --- [main] k.a.headhunter.HeadHunterApplication     : Starting HeadHunterApplication using Java 17.0.8 with PID 13344 (/Users/kenshi/Desktop/homework50/HeadHunter/target/classes started by kenshi in /Users/kenshi/Desktop/homework50/HeadHunter)
+2024-03-20T14:39:25.006+06:00  INFO 13344 --- [main] k.a.headhunter.HeadHunterApplication     : No active profile set, falling back to 1 default profile: "default"
+2024-03-20T14:39:25.500+06:00  INFO 13344 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-03-20T14:39:25.504+06:00  INFO 13344 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-03-20T14:39:25.504+06:00  INFO 13344 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2024-03-20T14:39:25.546+06:00  INFO 13344 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-03-20T14:39:25.546+06:00  INFO 13344 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 514 ms
+2024-03-20T14:39:25.599+06:00  INFO 13344 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-03-20T14:39:25.825+06:00  INFO 13344 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn1: url=jdbc:h2:./db/headHunter user=ROOT
+2024-03-20T14:39:25.825+06:00  INFO 13344 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-03-20T14:39:25.856+06:00  INFO 13344 --- [main] liquibase.database                       : Set default schema name to PUBLIC
+2024-03-20T14:39:25.946+06:00  INFO 13344 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/001_create_tables.yaml
+2024-03-20T14:39:25.964+06:00  INFO 13344 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/002_insert_information.sql
+2024-03-20T14:39:25.966+06:00  INFO 13344 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/003_editiing_table.yaml
+2024-03-20T14:39:25.968+06:00  INFO 13344 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/004_editing_table.yaml
+2024-03-20T14:39:25.983+06:00  INFO 13344 --- [main] liquibase.changelog                      : Creating database history table with name: PUBLIC.DATABASECHANGELOG
+2024-03-20T14:39:26.010+06:00  INFO 13344 --- [main] liquibase.changelog                      : Reading from PUBLIC.DATABASECHANGELOG
+2024-03-20T14:39:26.070+06:00  INFO 13344 --- [main] liquibase.lockservice                    : Successfully acquired change log lock
+2024-03-20T14:39:26.070+06:00  INFO 13344 --- [main] liquibase.command                        : Using deploymentId: 0923966070
+2024-03-20T14:39:26.071+06:00  INFO 13344 --- [main] liquibase.changelog                      : Reading from PUBLIC.DATABASECHANGELOG
+2024-03-20T14:39:26.092+06:00  INFO 13344 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/001_create_tables.yaml::create-user-table::Nursultan
+2024-03-20T14:39:26.096+06:00  INFO 13344 --- [main] liquibase.changelog                      : Table users created
+2024-03-20T14:39:26.096+06:00  INFO 13344 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/001_create_tables.yaml::create-user-table::Nursultan ran successfully in 3ms
+2024-03-20T14:39:26.100+06:00  INFO 13344 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/001_create_tables.yaml::create-categories-table::Nursultan
+2024-03-20T14:39:26.101+06:00  INFO 13344 --- [main] liquibase.changelog                      : Table categories created
+2024-03-20T14:39:26.104+06:00  INFO 13344 --- [main] liquibase.changelog                      : Foreign key constraint added to categories (parentId)
+2024-03-20T14:39:26.105+06:00  INFO 13344 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/001_create_tables.yaml::create-categories-table::Nursultan ran successfully in 5ms
+2024-03-20T14:39:26.107+06:00  INFO 13344 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/001_create_tables.yaml::create-vacancies-table::Nursultan
+2024-03-20T14:39:26.109+06:00  INFO 13344 --- [main] liquibase.changelog                      : Table vacancies created
+2024-03-20T14:39:26.109+06:00  INFO 13344 --- [main] liquibase.changelog                      : Foreign key constraint added to vacancies (categoryId)
+2024-03-20T14:39:26.110+06:00  INFO 13344 --- [main] liquibase.changelog                      : Foreign key constraint added to vacancies (authorId)
+2024-03-20T14:39:26.110+06:00  INFO 13344 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/001_create_tables.yaml::create-vacancies-table::Nursultan ran successfully in 3ms
+2024-03-20T14:39:26.112+06:00  INFO 13344 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/001_create_tables.yaml::create-resumes-table::Nursultan
+2024-03-20T14:39:26.113+06:00  INFO 13344 --- [main] liquibase.changelog                      : Table resumes created
+2024-03-20T14:39:26.114+06:00  INFO 13344 --- [main] liquibase.changelog                      : Foreign key constraint added to resumes (categoryId)
+2024-03-20T14:39:26.115+06:00  INFO 13344 --- [main] liquibase.changelog                      : Foreign key constraint added to resumes (userId)
+2024-03-20T14:39:26.116+06:00  INFO 13344 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/001_create_tables.yaml::create-resumes-table::Nursultan ran successfully in 4ms
+2024-03-20T14:39:26.117+06:00  INFO 13344 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/001_create_tables.yaml::create-respondedApplicants-table::Nursultan
+2024-03-20T14:39:26.118+06:00  INFO 13344 --- [main] liquibase.changelog                      : Table respondedApplicants created
+2024-03-20T14:39:26.118+06:00  INFO 13344 --- [main] liquibase.changelog                      : Foreign key constraint added to respondedApplicants (resumeId)
+2024-03-20T14:39:26.119+06:00  INFO 13344 --- [main] liquibase.changelog                      : Foreign key constraint added to respondedApplicants (vacancyId)
+2024-03-20T14:39:26.119+06:00  INFO 13344 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/001_create_tables.yaml::create-respondedApplicants-table::Nursultan ran successfully in 2ms
+2024-03-20T14:39:26.121+06:00  INFO 13344 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/001_create_tables.yaml::create-contactTypes-table::Nursultan
+2024-03-20T14:39:26.122+06:00  INFO 13344 --- [main] liquibase.changelog                      : Table contactTypes created
+2024-03-20T14:39:26.122+06:00  INFO 13344 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/001_create_tables.yaml::create-contactTypes-table::Nursultan ran successfully in 1ms
+2024-03-20T14:39:26.123+06:00  INFO 13344 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/001_create_tables.yaml::create-contactsInfo-table::Nursultan
+2024-03-20T14:39:26.125+06:00  INFO 13344 --- [main] liquibase.changelog                      : Table contactsInfo created
+2024-03-20T14:39:26.126+06:00  INFO 13344 --- [main] liquibase.changelog                      : Foreign key constraint added to contactsInfo (ContactTypeId)
+2024-03-20T14:39:26.127+06:00  INFO 13344 --- [main] liquibase.changelog                      : Foreign key constraint added to contactsInfo (resumeId)
+2024-03-20T14:39:26.127+06:00  INFO 13344 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/001_create_tables.yaml::create-contactsInfo-table::Nursultan ran successfully in 3ms
+2024-03-20T14:39:26.129+06:00  INFO 13344 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/001_create_tables.yaml::create-messages-table::Nursultan
+2024-03-20T14:39:26.129+06:00  INFO 13344 --- [main] liquibase.changelog                      : Table messages created
+2024-03-20T14:39:26.130+06:00  INFO 13344 --- [main] liquibase.changelog                      : Foreign key constraint added to messages (respondedApplicantsId)
+2024-03-20T14:39:26.130+06:00  INFO 13344 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/001_create_tables.yaml::create-messages-table::Nursultan ran successfully in 1ms
+2024-03-20T14:39:26.132+06:00  INFO 13344 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/001_create_tables.yaml::create-workExperienceInfo-table::Nursultan
+2024-03-20T14:39:26.133+06:00  INFO 13344 --- [main] liquibase.changelog                      : Table workExperienceInfo created
+2024-03-20T14:39:26.134+06:00  INFO 13344 --- [main] liquibase.changelog                      : Foreign key constraint added to workExperienceInfo (resumeId)
+2024-03-20T14:39:26.134+06:00  INFO 13344 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/001_create_tables.yaml::create-workExperienceInfo-table::Nursultan ran successfully in 2ms
+2024-03-20T14:39:26.135+06:00  INFO 13344 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/001_create_tables.yaml::create-educationInfo-table::Nursultan
+2024-03-20T14:39:26.136+06:00  INFO 13344 --- [main] liquibase.changelog                      : Table educationInfo created
+2024-03-20T14:39:26.138+06:00  INFO 13344 --- [main] liquibase.changelog                      : Foreign key constraint added to educationInfo (resumeId)
+2024-03-20T14:39:26.138+06:00  INFO 13344 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/001_create_tables.yaml::create-educationInfo-table::Nursultan ran successfully in 3ms
+2024-03-20T14:39:26.139+06:00  INFO 13344 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/002_insert_information.sql::raw::includeAll
+2024-03-20T14:39:26.168+06:00  INFO 13344 --- [main] liquibase.changelog                      : Custom SQL executed
+2024-03-20T14:39:26.173+06:00  INFO 13344 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/002_insert_information.sql::raw::includeAll ran successfully in 34ms
+2024-03-20T14:39:26.174+06:00  INFO 13344 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/003_editiing_table.yaml::modify-fk-for-cascade-delete-all::Nursultan
+2024-03-20T14:39:26.175+06:00  INFO 13344 --- [main] liquibase.changelog                      : Foreign key fk_respondedApplicants_resumeId dropped
+2024-03-20T14:39:26.176+06:00  INFO 13344 --- [main] liquibase.changelog                      : Foreign key constraint added to respondedApplicants (resumeId)
+2024-03-20T14:39:26.176+06:00  INFO 13344 --- [main] liquibase.changelog                      : Foreign key fk_contactsInfo_resumeId dropped
+2024-03-20T14:39:26.177+06:00  INFO 13344 --- [main] liquibase.changelog                      : Foreign key constraint added to contactsInfo (resumeId)
+2024-03-20T14:39:26.177+06:00  INFO 13344 --- [main] liquibase.changelog                      : Foreign key fk_workExperienceInfo_resumeId dropped
+2024-03-20T14:39:26.178+06:00  INFO 13344 --- [main] liquibase.changelog                      : Foreign key constraint added to workExperienceInfo (resumeId)
+2024-03-20T14:39:26.178+06:00  INFO 13344 --- [main] liquibase.changelog                      : Foreign key fk_educationInfo_resumeId dropped
+2024-03-20T14:39:26.179+06:00  INFO 13344 --- [main] liquibase.changelog                      : Foreign key constraint added to educationInfo (resumeId)
+2024-03-20T14:39:26.179+06:00  INFO 13344 --- [main] liquibase.changelog                      : Foreign key FK_MESSAGES_RESPONDEDAPPLICANTSID dropped
+2024-03-20T14:39:26.180+06:00  INFO 13344 --- [main] liquibase.changelog                      : Foreign key constraint added to messages (respondedApplicantsId)
+2024-03-20T14:39:26.180+06:00  INFO 13344 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/003_editiing_table.yaml::modify-fk-for-cascade-delete-all::Nursultan ran successfully in 6ms
+2024-03-20T14:39:26.181+06:00  INFO 13344 --- [main] liquibase.ui                             : Running Changeset: db/changelog/initial/004_editing_table.yaml::modify-fk-for-cascade-delete-all-2.0::Nursultan
+2024-03-20T14:39:26.182+06:00  INFO 13344 --- [main] liquibase.changelog                      : Foreign key fk_vacancies_authorId dropped
+2024-03-20T14:39:26.183+06:00  INFO 13344 --- [main] liquibase.changelog                      : Foreign key constraint added to vacancies (authorId)
+2024-03-20T14:39:26.183+06:00  INFO 13344 --- [main] liquibase.changelog                      : Foreign key fk_resumes_userId dropped
+2024-03-20T14:39:26.184+06:00  INFO 13344 --- [main] liquibase.changelog                      : Foreign key constraint added to resumes (userId)
+2024-03-20T14:39:26.184+06:00  INFO 13344 --- [main] liquibase.changelog                      : Foreign key fk_respondedApplicants_resumeId dropped
+2024-03-20T14:39:26.185+06:00  INFO 13344 --- [main] liquibase.changelog                      : Foreign key constraint added to respondedApplicants (resumeId)
+2024-03-20T14:39:26.185+06:00  INFO 13344 --- [main] liquibase.changelog                      : Foreign key fk_respondedApplicants_vacancyId dropped
+2024-03-20T14:39:26.186+06:00  INFO 13344 --- [main] liquibase.changelog                      : Foreign key constraint added to respondedApplicants (vacancyId)
+2024-03-20T14:39:26.186+06:00  INFO 13344 --- [main] liquibase.changelog                      : ChangeSet db/changelog/initial/004_editing_table.yaml::modify-fk-for-cascade-delete-all-2.0::Nursultan ran successfully in 4ms
+2024-03-20T14:39:26.189+06:00  INFO 13344 --- [main] liquibase.util                           : UPDATE SUMMARY
+2024-03-20T14:39:26.189+06:00  INFO 13344 --- [main] liquibase.util                           : Run:                         13
+2024-03-20T14:39:26.189+06:00  INFO 13344 --- [main] liquibase.util                           : Previously run:               0
+2024-03-20T14:39:26.189+06:00  INFO 13344 --- [main] liquibase.util                           : Filtered out:                 0
+2024-03-20T14:39:26.189+06:00  INFO 13344 --- [main] liquibase.util                           : -------------------------------
+2024-03-20T14:39:26.189+06:00  INFO 13344 --- [main] liquibase.util                           : Total change sets:           13
+2024-03-20T14:39:26.189+06:00  INFO 13344 --- [main] liquibase.util                           : Update summary generated
+2024-03-20T14:39:26.190+06:00  INFO 13344 --- [main] liquibase.command                        : Update command completed successfully.
+2024-03-20T14:39:26.190+06:00  INFO 13344 --- [main] liquibase.ui                             : Liquibase: Update has been successful. Rows affected: 20
+2024-03-20T14:39:26.191+06:00  INFO 13344 --- [main] liquibase.lockservice                    : Successfully released change log lock
+2024-03-20T14:39:26.191+06:00  INFO 13344 --- [main] liquibase.command                        : Command execution complete
+2024-03-20T14:39:26.416+06:00  INFO 13344 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2024-03-20T14:39:26.421+06:00  INFO 13344 --- [main] k.a.headhunter.HeadHunterApplication     : Started HeadHunterApplication in 1.674 seconds (process running for 1.942)
+2024-03-20T14:39:45.432+06:00  INFO 13344 --- [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-03-20T14:39:45.433+06:00  INFO 13344 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-03-20T14:39:45.435+06:00  INFO 13344 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2024-03-20T14:39:54.476+06:00  WARN 13344 --- [http-nio-8080-exec-3] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'int'; For input string: ""]
+2024-03-20T14:41:24.738+06:00  WARN 13344 --- [http-nio-8080-exec-6] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'int'; For input string: ""]
+2024-03-20T14:43:10.647+06:00 ERROR 13344 --- [http-nio-8080-exec-10] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: java.util.NoSuchElementException: No value present] with root cause
+
+java.util.NoSuchElementException: No value present
+	at java.base/java.util.Optional.get(Optional.java:143) ~[na:na]
+	at kg.attractor.headhunter.service.impl.UserServiceImpl.getUsersByName(UserServiceImpl.java:45) ~[classes/:na]
+	at kg.attractor.headhunter.controller.UserController.getUserByName(UserController.java:39) ~[classes/:na]
+	at jdk.internal.reflect.GeneratedMethodAccessor68.invoke(Unknown Source) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:150) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:887) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:798) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1081) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:974) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564) ~[tomcat-embed-core-10.1.19.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.19.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at java.base/java.lang.Thread.run(Thread.java:833) ~[na:na]
+
+2024-03-20T14:43:11.649+06:00 ERROR 13344 --- [http-nio-8080-exec-2] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: java.util.NoSuchElementException: No value present] with root cause
+
+java.util.NoSuchElementException: No value present
+	at java.base/java.util.Optional.get(Optional.java:143) ~[na:na]
+	at kg.attractor.headhunter.service.impl.UserServiceImpl.getUsersByName(UserServiceImpl.java:45) ~[classes/:na]
+	at kg.attractor.headhunter.controller.UserController.getUserByName(UserController.java:39) ~[classes/:na]
+	at jdk.internal.reflect.GeneratedMethodAccessor68.invoke(Unknown Source) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:150) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:887) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:798) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1081) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:974) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564) ~[tomcat-embed-core-10.1.19.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.0.17.jar:6.0.17]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.19.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.17.jar:6.0.17]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.19.jar:10.1.19]
+	at java.base/java.lang.Thread.run(Thread.java:833) ~[na:na]
+
+2024-03-20T14:54:58.555+06:00  INFO 13344 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-03-20T14:54:58.558+06:00  INFO 13344 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-03-20T14:55:03.456+06:00  INFO 13503 --- [main] k.a.headhunter.HeadHunterApplication     : Starting HeadHunterApplication using Java 17.0.8 with PID 13503 (/Users/kenshi/Desktop/homework50/HeadHunter/target/classes started by kenshi in /Users/kenshi/Desktop/homework50/HeadHunter)
+2024-03-20T14:55:03.457+06:00  INFO 13503 --- [main] k.a.headhunter.HeadHunterApplication     : No active profile set, falling back to 1 default profile: "default"
+2024-03-20T14:55:04.047+06:00  INFO 13503 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-03-20T14:55:04.052+06:00  INFO 13503 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-03-20T14:55:04.052+06:00  INFO 13503 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2024-03-20T14:55:04.100+06:00  INFO 13503 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-03-20T14:55:04.100+06:00  INFO 13503 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 615 ms
+2024-03-20T14:55:04.156+06:00  INFO 13503 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-03-20T14:55:04.301+06:00  INFO 13503 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn1: url=jdbc:h2:./db/headHunter user=ROOT
+2024-03-20T14:55:04.302+06:00  INFO 13503 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-03-20T14:55:04.326+06:00  INFO 13503 --- [main] liquibase.database                       : Set default schema name to PUBLIC
+2024-03-20T14:55:04.442+06:00  INFO 13503 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/001_create_tables.yaml
+2024-03-20T14:55:04.481+06:00  INFO 13503 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/002_insert_information.sql
+2024-03-20T14:55:04.486+06:00  INFO 13503 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/003_editiing_table.yaml
+2024-03-20T14:55:04.491+06:00  INFO 13503 --- [main] liquibase.changelog                      : Reading resource: db/changelog/initial/004_editing_table.yaml
+2024-03-20T14:55:04.640+06:00  INFO 13503 --- [main] liquibase.changelog                      : Reading from PUBLIC.DATABASECHANGELOG
+2024-03-20T14:55:04.670+06:00  INFO 13503 --- [main] liquibase.ui                             : Database is up to date, no changesets to execute
+2024-03-20T14:55:04.671+06:00  INFO 13503 --- [main] liquibase.changelog                      : Reading from PUBLIC.DATABASECHANGELOG
+2024-03-20T14:55:04.675+06:00  INFO 13503 --- [main] liquibase.util                           : UPDATE SUMMARY
+2024-03-20T14:55:04.675+06:00  INFO 13503 --- [main] liquibase.util                           : Run:                          0
+2024-03-20T14:55:04.675+06:00  INFO 13503 --- [main] liquibase.util                           : Previously run:              13
+2024-03-20T14:55:04.675+06:00  INFO 13503 --- [main] liquibase.util                           : Filtered out:                 0
+2024-03-20T14:55:04.675+06:00  INFO 13503 --- [main] liquibase.util                           : -------------------------------
+2024-03-20T14:55:04.675+06:00  INFO 13503 --- [main] liquibase.util                           : Total change sets:           13
+2024-03-20T14:55:04.676+06:00  INFO 13503 --- [main] liquibase.util                           : Update summary generated
+2024-03-20T14:55:04.684+06:00  INFO 13503 --- [main] liquibase.lockservice                    : Successfully released change log lock
+2024-03-20T14:55:04.684+06:00  INFO 13503 --- [main] liquibase.command                        : Command execution complete
+2024-03-20T14:55:04.979+06:00  INFO 13503 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2024-03-20T14:55:04.986+06:00  INFO 13503 --- [main] k.a.headhunter.HeadHunterApplication     : Started HeadHunterApplication in 1.823 seconds (process running for 2.354)
+2024-03-20T14:55:05.411+06:00  INFO 13503 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-03-20T14:55:05.411+06:00  INFO 13503 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-03-20T14:55:05.412+06:00  INFO 13503 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2024-03-20T14:56:19.352+06:00  WARN 13503 --- [http-nio-8080-exec-2] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'int'; For input string: ""]
+2024-03-20T15:50:34.555+06:00  WARN 13503 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m59s891ms).
+2024-03-20T17:03:47.640+06:00  WARN 13503 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=13m12s383ms).
+2024-03-20T18:58:38.024+06:00  WARN 13503 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h5m49s980ms).
+2024-03-20T20:24:30.961+06:00  WARN 13503 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h25m52s938ms).
+2024-03-20T21:42:22.849+06:00  WARN 13503 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h17m51s887ms).
+2024-03-20T22:02:08.033+06:00  WARN 13503 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=19m45s184ms).
+2024-03-20T22:02:20.409+06:00  INFO 13503 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-03-20T22:02:20.413+06:00  INFO 13503 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

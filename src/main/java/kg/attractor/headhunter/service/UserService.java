@@ -11,17 +11,18 @@ public interface UserService {
 
     UserDto getUserById(int id) throws UserNotFoundException;
 
-    List<UserDto> getUserByNameForEmployersAndApplicants(String name) throws UserNotFoundException;
+    List<UserDto> getUsersByName(String name, int UserId) throws UserNotFoundException;
+
+    List<UserDto> getUsersBySurname(String surname, int userId) throws UserNotFoundException;
 
     List<UserDto> getUserByPhoneNumber(String phoneNumber, int userId) throws UserNotFoundException;
+
 
     UserDto getUserByEmail(String email, int userId) throws UserNotFoundException;
 
     boolean doesUserExistByEmail(String email);
 
     void editUser(UserDto userDto);
-
-    void deleteUserById(int id);
 
     void addAvatar(int id, MultipartFile file) throws UserNotFoundException;
 

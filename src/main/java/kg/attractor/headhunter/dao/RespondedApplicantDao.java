@@ -8,40 +8,38 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
 public class RespondedApplicantDao {
     private final JdbcTemplate template;
 
-    public Optional<List<Vacancy>> getVacanciesForRespondedApplicantsByUserId(int userId) {
+    public List<Vacancy> getVacanciesForRespondedApplicantsByUserId(int userId) {
         String sql = """
-               
-                SELECT
-                   v.id,
-                   v.name,
-                   v.description,
-                   v.categoryId,
-                   v.salary,
-                   v.experienceFrom,
-                   v.experienceTo,
-                   v.authorId,
-                   v.createdDate,
-                   v.updateTime,
-                   v.isActive AS active
-               FROM respondedApplicants ra
-               JOIN resumes r ON ra.resumeId = r.id
-               JOIN vacancies v ON ra.vacancyId = v.id
-               WHERE r.userId = ?;
-                """;
-        List<Vacancy> vacancies = template.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), userId);
-        return vacancies.isEmpty() ? Optional.empty() : Optional.of(vacancies);
+                               
+                 SELECT
+                    v.id,
+                    v.name,
+                    v.description,
+                    v.categoryId,
+                    v.salary,
+                    v.experienceFrom,
+                    v.experienceTo,
+                    v.authorId,
+                    v.createdDate,
+                    v.updateTime,
+                    v.isActive AS active
+                FROM respondedApplicants ra
+                JOIN resumes r ON ra.resumeId = r.id
+                JOIN vacancies v ON ra.vacancyId = v.id
+                WHERE r.userId = ?;
+                 """;
+        return template.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), userId);
     }
 
-    public Optional<List<User>> getRespondedUsersForVacancies(int vacancyId) {
+    public List<User> getRespondedUsersForVacancies(int vacancyId) {
         String sql = """
-               
+                               
                  SELECT
                     u.id,
                     u.name,
@@ -58,7 +56,6 @@ public class RespondedApplicantDao {
                 WHERE ra.vacancyId = ?;
                  """;
 
-        List<User> users = template.query(sql, new BeanPropertyRowMapper<>(User.class), vacancyId);
-        return users.isEmpty() ? Optional.empty() : Optional.of(users);
+        return template.query(sql, new BeanPropertyRowMapper<>(User.class), vacancyId);
     }
 }

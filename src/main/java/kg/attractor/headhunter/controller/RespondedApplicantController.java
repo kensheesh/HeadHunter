@@ -35,7 +35,7 @@ public class RespondedApplicantController {
         try {
             List<UserDto> userDto = respondedApplicantService.getRespondedUsersForVacancies(vacancyId, userId);
             return ResponseEntity.ok(userDto);
-        } catch (UserNotFoundException e) {
+        } catch (UserNotFoundException | VacancyNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }

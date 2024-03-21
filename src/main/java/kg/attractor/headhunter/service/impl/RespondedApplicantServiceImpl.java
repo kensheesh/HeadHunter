@@ -37,7 +37,10 @@ public class RespondedApplicantServiceImpl implements RespondedApplicantService 
             }
         }
 
-        List<Vacancy> vacancies = respondedApplicantDao.getVacanciesForRespondedApplicantsByUserId(id).orElseThrow(() -> new VacancyNotFoundException("Can't find resume with this userId: " + id));
+        List<Vacancy> vacancies = respondedApplicantDao.getVacanciesForRespondedApplicantsByUserId(id);
+        if (vacancies.isEmpty()) {
+            throw new VacancyNotFoundException("Can't find vacancy with this id: " + id);
+        }
         List<VacancyDto> dtos = new ArrayList<>();
         vacancies.forEach(e -> dtos.add(VacancyDto.builder()
                 .id(e.getId())
@@ -56,7 +59,7 @@ public class RespondedApplicantServiceImpl implements RespondedApplicantService 
     }
 
     @Override
-    public List<UserDto> getRespondedUsersForVacancies(int vacancyId, int userId) throws UserNotFoundException {
+    public List<UserDto> getRespondedUsersForVacancies(int vacancyId, int userId) throws UserNotFoundException, VacancyNotFoundException {
         Optional<User> user = userDao.getUserById(userId);
 
         if (userId > userDao.getUsers().size() || userId < 1) {
@@ -69,7 +72,10 @@ public class RespondedApplicantServiceImpl implements RespondedApplicantService 
         }
 
 
-        List<User> users = respondedApplicantDao.getRespondedUsersForVacancies(vacancyId).orElseThrow(() -> new UserNotFoundException("Can't find user with this userId: "));
+        List<User> users = respondedApplicantDao.getRespondedUsersForVacancies(vacancyId);
+        if (users.isEmpty()) {
+            throw new VacancyNotFoundException("Can't find vacancy with this id: " + vacancyId);
+        }
         List<UserDto> dtos = new ArrayList<>();
         users.forEach(e -> dtos.add(UserDto.builder()
                 .id(e.getId())
