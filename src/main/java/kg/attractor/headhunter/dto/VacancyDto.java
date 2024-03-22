@@ -16,13 +16,14 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class VacancyDto {
+    private Integer id;
     @NotBlank
     private String name;
 
     @NotBlank
     private String description;
 
-    private CategoryDto categoryDto;
+    private Integer categoryId;
 
     @Positive
     private double salary;

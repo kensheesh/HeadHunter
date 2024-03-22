@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -57,40 +56,33 @@ public class ResumeDao {
     }
 
 
-    public List<Resume> getResumes() {
-        String sql = """
-                select * from resumes;
-                """;
-        return template.query(sql, new BeanPropertyRowMapper<>(Resume.class));
-    }
-
-    public List<Resume> getResumesByCategoryId(int categoryId) {
+    public List<Resume> getResumesByUserIdAndName(int userId, String name) {
         String sql = """
                 select * from resumes
-                where categoryId = ?;
+                where userId = ? and name = ?;
                 """;
-
-        return template.query(sql, new BeanPropertyRowMapper<>(Resume.class), categoryId);
+        return template.query(sql, new BeanPropertyRowMapper<>(Resume.class), userId, name);
     }
 
-    public List<Resume> getResumesByCategoryName(String categoryName) {
-        String sql = """
-                select r.* from resumes r
-                join categories c on r.categoryId = c.id
-                where c.name = ?;
-                """;
 
-        return template.query(sql, new BeanPropertyRowMapper<>(Resume.class), categoryName);
+
+
+    public List<Resume> getResumesByUserIdAndCategoryName(int userId, int categoryId) {
+
+        String sql = """
+            select * from resumes
+            where userId = ? and categoryId = ?;
+            """;
+        return template.query(sql, new BeanPropertyRowMapper<>(Resume.class), userId, categoryId);
     }
 
     public List<Resume> getResumesByTitle(String title) {
         String sql = """
-            select * from resumes
-            where name = ?;
-            """;
+                select * from resumes
+                where name = ?;
+                """;
         return template.query(sql, new BeanPropertyRowMapper<>(Resume.class), title);
     }
-
 
 
     public List<Resume> getActiveResumes() {
@@ -107,7 +99,8 @@ public class ResumeDao {
                 """;
         return template.query(sql, new BeanPropertyRowMapper<>(Resume.class), userId);
     }
-//
+
+    //
     public List<Resume> getResumesByUserId(int userId) {
         String sql = """
                 select * from resumes
@@ -116,7 +109,8 @@ public class ResumeDao {
 
         return template.query(sql, new BeanPropertyRowMapper<>(Resume.class), userId);
     }
-//
+
+    //
     public Optional<Resume> getResumeById(int id) {
         String sql = """
 

@@ -4,24 +4,16 @@ import kg.attractor.headhunter.dto.ResumeCreateDto;
 //import kg.attractor.headhunter.dto.ResumeDto;
 import kg.attractor.headhunter.dto.ResumeDto;
 import kg.attractor.headhunter.dto.ResumeEditDto;
+import kg.attractor.headhunter.dto.UserDto;
 import kg.attractor.headhunter.exception.*;
 
 import java.util.List;
 
 public interface ResumeService {
-    List<ResumeDto> getUsersAllResumes(int userId) throws UserNotFoundException, ResumeNotFoundException;
-
-//    List<ResumeDto> getResumesByTitle(String title, int userId) throws ResumeNotFoundException;
-//
-//    List<ResumeDto> getResumesByCategoryId(int categoryId) throws ResumeNotFoundException;
-//
-//    List<ResumeDto> getResumesByCategoryName(String categoryName, int userId) throws ResumeNotFoundException;
-//
-//    List<ResumeDto> getResumesByUserId(int userId) throws ResumeNotFoundException;
-//
-//    ResumeDto getResumeById(int id) throws ResumeNotFoundException;
-//
-//    List<ResumeDto> getActiveResumes();
+    List<ResumeDto> getUsersAllResumes(int userId);
+    List<ResumeDto> getUsersResumeByTitle(String name, int userId) throws UserNotFoundException, ResumeNotFoundException;
+    List<ResumeDto> getUsersResumesByCategoryName(String categoryName, int userId) throws UserNotFoundException, ResumeNotFoundException;
+    List<ResumeDto> getUsersActiveResumes(int userId) throws UserNotFoundException, ResumeNotFoundException;
 
     void createResume(ResumeCreateDto resumeCreateDto, int userId) throws UserNotFoundException,
             CategoryNotFoundException,
@@ -31,7 +23,6 @@ public interface ResumeService {
 
     void editResume(ResumeEditDto resumeDto, int userId) throws UserNotFoundException, ResumeNotFoundException;
 //
-//    void deleteResumeById(int id, int userId) throws UserNotFoundException;
-//
-//    List<ResumeDto> getActiveResumesByUserId(int userId) throws ResumeNotFoundException;
+    void deleteResumeById(int id, int userId) throws UserNotFoundException;
+    UserDto getUserById(int id) throws UserNotFoundException;
 }

@@ -6,7 +6,9 @@ import kg.attractor.headhunter.exception.*;
 import kg.attractor.headhunter.model.*;
 import kg.attractor.headhunter.service.ResumeService;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class ResumeServiceImpl implements ResumeService {
+    private final ModelMapper modelMapper;
     private final ResumeDao resumeDao;
     private final UserDao userDao;
     private final CategoryDao categoryDao;
@@ -28,15 +31,16 @@ public class ResumeServiceImpl implements ResumeService {
     private final ContactTypeDao contactTypeDao;
 
     @Override
-    public void createResume(ResumeCreateDto resumeDto, int userId) throws UserNotFoundException,
-            CategoryNotFoundException,
-            ResumeNotFoundException,
-            WorkExperienceNotFoundException,
-            EducationInfoNotFoundException {
-        Optional<User> user = userDao.getUserById(userId);
-        if (user.get().getAccountType().equals(AccountType.EMPLOYER)) {
-            throw new UserNotFoundException("You don't have access to add resume, because you are not applicant.");
+    @SneakyThrows
+    public void createResume(ResumeCreateDto resumeDto, int userId) {
+
+        System.out.println(resumeDto.getName());
+        if (isEmployer(userId)) {
+            log.error("User not found");
+            throw new UserNotFoundException("Cannot find user");
+
         }
+
         if (userId != userDao.getUserByEmail(resumeDto.getAuthorEmail()).get().getId()) {
             throw new UserNotFoundException("You don't have access to add resume for this user.");
         }
@@ -66,9 +70,9 @@ public class ResumeServiceImpl implements ResumeService {
             workExperienceInfo.setPosition(workExperienceInfoDto.getPosition());
             workExperienceInfo.setResponsibilities(workExperienceInfoDto.getResponsibilities());
 
-            if (workExperienceInfoDto.getYears() < 0) {
-                throw new WorkExperienceNotFoundException("Years of Work Experience cannot be negative");
-            }
+//            if (workExperienceInfoDto.getYears() < 0) {
+//                throw new WorkExperienceNotFoundException("Years of Work Experience cannot be negative");
+//            }
 
             workExperienceInfoDao.createWorkExperienceInfo(workExperienceInfo);
         }
@@ -103,14 +107,11 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public void editResume(ResumeEditDto resumeDto, int userId) throws UserNotFoundException, ResumeNotFoundException {
-        Optional<User> user = userDao.getUserById(userId);
-        // Какие еще проверки должны быть, я уже запутался в своем коде :(
-        if (user.get().getAccountType().equals(AccountType.EMPLOYER)) {
-            throw new UserNotFoundException("You don't have access to add resume, because you are not applicant.");
-        }
-        if (resumeDto.getSalary().compareTo(BigDecimal.valueOf(0)) < 0) {
-            throw new ResumeNotFoundException("Salary cannot be negative.");
+    @SneakyThrows
+    public void editResume(ResumeEditDto resumeDto, int userId) {
+        if (!isEmployer(userId)) {
+            log.error("User not found");
+            throw new UserNotFoundException("Cannot find user");
         }
 
         Resume resume = new Resume();
@@ -119,7 +120,6 @@ public class ResumeServiceImpl implements ResumeService {
         resume.setSalary(resumeDto.getSalary());
         resume.setIsActive(resumeDto.getIsActive());
         resumeDao.editResume(resume);
-
 
         for (int i = 0; i < resumeDto.getWorkExpInfos().size(); i++) {
 
@@ -146,38 +146,34 @@ public class ResumeServiceImpl implements ResumeService {
 
                 workExperienceInfoDao.editWorkExperienceInfo(workExperienceInfo);
             }
+            // Почти реализовал
         }
     }
 
     @Override
-    public void deleteResumeById(int id, int userId) throws UserNotFoundException {
-        Optional<User> user = userDao.getUserById(userId);
+    @SneakyThrows
+    public void deleteResumeById(int id, int userId) {
+        if (!isEmployer(userId)) {
+            log.error("User not found");
+            throw new UserNotFoundException("Cannot find user");
 
-        if (user.isPresent()) {
-            if (user.get().getAccountType().name().equals("EMPLOYER")) {
-                throw new UserNotFoundException("Don't have access");
-            }
         }
-
         resumeDao.deleteResumeById(id);
     }
 
-
     @Override
-    public List<ResumeDto> getUsersAllResumes(int userId) throws UserNotFoundException, ResumeNotFoundException {
-        Optional<User> userOptional = userDao.getUserById(userId);
-        if (userOptional.isEmpty()) {
-            throw new UserNotFoundException("Пользователь с ID " + userId + " не найден.");
+    @SneakyThrows
+    public List<ResumeDto> getUsersAllResumes(int userId) {
+        if (isEmployer(userId)) {
+            log.error("User not found");
+            throw new UserNotFoundException("Employers doesnt have resumes");
         }
 
+        User user = userDao.getUserById(userId).orElseThrow(() -> new UserNotFoundException("Cannot find user"));
         List<Resume> resumes = resumeDao.getResumesByUserId(userId);
-        if (resumes.isEmpty()) {
-            throw new ResumeNotFoundException("Резюме для пользователя с ID " + userId + " не найдены.");
-        }
 
         List<ResumeDto> resumeDtos = new ArrayList<>();
         for (Resume resume : resumes) {
-            System.out.println(resume.getName());
             List<WorkExperienceInfo> workExperiences = workExperienceInfoDao.getWorkExperienceInfoByResumeId(resume.getId());
             List<WorkExperienceInfoDto> workExperienceInfoDtos = workExperiences.stream()
                     .map(we -> new WorkExperienceInfoDto(we.getYears(), we.getCompanyName(), we.getPosition(), we.getResponsibilities()))
@@ -197,7 +193,7 @@ public class ResumeServiceImpl implements ResumeService {
                     .collect(Collectors.toList());
 
             ResumeDto resumeDto = ResumeDto.builder()
-                    .authorEmail(userOptional.get().getEmail())
+                    .authorEmail(user.getEmail())
                     .name(resume.getName())
                     .categoryName(categoryDao.getCategoryById(resume.getCategoryId()).getName())
                     .salary(resume.getSalary())
@@ -209,148 +205,90 @@ public class ResumeServiceImpl implements ResumeService {
 
             resumeDtos.add(resumeDto);
         }
-
         return resumeDtos;
     }
 
-
     @Override
-    public List<ResumeDto> getResumesByName(String name, int userId) throws ResumeNotFoundException {
-        List<Resume> resumes = resumeDao.getResumesByTitle(name);
-        if (resumes.isEmpty()) {
-            throw new ResumeNotFoundException("Can't find resumes with name: " + name);
-        }
+    public List<ResumeDto> getUsersResumeByTitle(String name, int userId) {
+        List<Resume> resumes = resumeDao.getResumesByUserIdAndName(userId, name);
 
-        return resumes.stream().map(resume -> {
-            Optional<User> user = userDao.getUserById(resume.getUserId());
-            return ResumeDto.builder()
-                    .authorEmail(user.get().getEmail())
-                    .name(resume.getName())
-                    .categoryName(categoryDao.getCategoryById(resume.getCategoryId()).getName())
-                    .salary(resume.getSalary())
-                    .isActive(resume.getIsActive())
-
-                    .build();
-        }).collect(Collectors.toList());
-    }
-
-
-
-    @Override
-    public List<ResumeDto> getResumesByCategoryId(int categoryId) throws ResumeNotFoundException {
-        List<Resume> resumes = resumeDao.getResumesByCategoryId(categoryId);
-        if (resumes.isEmpty() || categoryId == 0) {
-            throw new ResumeNotFoundException("Can't find resume with this category: " + categoryId);
-        }
-
-        return resumes.stream().map(resume -> ResumeDto.builder()
-                .id(resume.getId())
-                .userId(resume.getUserId())
-                .name(resume.getName())
-                .categoryId(resume.getCategoryId())
-                .salary(resume.getSalary())
-                .isActive(resume.isActive())
-                .createdTime(resume.getCreatedTime())
-                .updateTime(resume.getUpdateTime())
-                .build()).collect(Collectors.toList());
+        return resumes.stream()
+                .map(this::convertToResumeDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<ResumeDto> getResumesByCategoryName(String categoryName, int userId) throws ResumeNotFoundException {
-        Optional<User> user = userDao.getUserById(userId);
+    public List<ResumeDto> getUsersResumesByCategoryName(String categoryName, int userId) {
+        Integer categoryId = categoryDao.getCategoryByName(categoryName).getId();
+        List<Resume> resumes = resumeDao.getResumesByUserIdAndCategoryName(userId, categoryId);
 
-        if (user.isPresent()) {
-            if (user.get().getAccountType().name().equals("APPLICANT")) {
-                throw new ResumeNotFoundException("Don't have access");
-            }
-        }
-
-        List<Resume> resumes = resumeDao.getResumesByCategoryName(categoryName);
-        if (resumes.isEmpty()) {
-            throw new ResumeNotFoundException("Can't find resume with this category: " + categoryName);
-        }
-
-        return resumes.stream().map(resume -> ResumeDto.builder()
-                .id(resume.getId())
-                .userId(resume.getUserId())
-                .name(resume.getName())
-                .categoryId(resume.getCategoryId())
-                .salary(resume.getSalary())
-                .isActive(resume.isActive())
-                .createdTime(resume.getCreatedTime())
-                .updateTime(resume.getUpdateTime())
-                .build()).collect(Collectors.toList());
+        return resumes.stream()
+                .map(this::convertToResumeDto)
+                .collect(Collectors.toList());
     }
 
 
     @Override
-    public List<ResumeDto> getActiveResumes() {
-        List<Resume> resumes = resumeDao.getActiveResumes();
-        List<ResumeDto> dtos = new ArrayList<>();
-        resumes.forEach(e -> dtos.add(ResumeDto.builder()
-                .id(e.getId())
-                .userId(e.getUserId())
-                .name(e.getName())
-                .categoryId(e.getCategoryId())
-                .salary(e.getSalary())
-                .isActive(e.isActive())
-                .createdTime(e.getCreatedTime())
-                .updateTime(e.getUpdateTime())
-                .build()));
-        return dtos;
-    }
-
-    @Override
-    public List<ResumeDto> getActiveResumesByUserId(int userId) throws ResumeNotFoundException {
+    public List<ResumeDto> getUsersActiveResumes(int userId) {
         List<Resume> resumes = resumeDao.getActiveResumesByUserId(userId);
-        if (resumes.isEmpty() || userId == 0) {
-            throw new ResumeNotFoundException("Can't find resume with this userId: " + userId);
-        }
 
-        return resumes.stream().map(resume -> ResumeDto.builder()
-                .id(resume.getId())
-                .userId(resume.getUserId())
-                .name(resume.getName())
-                .categoryId(resume.getCategoryId())
-                .salary(resume.getSalary())
-                .isActive(resume.isActive())
-                .createdTime(resume.getCreatedTime())
-                .updateTime(resume.getUpdateTime())
-                .build()).collect(Collectors.toList());
+        return resumes.stream()
+                .map(this::convertToResumeDto)
+                .collect(Collectors.toList());
     }
 
+    private ResumeDto convertToResumeDto(Resume resume) {
+        Optional<User> user = userDao.getUserById(resume.getUserId());
 
-    @Override
-    public List<ResumeDto> getResumesByUserId(int userId) throws ResumeNotFoundException {
-        List<Resume> resumes = resumeDao.getResumesByUserId(userId);
-        if (resumes.isEmpty() || userId == 0) {
-            throw new ResumeNotFoundException("Can't find resume with this category: " + userId);
-        }
+        List<WorkExperienceInfo> workExperiences = workExperienceInfoDao.getWorkExperienceInfoByResumeId(resume.getId());
+        List<WorkExperienceInfoDto> workExperienceInfoDtos = workExperiences.stream()
+                .map(we -> new WorkExperienceInfoDto(we.getYears(), we.getCompanyName(), we.getPosition(), we.getResponsibilities()))
+                .collect(Collectors.toList());
 
-        return resumes.stream().map(resume -> ResumeDto.builder()
-                .id(resume.getId())
-                .userId(resume.getUserId())
-                .name(resume.getName())
-                .categoryId(resume.getCategoryId())
-                .salary(resume.getSalary())
-                .isActive(resume.isActive())
-                .createdTime(resume.getCreatedTime())
-                .updateTime(resume.getUpdateTime())
-                .build()).collect(Collectors.toList());
-    }
+        List<EducationInfo> educationInfos = educationInfoDao.getEducationInfoByResumeId(resume.getId());
+        List<EducationInfoDto> educationInfoDtos = educationInfos.stream()
+                .map(ei -> new EducationInfoDto(ei.getInstitution(), ei.getProgram(), ei.getStartDate(), ei.getEndDate(), ei.getDegree()))
+                .collect(Collectors.toList());
 
-    @Override
-    public ResumeDto getResumeById(int id) throws ResumeNotFoundException {
-        Resume resume = resumeDao.getResumeById(id).orElseThrow(() -> new ResumeNotFoundException("Can't find resume with id: " + id));
+        List<ContactInfo> contactInfos = contactInfoDao.getContactInfoByResumeId(resume.getId());
+        List<ContactInfoDto> contactInfoDtos = contactInfos.stream()
+                .map(ci -> new ContactInfoDto(contactTypeDao.getContactTypeById(ci.getContactTypeId()).getType(), ci.getContent()))
+                .collect(Collectors.toList());
+
+        Category category = categoryDao.getCategoryById(resume.getCategoryId());
+
         return ResumeDto.builder()
-                .id(resume.getId())
-                .userId(resume.getUserId())
+                .authorEmail(user.get().getEmail())
                 .name(resume.getName())
-                .categoryId(resume.getCategoryId())
+                .categoryName(category.getName())
                 .salary(resume.getSalary())
-                .isActive(resume.isActive())
-                .createdTime(resume.getCreatedTime())
-                .updateTime(resume.getUpdateTime())
+                .isActive(resume.getIsActive())
+                .workExpInfos(workExperienceInfoDtos)
+                .educationInfos(educationInfoDtos)
+                .contactInfos(contactInfoDtos)
                 .build();
+    }
+
+    @SneakyThrows
+    public boolean isEmployer(int id) {
+        boolean isEmployer = false;
+        Optional<User> optUser = userDao.getUserById(id);
+        if (optUser.isPresent()) {
+            UserDto dto = getUserById(id);
+            if (dto.getAccountType().name().equalsIgnoreCase(String.valueOf(AccountType.EMPLOYER))) {
+                isEmployer = true;
+                return isEmployer;
+            }
+        } else {
+            throw new UserNotFoundException("Cannot find user");
+        }
+        return isEmployer;
+    }
+
+
+    @Override
+    public UserDto getUserById(int id) {
+        Optional<User> user = userDao.getUserById(id);
+        return modelMapper.map(user, UserDto.class);
     }
 }
