@@ -1,9 +1,6 @@
 package kg.attractor.headhunter.dto;
 
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -19,6 +16,9 @@ public class ResumeCreateDto {
     private String authorEmail;
 
     @NotBlank
+    @NonNull
+    @NotEmpty
+    @Size(min = 5)
     private String name;
 
     @NotBlank
@@ -29,6 +29,8 @@ public class ResumeCreateDto {
 
     private List<WorkExperienceInfoDto> workExpInfos;
     private List<EducationInfoDto> educationInfos;
+
+    @NotEmpty(message = "Contact info list cannot be empty")
     private List<ContactInfoDto> contactInfos;
     private Boolean isActive;
 }

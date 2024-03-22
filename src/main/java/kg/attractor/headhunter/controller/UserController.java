@@ -1,5 +1,6 @@
 package kg.attractor.headhunter.controller;
 
+import jakarta.validation.Valid;
 import kg.attractor.headhunter.dto.UserDto;
 import kg.attractor.headhunter.exception.UserNotFoundException;
 import kg.attractor.headhunter.service.UserService;
@@ -12,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@RequestMapping("accounts")
+@RequestMapping("/accounts")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
@@ -23,7 +24,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getUserById(@PathVariable int id) {
+    public ResponseEntity<?> getUserById( @PathVariable int id) {
         try {
             UserDto user = userService.getUserById(id);
             return ResponseEntity.ok(user);
@@ -83,14 +84,14 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<?> createUser(@Valid @RequestBody UserDto userDto) {
         userService.createUser(userDto);
         return ResponseEntity.ok().build();
     }
 
 
     @PostMapping("/settings")
-    public ResponseEntity<?> editUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<?> editUser(@Valid @RequestBody UserDto userDto) {
         userService.editUser(userDto);
         return ResponseEntity.ok().build();
     }

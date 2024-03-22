@@ -55,7 +55,6 @@ public class ResumeDao {
         template.update(sql, resume.getName(), resume.getSalary(), resume.getIsActive(), Timestamp.valueOf(LocalDateTime.now()), resume.getId());
     }
 
-
     public List<Resume> getResumesByUserIdAndName(int userId, String name) {
         String sql = """
                 select * from resumes
@@ -64,32 +63,13 @@ public class ResumeDao {
         return template.query(sql, new BeanPropertyRowMapper<>(Resume.class), userId, name);
     }
 
-
-
-
     public List<Resume> getResumesByUserIdAndCategoryName(int userId, int categoryId) {
 
         String sql = """
-            select * from resumes
-            where userId = ? and categoryId = ?;
-            """;
-        return template.query(sql, new BeanPropertyRowMapper<>(Resume.class), userId, categoryId);
-    }
-
-    public List<Resume> getResumesByTitle(String title) {
-        String sql = """
                 select * from resumes
-                where name = ?;
+                where userId = ? and categoryId = ?;
                 """;
-        return template.query(sql, new BeanPropertyRowMapper<>(Resume.class), title);
-    }
-
-
-    public List<Resume> getActiveResumes() {
-        String sql = """
-                select * from resumes where isActive = true
-                """;
-        return template.query(sql, new BeanPropertyRowMapper<>(Resume.class));
+        return template.query(sql, new BeanPropertyRowMapper<>(Resume.class), userId, categoryId);
     }
 
     public List<Resume> getActiveResumesByUserId(int userId) {
@@ -110,13 +90,11 @@ public class ResumeDao {
         return template.query(sql, new BeanPropertyRowMapper<>(Resume.class), userId);
     }
 
-    //
     public Optional<Resume> getResumeById(int id) {
         String sql = """
-
-                    select * from resumes
+                select * from resumes
                 where id = ?;
-                """;
+                   """;
 
         return Optional.ofNullable(
                 DataAccessUtils.singleResult(

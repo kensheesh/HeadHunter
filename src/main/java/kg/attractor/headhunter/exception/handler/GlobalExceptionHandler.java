@@ -1,7 +1,6 @@
 package kg.attractor.headhunter.exception.handler;
 
-import kg.attractor.headhunter.exception.ErrorResponseBody;
-import kg.attractor.headhunter.exception.UserNotFoundException;
+import kg.attractor.headhunter.exception.*;
 import kg.attractor.headhunter.service.ErrorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +18,21 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ErrorResponseBody> userNotFoundException(UserNotFoundException exception) {
+        return new ResponseEntity<>(errorService.makeResponse(exception), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ResumeNotFoundException.class)
+    public ResponseEntity<ErrorResponseBody> resumeNotFoundException(ResumeNotFoundException exception) {
+        return new ResponseEntity<>(errorService.makeResponse(exception), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(CategoryNotFoundException.class)
+    public ResponseEntity<ErrorResponseBody> categoryNotFoundException(CategoryNotFoundException exception) {
+        return new ResponseEntity<>(errorService.makeResponse(exception), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(EducationInfoNotFoundException.class)
+    public ResponseEntity<ErrorResponseBody> educationInfoNotFoundException(EducationInfoNotFoundException exception) {
         return new ResponseEntity<>(errorService.makeResponse(exception), HttpStatus.NOT_FOUND);
     }
 }

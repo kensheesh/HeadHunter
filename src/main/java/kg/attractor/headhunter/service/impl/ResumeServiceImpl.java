@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.core.convert.ConverterNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -33,21 +34,13 @@ public class ResumeServiceImpl implements ResumeService {
     @Override
     @SneakyThrows
     public void createResume(ResumeCreateDto resumeDto, int userId) {
-
-        System.out.println(resumeDto.getName());
         if (isEmployer(userId)) {
             log.error("User not found");
-            throw new UserNotFoundException("Cannot find user");
+            throw new UserNotFoundException("Employer cannot create resume");
+        }
+        userDao.getUserByEmail(resumeDto.getAuthorEmail()).orElseThrow(() -> new UserNotFoundException("There isn't applicant with this email"));
+        Category category = categoryDao.getCategoryByName(resumeDto.getCategoryName()).orElseThrow(() -> new CategoryNotFoundException("There isn't category like this"));
 
-        }
-
-        if (userId != userDao.getUserByEmail(resumeDto.getAuthorEmail()).get().getId()) {
-            throw new UserNotFoundException("You don't have access to add resume for this user.");
-        }
-        Integer categoryId = categoryDao.getCategoryByName(resumeDto.getCategoryName()).getId();
-        if (categoryId == null) {
-            throw new CategoryNotFoundException("There isn't category like this " + resumeDto.getCategoryName());
-        }
         if (resumeDto.getSalary().compareTo(BigDecimal.valueOf(0)) < 0) {
             throw new ResumeNotFoundException("Salary cannot be negative.");
         }
@@ -55,7 +48,7 @@ public class ResumeServiceImpl implements ResumeService {
         Resume resume = new Resume();
         resume.setUserId(userId);
         resume.setName(resumeDto.getName());
-        resume.setCategoryId(categoryDao.getCategoryByName(resumeDto.getCategoryName()).getId());
+        resume.setCategoryId(category.getId());
         resume.setSalary(resumeDto.getSalary());
         resume.setIsActive(resumeDto.getIsActive());
         Integer resumeId = resumeDao.createResumeAndReturnId(resume);
@@ -69,10 +62,6 @@ public class ResumeServiceImpl implements ResumeService {
             workExperienceInfo.setCompanyName(workExperienceInfoDto.getCompanyName());
             workExperienceInfo.setPosition(workExperienceInfoDto.getPosition());
             workExperienceInfo.setResponsibilities(workExperienceInfoDto.getResponsibilities());
-
-//            if (workExperienceInfoDto.getYears() < 0) {
-//                throw new WorkExperienceNotFoundException("Years of Work Experience cannot be negative");
-//            }
 
             workExperienceInfoDao.createWorkExperienceInfo(workExperienceInfo);
         }
@@ -219,7 +208,7 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     public List<ResumeDto> getUsersResumesByCategoryName(String categoryName, int userId) {
-        Integer categoryId = categoryDao.getCategoryByName(categoryName).getId();
+        Integer categoryId = categoryDao.getCategoryByName(categoryName).get().getId();
         List<Resume> resumes = resumeDao.getResumesByUserIdAndCategoryName(userId, categoryId);
 
         return resumes.stream()
@@ -280,7 +269,7 @@ public class ResumeServiceImpl implements ResumeService {
                 return isEmployer;
             }
         } else {
-            throw new UserNotFoundException("Cannot find user");
+            throw new UserNotFoundException("Employer cannot create resume");
         }
         return isEmployer;
     }
