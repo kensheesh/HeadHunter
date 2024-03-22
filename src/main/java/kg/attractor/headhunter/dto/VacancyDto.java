@@ -12,10 +12,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class VacancyDto {
-    private int id;
     private String name;
     private String description;
-    private int categoryId;
+    private CategoryDto categoryDto;
     private double salary;
     private int experienceFrom;
     private int experienceTo;

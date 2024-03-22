@@ -184,12 +184,12 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: userId
+                  name: authorId
                   type: int
                   constraints:
                     nullable: false
               - column:
-                  name: name
+                  name: title
                   type: varchar(255)
                   constraints:
                     nullable: false

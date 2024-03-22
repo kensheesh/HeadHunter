@@ -3,25 +3,18 @@ package kg.attractor.headhunter.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 public class Resume {
-    private int id;
-    private int UserId;
-    private String name;
-    private int categoryId;
-    private int salary;
-    private boolean isActive;
+    private Integer id;
+    private Integer AuthorId;
+    private String title;
+    private Integer categoryId;
+    private BigDecimal salary;
+    private Boolean isActive;
     private LocalDateTime createdTime;
     private LocalDateTime updateTime;
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
-    }
 }

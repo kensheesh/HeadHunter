@@ -1,31 +1,34 @@
 package kg.attractor.headhunter.service;
 
-import kg.attractor.headhunter.dto.ResumeDto;
-import kg.attractor.headhunter.exception.ResumeNotFoundException;
-import kg.attractor.headhunter.exception.UserNotFoundException;
+import kg.attractor.headhunter.dto.ResumeCreateDto;
+//import kg.attractor.headhunter.dto.ResumeDto;
+import kg.attractor.headhunter.exception.*;
 
 import java.util.List;
 
 public interface ResumeService {
-    List<ResumeDto> getResumes(int userId) throws UserNotFoundException;
+//    List<ResumeDto> getAllResumes(int userId) throws UserNotFoundException;
+//
+//    List<ResumeDto> getResumesByTitle(String title, int userId) throws ResumeNotFoundException;
+//
+//    List<ResumeDto> getResumesByCategoryId(int categoryId) throws ResumeNotFoundException;
+//
+//    List<ResumeDto> getResumesByCategoryName(String categoryName, int userId) throws ResumeNotFoundException;
+//
+//    List<ResumeDto> getResumesByUserId(int userId) throws ResumeNotFoundException;
+//
+//    ResumeDto getResumeById(int id) throws ResumeNotFoundException;
+//
+//    List<ResumeDto> getActiveResumes();
 
-    List<ResumeDto> getResumesByTitle(String title, int userId) throws ResumeNotFoundException;
-
-    List<ResumeDto> getResumesByCategoryId(int categoryId) throws ResumeNotFoundException;
-
-    List<ResumeDto> getResumesByCategoryName(String categoryName, int userId) throws ResumeNotFoundException;
-
-    List<ResumeDto> getResumesByUserId(int userId) throws ResumeNotFoundException;
-
-    ResumeDto getResumeById(int id) throws ResumeNotFoundException;
-
-    List<ResumeDto> getActiveResumes();
-
-    void createResume(ResumeDto resumeDto, int userId) throws UserNotFoundException;
-
-    void editResume(ResumeDto resumeDto, int userId) throws UserNotFoundException;
-
-    void deleteResumeById(int id, int userId) throws UserNotFoundException;
-
-    List<ResumeDto> getActiveResumesByUserId(int userId) throws ResumeNotFoundException;
+    void createResume(ResumeCreateDto resumeCreateDto, int userId) throws UserNotFoundException,
+            CategoryNotFoundException,
+            ResumeNotFoundException,
+            WorkExperienceNotFoundException,
+            EducationInfoNotFoundException;
+//    void editResume(ResumeDto resumeDto, int userId) throws UserNotFoundException;
+//
+//    void deleteResumeById(int id, int userId) throws UserNotFoundException;
+//
+//    List<ResumeDto> getActiveResumesByUserId(int userId) throws ResumeNotFoundException;
 }

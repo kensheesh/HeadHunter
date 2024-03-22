@@ -1,7 +1,12 @@
 package kg.attractor.headhunter.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Category {
-    private int id;
+    private Integer id;
     private String name;
     private Integer parentId;
 }

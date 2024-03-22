@@ -1,8 +1,13 @@
 package kg.attractor.headhunter.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class RespondedApplicant {
-    private int id;
-    private int resumeId;
-    private int vacancyId;
+    private Integer id;
+    private Integer resumeId;
+    private Integer vacancyId;
     private boolean confirmation;
 }

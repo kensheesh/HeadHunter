@@ -1,10 +1,15 @@
 package kg.attractor.headhunter.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDate;
 
+@Getter
+@Setter
 public class EducationInfo {
-    private int id;
-    private int resumeId;
+    private Integer id;
+    private Integer resumeId;
     private String institution;
     private String program;
     private LocalDate startDate;
