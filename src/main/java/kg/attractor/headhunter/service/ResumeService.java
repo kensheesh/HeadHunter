@@ -2,13 +2,15 @@ package kg.attractor.headhunter.service;
 
 import kg.attractor.headhunter.dto.ResumeCreateDto;
 //import kg.attractor.headhunter.dto.ResumeDto;
+import kg.attractor.headhunter.dto.ResumeDto;
+import kg.attractor.headhunter.dto.ResumeEditDto;
 import kg.attractor.headhunter.exception.*;
 
 import java.util.List;
 
 public interface ResumeService {
-//    List<ResumeDto> getAllResumes(int userId) throws UserNotFoundException;
-//
+    List<ResumeDto> getUsersAllResumes(int userId) throws UserNotFoundException, ResumeNotFoundException;
+
 //    List<ResumeDto> getResumesByTitle(String title, int userId) throws ResumeNotFoundException;
 //
 //    List<ResumeDto> getResumesByCategoryId(int categoryId) throws ResumeNotFoundException;
@@ -26,7 +28,8 @@ public interface ResumeService {
             ResumeNotFoundException,
             WorkExperienceNotFoundException,
             EducationInfoNotFoundException;
-//    void editResume(ResumeDto resumeDto, int userId) throws UserNotFoundException;
+
+    void editResume(ResumeEditDto resumeDto, int userId) throws UserNotFoundException, ResumeNotFoundException;
 //
 //    void deleteResumeById(int id, int userId) throws UserNotFoundException;
 //

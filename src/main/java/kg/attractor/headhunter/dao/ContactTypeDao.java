@@ -20,4 +20,12 @@ public class ContactTypeDao {
                 """;
         return template.queryForObject(sql, new BeanPropertyRowMapper<>(ContactType.class), name);
     }
+
+    public ContactType getContactTypeById(int id) {
+        String sql = """
+                select * from contactTypes
+                where id = ?;
+                """;
+        return template.queryForObject(sql, new BeanPropertyRowMapper<>(ContactType.class), id);
+    }
 }

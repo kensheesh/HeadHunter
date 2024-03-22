@@ -37,20 +37,22 @@ public class ResumeController {
         try {
             resumeService.editResume(resumeDto, userId);
             return ResponseEntity.ok().build();
-        } catch (UserNotFoundException e) {
+        } catch (UserNotFoundException | ResumeNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
 //
-//    @GetMapping
-//    public ResponseEntity<?> getAllResumes(@RequestParam int userId) {
-//        try {
-//            return ResponseEntity.ok(resumeService.getAllResumes(userId));
-//        } catch (UserNotFoundException e) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-//        }
-//    }
+    @GetMapping
+    public ResponseEntity<?> getAllResumes(@RequestParam int userId) {
+        try {
+            return ResponseEntity.ok(resumeService.getUsersAllResumes(userId));
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (ResumeNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
 //
 //    @GetMapping("/{id}")
 //    public ResponseEntity<?> getResumeById(@PathVariable int id) {

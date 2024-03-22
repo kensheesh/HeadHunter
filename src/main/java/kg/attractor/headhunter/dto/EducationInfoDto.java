@@ -1,5 +1,7 @@
 package kg.attractor.headhunter.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PastOrPresent;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,9 +14,17 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EducationInfoDto {
+    @NotBlank
     private String institution;
+
+    @NotBlank
     private String program;
+
+    @PastOrPresent
     private LocalDate startDate;
+
+    @PastOrPresent
     private LocalDate endDate;
+
     private String degree;
 }

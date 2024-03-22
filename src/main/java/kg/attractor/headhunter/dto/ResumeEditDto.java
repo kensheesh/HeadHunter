@@ -1,5 +1,8 @@
 package kg.attractor.headhunter.dto;
 
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,11 +16,17 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResumeEditDto {
-    private String email;
-    private String title;
+    @Positive
+    private Integer id;
+
+    @NotBlank
+    private String name;
+
+    @DecimalMin("0.0")
     private BigDecimal salary;
+
     private List<WorkExperienceInfoEditDto> workExpInfos;
-    private List<EducationInfoDto> educationInfos;
-    private List<ContactInfoDto> contactInfos;
     private Boolean isActive;
+//    private List<EducationInfoDto> educationInfos;
+//    private List<ContactInfoDto> contactInfos;
 }

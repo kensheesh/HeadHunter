@@ -2,10 +2,13 @@ package kg.attractor.headhunter.dao;
 
 import kg.attractor.headhunter.model.EducationInfo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -26,4 +29,11 @@ public class EducationInfoDao {
                 .addValue("endDate", educationInfo.getEndDate())
                 .addValue("degree", educationInfo.getDegree()));
     }
+
+    // В классе EducationInfoDao
+    public List<EducationInfo> getEducationInfoByResumeId(int resumeId) {
+        String sql = "SELECT * FROM educationInfo WHERE resumeId = ?";
+        return template.query(sql, new BeanPropertyRowMapper<>(EducationInfo.class), resumeId);
+    }
+
 }

@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
 @Setter
 public class Resume {
     private Integer id;
-    private Integer AuthorId;
-    private String title;
+    private Integer userId;
+    private String name;
     private Integer categoryId;
     private BigDecimal salary;
     private Boolean isActive;

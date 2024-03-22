@@ -13,7 +13,7 @@ public class CategoryDao {
     private final JdbcTemplate template;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public Category getCategoryById(String name) {
+    public Category getCategoryByName(String name) {
         String sql = """
                 select * from categories
                 where name like ?
@@ -21,4 +21,11 @@ public class CategoryDao {
         return template.queryForObject(sql, new BeanPropertyRowMapper<>(Category.class), name);
     }
 
+    public Category getCategoryById(int id) {
+        String sql = """
+                select * from categories
+                where id like ?
+                """;
+        return template.queryForObject(sql, new BeanPropertyRowMapper<>(Category.class), id);
+    }
 }

@@ -2,10 +2,13 @@ package kg.attractor.headhunter.dao;
 
 import kg.attractor.headhunter.model.WorkExperienceInfo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -28,11 +31,18 @@ public class WorkExperienceInfoDao {
 
     public void editWorkExperienceInfo(WorkExperienceInfo workExperienceInfo) {
         String sql = """
-                update workExperience
+                update workExperienceInfo
                 set years = ?, companyName = ?, position = ?, responsibilities = ?
-                where resumeId = ?;
+                where id = ?;
                 """;
         template.update(sql, workExperienceInfo.getYears(), workExperienceInfo.getCompanyName(), workExperienceInfo.getPosition(),
                 workExperienceInfo.getResponsibilities(), workExperienceInfo.getResumeId());
     }
+
+    // В классе WorkExperienceInfoDao
+    public List<WorkExperienceInfo> getWorkExperienceInfoByResumeId(int resumeId) {
+        String sql = "SELECT * FROM workExperienceInfo WHERE resumeId = ?";
+        return template.query(sql, new BeanPropertyRowMapper<>(WorkExperienceInfo.class), resumeId);
+    }
+
 }
