@@ -1,18 +1,22 @@
 package kg.attractor.headhunter.service.impl;
 
 import kg.attractor.headhunter.dao.UserDao;
+import kg.attractor.headhunter.dto.UserCreateDto;
 import kg.attractor.headhunter.dto.UserDto;
+import kg.attractor.headhunter.dto.UserEditDto;
 import kg.attractor.headhunter.exception.UserNotFoundException;
+import kg.attractor.headhunter.model.AccountType;
 import kg.attractor.headhunter.model.User;
 import kg.attractor.headhunter.service.UserService;
-import kg.attractor.headhunter.util.FileUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,36 +25,77 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
     private final UserDao userDao;
     private final ModelMapper modelMapper;
-    private final FileUtil fileUtil;
 
     @Override
-    public List<UserDto> getUsers() {
-        List<User> users = userDao.getUsers();
+    @SneakyThrows
+    public List<UserDto> getAllApplicants() {
+        List<User> users = userDao.getAllApplicants();
+        if (users.isEmpty()) {
+            throw new UserNotFoundException("Cannot find any applicants");
+        }
+
         return users.stream()
                 .map(user -> modelMapper.map(user, UserDto.class))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public UserDto getUserById(int id) throws UserNotFoundException {
+    @SneakyThrows
+    public List<UserDto> getAllEmployers() {
+        List<User> users = userDao.getAllEmployers();
+        if (users.isEmpty()) {
+            throw new UserNotFoundException("Cannot find any employers");
+        }
+
+        return users.stream()
+                .map(user -> modelMapper.map(user, UserDto.class))
+                .collect(Collectors.toList());
+    }
+
+//    @Override
+//    @SneakyThrows
+//    public UserDto search(Integer id, String name, String surname, String phoneNumber, String email) {
+//        if (id != null) {
+//            User user = userDao.getUserById(id).orElseThrow(() -> new UserNotFoundException("Can't find user with id: " + id));
+//            return modelMapper.map(user, UserDto.class);
+//        } else if (name != null) {
+//            return ResponseEntity.ok(userService.getApplicantsBySurname(surname));
+//        } else if (email != null) {
+//            return ResponseEntity.ok(List.of(userService.getApplicantByEmail(email)));
+//        } else if (phoneNumber != null) {
+//            return ResponseEntity.ok(List.of(userService.getApplicantByPhoneNumber(phoneNumber)));
+//        }
+//        // Если никакие параметры не установлены или не соответствуют условиям выше, верните всех пользователей
+//        // Это может быть не лучшим решением с точки зрения производительности, нужно решить, как лучше обрабатывать такие случаи
+//        return ResponseEntity.ok(userService.getAllApplicants()); // Или другой подходящий метод
+//
+//    }
+
+    @Override
+    @SneakyThrows
+    public UserDto getUserById(Integer id) {
         User user = userDao.getUserById(id).orElseThrow(() -> new UserNotFoundException("Can't find user with id: " + id));
         return modelMapper.map(user, UserDto.class);
     }
 
     @Override
-    public List<UserDto> getUsersByName(String name, int userId) throws UserNotFoundException {
-        List<User> users = new ArrayList<>();
-        if (userDao.getUserById(userId).get().getAccountType().name().equals("EMPLOYER")) {
-            users = userDao.getApplicantsByName(name);
-        }
-        if (userDao.getUserById(userId).get().getAccountType().name().equals("APPLICANT")) {
-            users = userDao.getEmployersByName(name);
-        }
+    @SneakyThrows
+    public UserDto getUserByEmail(String email) {
+        User user = userDao.getUserByEmail(email).orElseThrow(() -> new UserNotFoundException("Can't find user with id: " + email));
+        return modelMapper.map(user, UserDto.class);
+    }
 
+
+    @Override
+    @SneakyThrows
+    public List<UserDto> getEmployersByName(String name) {
+        List<User> users = userDao.getEmployersByName(name);
         if (users.isEmpty()) {
-            throw new UserNotFoundException("Can't find user with name: " + name);
+            throw new UserNotFoundException("Cannot find any employers with name " + name);
         }
 
         return users.stream()
@@ -59,39 +104,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getUsersBySurname(String surname, int userId) throws UserNotFoundException {
-        List<User> users = userDao.getApplicantsBySurname(surname);
-        if (userId > userDao.getUsers().size() || userId < 1) {
-            throw new UserNotFoundException("Don't have access");
-        }
-
-        Optional<User> userForChecking = userDao.getUserById(userId);
-        if (userForChecking.isPresent()) {
-            if (userForChecking.get().getAccountType().name().equals("APPLICANT")) {
-                throw new UserNotFoundException("Don't have access");
-            }
-        }
-
-        return users.stream()
-                .map(user -> modelMapper.map(user, UserDto.class))
-                .collect(Collectors.toList());
-    }
-
-    public List<UserDto> getUserByPhoneNumber(String phoneNumber, int userId) throws UserNotFoundException {
-        if (userId > userDao.getUsers().size() || userId < 1) {
-            throw new UserNotFoundException("Don't have access");
-        }
-
-        Optional<User> userForChecking = userDao.getUserById(userId);
-        if (userForChecking.isPresent()) {
-            if (userForChecking.get().getAccountType().name().equals("APPLICANT")) {
-                throw new UserNotFoundException("Don't have access");
-            }
-        }
-
-        List<User> users = userDao.getUserByPhoneNumber(phoneNumber);
+    @SneakyThrows
+    public List<UserDto> getApplicantsByName(String name) {
+        List<User> users = userDao.getApplicantsByName(name);
         if (users.isEmpty()) {
-            throw new UserNotFoundException("Can't find user with phoneNumber:" + phoneNumber);
+            throw new UserNotFoundException("Cannot find any applicants with name " + name);
         }
 
         return users.stream()
@@ -99,64 +116,95 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
-    public UserDto getUserByEmail(String email, int userId) throws UserNotFoundException {
-        if (userId > userDao.getUsers().size() || userId < 1) {
-            throw new UserNotFoundException("Don't have access");
+    @Override
+    @SneakyThrows
+    public List<UserDto> getApplicantsBySurname(String surname) {
+        List<User> users = userDao.getApplicantsBySurname(surname);
+        if (users.isEmpty()) {
+            throw new UserNotFoundException("Cannot find any applicants with name " + surname);
         }
 
-        Optional<User> userForChecking = userDao.getUserById(userId);
-        if (userForChecking.isPresent()) {
-            if (userForChecking.get().getAccountType().name().equals("APPLICANT")) {
-                throw new UserNotFoundException("Don't have access");
-            }
-        }
+        return users.stream()
+                .map(user -> modelMapper.map(user, UserDto.class))
+                .collect(Collectors.toList());
+    }
 
-        User user = userDao.getUserByEmail(email).orElseThrow(() -> new UserNotFoundException("Can't find user with email:" + email));
+    @Override
+    @SneakyThrows
+    public UserDto getApplicantByEmail(String email) {
+        User user = userDao.getApplicantByEmail(email).orElseThrow(() -> new UserNotFoundException("Can't find applicant with email: " + email));
         return modelMapper.map(user, UserDto.class);
     }
 
     @Override
-    public boolean doesUserExistByEmail(String email) {
-        return userDao.doesUserExistByEmail(email);
+    @SneakyThrows
+    public UserDto getApplicantByPhoneNumber(String phoneNumber) {
+        User user = userDao.getApplicantByPhoneNumber(phoneNumber).orElseThrow(() -> new UserNotFoundException("Can't find applicant with phone number: " + phoneNumber));
+
+        return modelMapper.map(user, UserDto.class);
     }
 
     @Override
-    public void editUser(UserDto userDto) {
-        User user = new User();
-        user.setId(userDto.getId());
-        user.setName(userDto.getName());
-        user.setSurname(userDto.getSurname());
-        user.setAge(userDto.getAge());
-        user.setPassword(userDto.getPassword());
-        user.setAvatar(userDto.getAvatar());
+    @SneakyThrows
+    public void createUser(UserCreateDto userCreateDto, Authentication authentication) {
+        // Проверка существования пользователя по email
+        if (userDao.isExists(userCreateDto.getEmail())) {
+            throw new RuntimeException("User with email " + userCreateDto.getEmail() + " already exists");
+        }
 
-        userDao.editUser(user);
-    }
+        // Проверка существования пользователя по номеру телефона
+        userDao.getApplicantByPhoneNumber(userCreateDto.getPhoneNumber())
+                .ifPresent(user -> {
+                    throw new RuntimeException("User with phone number " + userCreateDto.getPhoneNumber() + " already exists");
+                });
 
-    @Override
-    public void createUser(UserDto userDto) {
-        log.info("Creating new user: {}", userDto.getName());
-        if (userDto.getAccountType().name().equals("EMPLOYER")) {
-            userDto.setSurname(null);
+        if (userCreateDto.getAccountType().equals(AccountType.APPLICANT) && userCreateDto.getSurname() == null) {
+            throw new UserNotFoundException("Applicant must have surname");
         }
 
         User user = new User();
-        user.setName(userDto.getName());
-        user.setSurname(userDto.getSurname());
-        user.setAge(userDto.getAge());
-        user.setEmail(userDto.getEmail());
-        user.setPassword(userDto.getPassword());
-        user.setPhoneNumber(userDto.getPhoneNumber());
-        user.setAvatar("base_avatar.jpg");
-        user.setAccountType(userDto.getAccountType());
+        user.setName(userCreateDto.getName());
+        user.setSurname(userCreateDto.getAccountType().equals(AccountType.APPLICANT) ? userCreateDto.getSurname() : null);
+        user.setEmail(userCreateDto.getEmail());
+        user.setPassword(userCreateDto.getPassword());
+        user.setPhoneNumber(userCreateDto.getPhoneNumber());
+        user.setAccountType(userCreateDto.getAccountType());
+
         userDao.createUser(user);
     }
 
     @Override
-    public void addAvatar(int id, MultipartFile file) throws UserNotFoundException {
-        User user = userDao.getUserById(id).orElseThrow(() -> new UserNotFoundException("Can't find user with id: " + id));
-        String filename = fileUtil.saveUploadedFile(file, "avatars");
-        user.setAvatar(filename);
-        userDao.addAvatar(user);
+    @SneakyThrows
+    public void editUser(UserEditDto userEditDto, Authentication authentication) {
+        User mayBeUser = getUserFromAuth(authentication.getPrincipal().toString());
+        userDao.getUserByEmail(mayBeUser.getEmail()).orElseThrow(() -> new UserNotFoundException("Unexpected problem with authentication"));
+
+        User user = userDao.getUserByEmail(mayBeUser.getEmail())
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        if (userEditDto.getName() != null && !userEditDto.getName().isBlank()) {
+            user.setName(userEditDto.getName());
+        } else if (userEditDto.getName() != null) {
+            throw new UserNotFoundException("Name cannot contain blanks");
+        }
+
+        user.setSurname(mayBeUser.getAccountType().equals(AccountType.APPLICANT) ? userEditDto.getSurname() : null);
+
+        if (userEditDto.getPassword() != null) {
+            user.setPassword(passwordEncoder.encode(userEditDto.getPassword()));
+        }
+
+        userDao.editUser(user);
     }
+
+
+
+    @SneakyThrows
+    public User getUserFromAuth(String auth) {
+        int x = auth.indexOf("=");
+        int y = auth.indexOf(",");
+        String email = auth.substring(x + 1, y);
+        return userDao.getUserByEmail(email).orElseThrow(() -> new UserNotFoundException("can't find with this email"));
+    }
+
 }

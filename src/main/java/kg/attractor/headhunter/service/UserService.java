@@ -1,30 +1,31 @@
 package kg.attractor.headhunter.service;
 
+import kg.attractor.headhunter.dto.UserCreateDto;
 import kg.attractor.headhunter.dto.UserDto;
-import kg.attractor.headhunter.exception.UserNotFoundException;
-import org.springframework.web.multipart.MultipartFile;
+import kg.attractor.headhunter.dto.UserEditDto;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
 public interface UserService {
-    List<UserDto> getUsers();
+    List<UserDto> getAllApplicants();
 
-    UserDto getUserById(int id) throws UserNotFoundException;
+    List<UserDto> getAllEmployers();
 
-    List<UserDto> getUsersByName(String name, int UserId) throws UserNotFoundException;
+    UserDto getUserById(Integer id);
+    UserDto getUserByEmail(String email);
 
-    List<UserDto> getUsersBySurname(String surname, int userId) throws UserNotFoundException;
+    List<UserDto> getEmployersByName(String name);
 
-    List<UserDto> getUserByPhoneNumber(String phoneNumber, int userId) throws UserNotFoundException;
+    List<UserDto> getApplicantsByName(String name);
 
+    List<UserDto> getApplicantsBySurname(String surname);
 
-    UserDto getUserByEmail(String email, int userId) throws UserNotFoundException;
+    UserDto getApplicantByEmail(String email);
 
-    boolean doesUserExistByEmail(String email);
+    UserDto getApplicantByPhoneNumber(String phoneNumber);
 
-    void editUser(UserDto userDto);
+    void createUser(UserCreateDto userCreateDto, Authentication authentication);
+    void editUser(UserEditDto userEditDto, Authentication authentication);
 
-    void addAvatar(int id, MultipartFile file) throws UserNotFoundException;
-
-    void createUser(UserDto userDto);
 }

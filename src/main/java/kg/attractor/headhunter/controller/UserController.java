@@ -1,14 +1,14 @@
 package kg.attractor.headhunter.controller;
 
 import jakarta.validation.Valid;
+import kg.attractor.headhunter.dto.UserCreateDto;
 import kg.attractor.headhunter.dto.UserDto;
-import kg.attractor.headhunter.exception.UserNotFoundException;
+import kg.attractor.headhunter.dto.UserEditDto;
 import kg.attractor.headhunter.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -18,93 +18,49 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping
-    public ResponseEntity<List<UserDto>> getUsers() {
-        return ResponseEntity.ok(userService.getUsers());
+    @GetMapping("/applicants")
+    public ResponseEntity<List<UserDto>> getAllApplicants() {
+        return ResponseEntity.ok(userService.getAllApplicants());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getUserById( @PathVariable int id) {
-        try {
-            UserDto user = userService.getUserById(id);
-            return ResponseEntity.ok(user);
-        } catch (UserNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    @GetMapping("/employers")
+    public ResponseEntity<List<UserDto>> getAllEmployers() {
+        return ResponseEntity.ok(userService.getAllEmployers());
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> search(@RequestParam(name = "id", required = false) Integer id,
+                                    @RequestParam(name = "employerName", required = false) String employerName,
+                                    @RequestParam(name = "applicantName", required = false) String applicantName,
+                                    @RequestParam(name = "applicantSurname", required = false) String applicantSurname,
+                                    @RequestParam(name = "phoneNumber", required = false) String phoneNumber,
+                                    @RequestParam(name = "email", required = false) String email) {
+        if (id != null) {
+            return ResponseEntity.ok(userService.getUserById(id));
+        } else if (employerName != null) {
+            return ResponseEntity.ok(userService.getEmployersByName(employerName));
+        } else if (applicantName != null) {
+            return ResponseEntity.ok(userService.getApplicantsByName(applicantName));
+        } else if (applicantSurname != null) {
+            return ResponseEntity.ok(userService.getApplicantsBySurname(applicantSurname));
+        } else if (phoneNumber != null) {
+            return ResponseEntity.ok(userService.getApplicantByPhoneNumber(phoneNumber));
+        } else if (email != null) {
+            return ResponseEntity.ok(userService.getApplicantByEmail(email));
+        } else {
+            return ResponseEntity.ok().body("Nullable input");
         }
     }
 
-    @GetMapping("/name/{name}")
-    public ResponseEntity<?> getUserByName(@PathVariable String name,
-                                           @RequestParam int userId) {
-        try {
-            List<UserDto> users = userService.getUsersByName(name, userId);
-            return ResponseEntity.ok(users);
-        } catch (UserNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+    @PostMapping()
+    public ResponseEntity<?> createUser(@Valid @RequestBody UserCreateDto user, Authentication authentication) {
+        userService.createUser(user, authentication);
+        return ResponseEntity.ok("User is created");
     }
 
-    @GetMapping("surname/{surname}")
-    public ResponseEntity<?> getUsersBySurname(@PathVariable String surname,
-                                               @RequestParam int userId) {
-        try {
-            List<UserDto> users = userService.getUsersBySurname(surname, userId);
-            return ResponseEntity.ok(users);
-        } catch (UserNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
-    }
-
-    @GetMapping("/phoneNumber/{phoneNumber}")
-    public ResponseEntity<?> getUserByPhoneNumber(@PathVariable String phoneNumber,
-                                                  @RequestParam int userId) {
-        try {
-            List<UserDto> users = userService.getUserByPhoneNumber(phoneNumber, userId);
-            return ResponseEntity.ok(users);
-        } catch (UserNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
-    }
-
-    @GetMapping("/email/{email}")
-    public ResponseEntity<?> getUserByEmail(@PathVariable String email,
-                                            @RequestParam int userId) {
-        try {
-            UserDto user = userService.getUserByEmail(email, userId);
-            return ResponseEntity.ok(user);
-        } catch (UserNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
-    }
-
-    @GetMapping("/exists/{email}")
-    public ResponseEntity<Boolean> checkUserExistenceByEmail(@PathVariable String email) {
-        boolean exists = userService.doesUserExistByEmail(email);
-        return ResponseEntity.ok(exists);
-    }
-
-    @PostMapping
-    public ResponseEntity<?> createUser(@Valid @RequestBody UserDto userDto) {
-        userService.createUser(userDto);
-        return ResponseEntity.ok().build();
-    }
-
-
-    @PostMapping("/settings")
-    public ResponseEntity<?> editUser(@Valid @RequestBody UserDto userDto) {
-        userService.editUser(userDto);
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/avatar/{id}")
-    public ResponseEntity<?> addAvatar(@PathVariable int id, @RequestParam("file") MultipartFile file) {
-        try {
-            userService.addAvatar(id, file);
-            return ResponseEntity.ok().build();
-        } catch (UserNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
+    @PutMapping
+    public ResponseEntity<?> editUser(@Valid @RequestBody UserEditDto user, Authentication authentication) {
+        userService.editUser(user, authentication);
+        return ResponseEntity.ok("User is edited");
     }
 }

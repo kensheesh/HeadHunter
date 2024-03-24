@@ -13,9 +13,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import javax.sql.DataSource;
+import javax.swing.text.html.HTML;
 
 @Configuration
 @EnableWebSecurity
@@ -23,6 +25,11 @@ import javax.sql.DataSource;
 public class SecurityConfig {
 
     private final DataSource dataSource;
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -55,11 +62,10 @@ public class SecurityConfig {
                 .logout(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.GET, "/accounts/employers").fullyAuthenticated()
+                        .requestMatchers(HttpMethod.POST , "/accounts").fullyAuthenticated()
+//                        .requestMatchers(HttpMethod.PUT, "/accounts").fullyAuthenticated()
                         .anyRequest().permitAll())
         ;
-//                        .requestMatchers("/reviews/**").hasRole("USER")
-//                        .anyRequest().permitAll());
         return http.build();
     }
 }
