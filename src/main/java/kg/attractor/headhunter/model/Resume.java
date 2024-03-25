@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@NoArgsConstructor  // Для создания конструктора без параметров
-@AllArgsConstructor // Для создания конструктора со всеми параметрами
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class Resume {
     private Integer id;

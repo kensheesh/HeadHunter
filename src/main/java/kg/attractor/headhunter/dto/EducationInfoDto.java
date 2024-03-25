@@ -1,6 +1,7 @@
 package kg.attractor.headhunter.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,17 +15,20 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EducationInfoDto {
-    @NotBlank
+    @NotBlank(message = "Institution cannot be blank")
     private String institution;
 
-    @NotBlank
+    @NotBlank(message = "Program cannot be blank")
     private String program;
 
-    @PastOrPresent
+    @NotNull(message = "Start date cannot be null")
+    @PastOrPresent(message = "Start date must be in the past or present")
     private LocalDate startDate;
 
-    @PastOrPresent
+    @NotNull(message = "End date cannot be null")
+    @PastOrPresent(message = "End date must be in the past or present")
     private LocalDate endDate;
 
+    @NotBlank(message = "Degree cannot be blank")
     private String degree;
 }

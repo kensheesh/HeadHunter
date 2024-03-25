@@ -66,7 +66,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.PUT, "/accounts").fullyAuthenticated()
                         .requestMatchers(HttpMethod.POST, "/accounts/avatar").fullyAuthenticated()
-                        .requestMatchers(HttpMethod.GET, "/resumes").hasAuthority("EMPLOYER")
+
+                        .requestMatchers(HttpMethod.GET, "/resumes/applicant").hasAuthority("APPLICANT")
+                        .requestMatchers(HttpMethod.POST, "/resumes").hasAuthority("APPLICANT")
+                        .requestMatchers(HttpMethod.GET, "/resumes/**").hasAuthority("EMPLOYER")
+//                        .requestMatchers()
                         .anyRequest().permitAll())
                 .exceptionHandling(exception -> exception
                         .accessDeniedHandler(customAccessDeniedHandler()));

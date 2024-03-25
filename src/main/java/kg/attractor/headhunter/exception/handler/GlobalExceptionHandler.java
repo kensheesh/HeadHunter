@@ -1,25 +1,38 @@
 package kg.attractor.headhunter.exception.handler;
 
-import kg.attractor.headhunter.exception.*;
+import kg.attractor.headhunter.exception.CategoryNotFoundException;
+import kg.attractor.headhunter.exception.EducationInfoNotFoundException;
+import kg.attractor.headhunter.exception.ResumeNotFoundException;
+import kg.attractor.headhunter.exception.UserNotFoundException;
 import kg.attractor.headhunter.service.ErrorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.nio.file.AccessDeniedException;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
     private final ErrorService errorService;
+
+    private ResponseEntity<Map<String, List<String>>> createErrorResponse(HttpStatus status, String message) {
+        List<String> errors = Collections.singletonList(message);
+        Map<String, List<String>> errorResponse = new HashMap<>();
+        errorResponse.put("errors", errors);
+        return new ResponseEntity<>(errorResponse, new HttpHeaders(), status);
+    }
+
     private Map<String, List<String>> getErrorsMap(List<String> errors) {
         Map<String, List<String>> errorResponse = new HashMap<>();
         errorResponse.put("errors", errors);
@@ -34,33 +47,33 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<Map<String, List<String>>> handleAccessDeniedException(AccessDeniedException ex) {
-        List<String> errors = Collections.singletonList("Недостаточно прав для доступа к этому ресурсу");
-        return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.FORBIDDEN);
+        return createErrorResponse(HttpStatus.FORBIDDEN, "Недостаточно прав для доступа к этому ресурсу");
     }
+
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<Map<String, List<String>>> handleNotFoundException(UserNotFoundException ex) {
-        List<String> errors = Collections.singletonList(ex.getMessage());
-        return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.NOT_FOUND);
+        return createErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<Map<String, List<String>>> handleRuntimeException(RuntimeException ex) {
-        List<String> errors = Collections.singletonList(ex.getMessage());
-        return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.NOT_FOUND);
+        return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
 
     @ExceptionHandler(ResumeNotFoundException.class)
-    public ResponseEntity<ErrorResponseBody> resumeNotFoundException(ResumeNotFoundException exception) {
-        return new ResponseEntity<>(errorService.makeResponse(exception), HttpStatus.NOT_FOUND);
+    public ResponseEntity<Map<String, List<String>>> handleResumeNotFoundException(ResumeNotFoundException ex) {
+        return createErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
     @ExceptionHandler(CategoryNotFoundException.class)
-    public ResponseEntity<ErrorResponseBody> categoryNotFoundException(CategoryNotFoundException exception) {
-        return new ResponseEntity<>(errorService.makeResponse(exception), HttpStatus.NOT_FOUND);
+    public ResponseEntity<Map<String, List<String>>> handleCategoryNotFoundException(CategoryNotFoundException ex) {
+        return createErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
     @ExceptionHandler(EducationInfoNotFoundException.class)
-    public ResponseEntity<ErrorResponseBody> educationInfoNotFoundException(EducationInfoNotFoundException exception) {
-        return new ResponseEntity<>(errorService.makeResponse(exception), HttpStatus.NOT_FOUND);
+    public ResponseEntity<Map<String, List<String>>> handleEducationInfoNotFoundException(EducationInfoNotFoundException ex) {
+        return createErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage());
     }
+
+    // Добавьте другие обработчики исключений по аналогии
 }

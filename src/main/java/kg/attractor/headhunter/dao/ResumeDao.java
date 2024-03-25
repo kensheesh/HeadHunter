@@ -1,6 +1,7 @@
 package kg.attractor.headhunter.dao;
 
 import kg.attractor.headhunter.model.Resume;
+import kg.attractor.headhunter.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -31,6 +32,34 @@ public class ResumeDao {
         return template.query(sql, new BeanPropertyRowMapper<>(Resume.class));
     }
 
+    public List<Resume> getAllResumesByName(String name) {
+        String sql = """
+                select * from resumes
+                where name like ?
+                and isActive = true;
+                """;
+        return template.query(sql, new BeanPropertyRowMapper<>(Resume.class), name);
+    }
+
+    public List<Resume> getAllResumesByCategoryId(Integer categoryId) {
+        String sql = """
+                select * from resumes
+                where categoryId = ?
+                and isActive = true;
+                """;
+        return template.query(sql, new BeanPropertyRowMapper<>(Resume.class), categoryId);
+    }
+
+    public List<Resume> getAllResumesOfApplicant(Integer id) {
+        String sql = """
+                select * from resumes
+                where userId = ?;
+                """;
+        return template.query(sql, new BeanPropertyRowMapper<>(Resume.class), id);
+    }
+
+//------------------------------------------------------------------------------------------------------------------------------------------------------
+
     public Integer createResumeAndReturnId(Resume resume) {
         String sql = """
                 insert into resumes (name, userId, categoryId, salary, isActive, createdTime, updateTime)
@@ -52,6 +81,12 @@ public class ResumeDao {
 
         return Objects.requireNonNull(keyHolder.getKey()).intValue();
     }
+
+
+
+
+
+
 
     public void editResume(Resume resume) {
         String sql = """

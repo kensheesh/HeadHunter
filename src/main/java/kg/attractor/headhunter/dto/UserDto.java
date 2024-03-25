@@ -1,10 +1,11 @@
 package kg.attractor.headhunter.dto;
 
 
-import jakarta.validation.constraints.*;
 import kg.attractor.headhunter.model.AccountType;
-import lombok.*;
-import org.springframework.web.multipart.MultipartFile;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
