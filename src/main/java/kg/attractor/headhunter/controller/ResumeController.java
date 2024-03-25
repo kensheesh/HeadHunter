@@ -3,6 +3,7 @@ package kg.attractor.headhunter.controller;
 import jakarta.validation.Valid;
 import kg.attractor.headhunter.dto.ResumeCreateDto;
 import kg.attractor.headhunter.dto.ResumeDto;
+import kg.attractor.headhunter.dto.ResumeEditDto;
 import kg.attractor.headhunter.service.ResumeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +46,11 @@ public class ResumeController {
     public ResponseEntity<?> createResumeForApplicant(@Valid @RequestBody ResumeCreateDto resumeDto, Authentication authentication) {
         resumeService.createResumeForApplicant(resumeDto, authentication);
         return ResponseEntity.ok().build();
+    }
+
+    @PutMapping
+    public ResponseEntity<?> editResumeForApplicant(@Valid @RequestBody ResumeEditDto resumeEditDto, Authentication authentication) {
+        resumeService.editResumeForApplicant(resumeEditDto, authentication);
     }
 //
 //    @PutMapping

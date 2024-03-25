@@ -1,8 +1,7 @@
 package kg.attractor.headhunter.dto;
 
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,17 +15,28 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResumeEditDto {
-    @Positive
     private Integer id;
 
-    @NotBlank
+//    @NotBlank(message = "Name cannot be null or blank")
+    @Size(min = 2, max = 20)
     private String name;
 
-    @DecimalMin("0.0")
+//    @NotBlank(message = "Category cannot be null or blank")
+    private String categoryName;
+
+//    @NotNull(message = "Salary cannot be null")
+    @Min(0)
+    @Max(1000000)
     private BigDecimal salary;
 
+    @Valid
     private List<WorkExperienceInfoEditDto> workExpInfos;
+
+    @Valid
+    private List<EducationInfoEditDto> educationInfos;
+
+//    @NotEmpty(message = "Contact info list cannot be empty")
+    private List<ContactInfoDto> contactInfos;
+
     private Boolean isActive;
-//    private List<EducationInfoDto> educationInfos;
-//    private List<ContactInfoDto> contactInfos;
 }

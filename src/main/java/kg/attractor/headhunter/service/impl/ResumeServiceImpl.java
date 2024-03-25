@@ -3,7 +3,6 @@ package kg.attractor.headhunter.service.impl;
 import kg.attractor.headhunter.dao.*;
 import kg.attractor.headhunter.dto.*;
 import kg.attractor.headhunter.exception.CategoryNotFoundException;
-import kg.attractor.headhunter.exception.EducationInfoNotFoundException;
 import kg.attractor.headhunter.exception.ResumeNotFoundException;
 import kg.attractor.headhunter.exception.UserNotFoundException;
 import kg.attractor.headhunter.model.*;
@@ -16,8 +15,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -432,23 +433,23 @@ public class ResumeServiceImpl implements ResumeService {
         }
         //----------------------------------------------------------------------------------------------------------------------------------------------
         if (resumeDto.getEducationInfos() != null && !resumeDto.getEducationInfos().isEmpty()) {
-        for (int i = 0; i < resumeDto.getEducationInfos().size(); i++) {
-            EducationInfoDto educationInfoDto = resumeDto.getEducationInfos().get(i);
-            EducationInfo educationInfo = new EducationInfo();
-            if (educationInfoDto.getStartDate() != null && educationInfoDto.getEndDate() != null &&
-                    educationInfoDto.getEndDate().isBefore(educationInfoDto.getStartDate())) {
-                throw new IllegalArgumentException("End date cannot be before start date");
+            for (int i = 0; i < resumeDto.getEducationInfos().size(); i++) {
+                EducationInfoDto educationInfoDto = resumeDto.getEducationInfos().get(i);
+                EducationInfo educationInfo = new EducationInfo();
+                if (educationInfoDto.getStartDate() != null && educationInfoDto.getEndDate() != null &&
+                        educationInfoDto.getEndDate().isBefore(educationInfoDto.getStartDate())) {
+                    throw new ResumeNotFoundException("End date cannot be before start date");
+                }
+
+                educationInfo.setResumeId(resumeId);
+                educationInfo.setInstitution(educationInfoDto.getInstitution());
+                educationInfo.setProgram(educationInfoDto.getProgram());
+                educationInfo.setStartDate(educationInfoDto.getStartDate());
+                educationInfo.setEndDate(educationInfoDto.getEndDate());
+                educationInfo.setDegree(educationInfoDto.getDegree());
+
+                educationInfoDao.createEducationInfo(educationInfo);
             }
-
-            educationInfo.setResumeId(resumeId);
-            educationInfo.setInstitution(educationInfoDto.getInstitution());
-            educationInfo.setProgram(educationInfoDto.getProgram());
-            educationInfo.setStartDate(educationInfoDto.getStartDate());
-            educationInfo.setEndDate(educationInfoDto.getEndDate());
-            educationInfo.setDegree(educationInfoDto.getDegree());
-
-            educationInfoDao.createEducationInfo(educationInfo);
-        }
         }
         //----------------------------------------------------------------------------------------------------------------------------------------------
         for (int i = 0; i < resumeDto.getContactInfos().size(); i++) {
@@ -462,50 +463,86 @@ public class ResumeServiceImpl implements ResumeService {
             contactInfoDao.createContactInfo(contactInfo);
         }
     }
-//
-//    @Override
-//    @SneakyThrows
-//    public void editResume(ResumeEditDto resumeDto, int userId) {
-//        if (!isEmployer(userId)) {
-//            log.error("User not found");
-//            throw new UserNotFoundException("Cannot find user");
-//        }
-//
-//        Resume resume = new Resume();
-//        resume.setId(resumeDto.getId());
-//        resume.setName(resumeDto.getName());
-//        resume.setSalary(resumeDto.getSalary());
-//        resume.setIsActive(resumeDto.getIsActive());
-//        resumeDao.editResume(resume);
-//
-//        for (int i = 0; i < resumeDto.getWorkExpInfos().size(); i++) {
-//
-//            if (resumeDto.getWorkExpInfos().get(i).getId() == null) {
-//                WorkExperienceInfoEditDto workExperienceInfoEditDto = resumeDto.getWorkExpInfos().get(i);
-//                WorkExperienceInfo workExperienceInfo = new WorkExperienceInfo();
-//
-//                workExperienceInfo.setResumeId(resumeDto.getId());
-//                workExperienceInfo.setYears(workExperienceInfoEditDto.getYears());
-//                workExperienceInfo.setCompanyName(workExperienceInfoEditDto.getCompanyName());
-//                workExperienceInfo.setPosition(workExperienceInfoEditDto.getPosition());
-//                workExperienceInfo.setResponsibilities(workExperienceInfoEditDto.getResponsibilities());
-//
-//                workExperienceInfoDao.createWorkExperienceInfo(workExperienceInfo);
-//            } else {
-//                WorkExperienceInfoEditDto workExperienceInfoEditDto = resumeDto.getWorkExpInfos().get(i);
-//                WorkExperienceInfo workExperienceInfo = new WorkExperienceInfo();
-//
-//                workExperienceInfo.setResumeId(resume.getId());
-//                workExperienceInfo.setYears(workExperienceInfoEditDto.getYears());
-//                workExperienceInfo.setCompanyName(workExperienceInfoEditDto.getCompanyName());
-//                workExperienceInfo.setPosition(workExperienceInfoEditDto.getPosition());
-//                workExperienceInfo.setResponsibilities(workExperienceInfoEditDto.getResponsibilities());
-//
-//                workExperienceInfoDao.editWorkExperienceInfo(workExperienceInfo);
-//            }
-//            // Почти реализовал
-//        }
-//    }
+
+
+    @Override
+    @SneakyThrows
+    public void editResumeForApplicant(ResumeEditDto resumeDto, Authentication authentication) {
+        User user = getUserFromAuth(authentication.getPrincipal().toString());
+        if (resumeDao.isApplicantHasResumeById(user, resumeDto.getId())) {
+            throw new ResumeNotFoundException("Can't find your resume with this id");
+        }
+        Category category = categoryDao.getCategoryByName(resumeDto.getCategoryName()).orElseThrow(() -> new CategoryNotFoundException("Cannot find this category"));
+
+        Resume resume = new Resume();
+        resume.setId(resumeDto.getId());
+        resume.setName(resumeDto.getName());
+        resume.setCategoryId(category.getId());
+        resume.setSalary(resumeDto.getSalary());
+        resume.setIsActive(resumeDto.getIsActive());
+        resumeDao.editResume(resume);
+
+        if (resumeDto.getWorkExpInfos() != null && !resumeDto.getWorkExpInfos().isEmpty()) {
+            for (int i = 0; i < resumeDto.getWorkExpInfos().size(); i++) {
+
+                if (resumeDto.getWorkExpInfos().get(i).getId() == null || resumeDto.getWorkExpInfos().get(i).getId() == 0) {
+                    WorkExperienceInfoEditDto workExperienceInfoEditDto = resumeDto.getWorkExpInfos().get(i);
+                    WorkExperienceInfo workExperienceInfo = new WorkExperienceInfo();
+
+                    workExperienceInfo.setResumeId(resumeDto.getId());
+                    workExperienceInfo.setYears(workExperienceInfoEditDto.getYears());
+                    workExperienceInfo.setCompanyName(workExperienceInfoEditDto.getCompanyName());
+                    workExperienceInfo.setPosition(workExperienceInfoEditDto.getPosition());
+                    workExperienceInfo.setResponsibilities(workExperienceInfoEditDto.getResponsibilities());
+
+                    workExperienceInfoDao.createWorkExperienceInfo(workExperienceInfo);
+                } else {
+                    WorkExperienceInfoEditDto workExperienceInfoEditDto = resumeDto.getWorkExpInfos().get(i);
+                    WorkExperienceInfo workExperienceInfo = new WorkExperienceInfo();
+
+                    workExperienceInfo.setId(workExperienceInfoEditDto.getId());
+                    workExperienceInfo.setResumeId(resume.getId());
+                    workExperienceInfo.setYears(workExperienceInfoEditDto.getYears());
+                    workExperienceInfo.setCompanyName(workExperienceInfoEditDto.getCompanyName());
+                    workExperienceInfo.setPosition(workExperienceInfoEditDto.getPosition());
+                    workExperienceInfo.setResponsibilities(workExperienceInfoEditDto.getResponsibilities());
+
+                    workExperienceInfoDao.editWorkExperienceInfo(workExperienceInfo);
+                }
+            }
+        }
+
+        if (resumeDto.getEducationInfos() != null && !resumeDto.getEducationInfos().isEmpty()) {
+            for (int i = 0; i < resumeDto.getEducationInfos().size(); i++) {
+
+                if (resumeDto.getEducationInfos().get(i).getId() == null || resumeDto.getEducationInfos().get(i).getId() == 0) {
+                    EducationInfoEditDto educationInfoEditDto = resumeDto.getEducationInfos().get(i);
+                    EducationInfo educationInfo = new EducationInfo();
+
+                    educationInfo.setResumeId(resumeDto.getId());
+                    educationInfo.setInstitution(educationInfoEditDto.getInstitution());
+                    educationInfo.setProgram(educationInfoEditDto.getProgram());
+                    educationInfo.setStartDate(educationInfoEditDto.getStartDate());
+                    educationInfo.setEndDate(educationInfoEditDto.getEndDate());
+                    educationInfo.setDegree(educationInfoEditDto.getDegree());
+                    educationInfoDao.createEducationInfo(educationInfo);
+                } else {
+                    EducationInfoEditDto educationInfoEditDto = resumeDto.getEducationInfos().get(i);
+                    EducationInfo educationInfo = new EducationInfo();
+
+                    educationInfo.setId(educationInfoEditDto.getId());
+                    educationInfo.setResumeId(resume.getId());
+                    educationInfo.setInstitution(educationInfoEditDto.getInstitution());
+                    educationInfo.setProgram(educationInfoEditDto.getProgram());
+                    educationInfo.setStartDate(educationInfoEditDto.getStartDate());
+                    educationInfo.setEndDate(educationInfoEditDto.getEndDate());
+                    educationInfo.setDegree(educationInfoEditDto.getDegree());
+
+                    educationInfoDao.editEducationInfo(educationInfo);
+                }
+            }
+        }
+    }
 //
 //    @Override
 //    @SneakyThrows

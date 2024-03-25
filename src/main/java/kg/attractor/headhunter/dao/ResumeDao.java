@@ -83,11 +83,6 @@ public class ResumeDao {
     }
 
 
-
-
-
-
-
     public void editResume(Resume resume) {
         String sql = """
                 UPDATE resumes
@@ -97,6 +92,17 @@ public class ResumeDao {
 
         template.update(sql, resume.getName(), resume.getSalary(), resume.getIsActive(), Timestamp.valueOf(LocalDateTime.now()), resume.getId());
     }
+
+    public boolean isApplicantHasResumeById(User user, Integer resumeId) {
+        String sql = """
+                SELECT COUNT(*) FROM resumes
+                WHERE id = ? AND userId = ?
+                """;
+
+        Integer count = template.queryForObject(sql, Integer.class, resumeId, user.getId());
+        return count != null && count > 0;
+    }
+
 
     public List<Resume> getResumesByUserIdAndName(int userId, String name) {
         String sql = """

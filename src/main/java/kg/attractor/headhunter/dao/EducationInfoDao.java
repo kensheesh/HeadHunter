@@ -1,6 +1,7 @@
 package kg.attractor.headhunter.dao;
 
 import kg.attractor.headhunter.model.EducationInfo;
+import kg.attractor.headhunter.model.WorkExperienceInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -28,6 +29,16 @@ public class EducationInfoDao {
                 .addValue("startDate", educationInfo.getStartDate())
                 .addValue("endDate", educationInfo.getEndDate())
                 .addValue("degree", educationInfo.getDegree()));
+    }
+
+    public void editEducationInfo(EducationInfo educationInfo) {
+        String sql = """
+                update educationInfo
+                set institution = ?, program = ?, startDate = ?, endDate = ?, degree = ?
+                where id = ?;
+                """;
+        template.update(sql, educationInfo.getInstitution(), educationInfo.getProgram(), educationInfo.getStartDate(),
+                educationInfo.getEndDate(), educationInfo.getDegree(), educationInfo.getId());
     }
 
     public List<EducationInfo> getEducationInfoByResumeId(int resumeId) {

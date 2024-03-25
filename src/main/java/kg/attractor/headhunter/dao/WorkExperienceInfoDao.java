@@ -36,10 +36,11 @@ public class WorkExperienceInfoDao {
                 where id = ?;
                 """;
         template.update(sql, workExperienceInfo.getYears(), workExperienceInfo.getCompanyName(), workExperienceInfo.getPosition(),
-                workExperienceInfo.getResponsibilities(), workExperienceInfo.getResumeId());
+                workExperienceInfo.getResponsibilities(), workExperienceInfo.getId());
     }
 
-    // В классе WorkExperienceInfoDao
+
+
     public List<WorkExperienceInfo> getWorkExperienceInfoByResumeId(int resumeId) {
         String sql = """
                 select * from workExperienceInfo
