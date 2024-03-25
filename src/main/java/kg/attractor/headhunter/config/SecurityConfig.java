@@ -1,10 +1,12 @@
 package kg.attractor.headhunter.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,8 +15,12 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 
 import javax.sql.DataSource;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 @EnableWebSecurity
@@ -60,8 +66,24 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.PUT, "/accounts").fullyAuthenticated()
                         .requestMatchers(HttpMethod.POST, "/accounts/avatar").fullyAuthenticated()
+                        .requestMatchers(HttpMethod.GET, "/resumes").hasAuthority("EMPLOYER")
                         .anyRequest().permitAll())
+                .exceptionHandling(exception -> exception
+                        .accessDeniedHandler(customAccessDeniedHandler()));
         ;
         return http.build();
+    }
+
+    @Bean
+    public AccessDeniedHandler customAccessDeniedHandler() {
+        return (request, response, accessDeniedException) -> {
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            response.setContentType("application/json;charset=UTF-8");
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("error", "Недостаточно прав для доступа к этому ресурсу");
+
+            response.getWriter().write(new ObjectMapper().writeValueAsString(data));
+        };
     }
 }

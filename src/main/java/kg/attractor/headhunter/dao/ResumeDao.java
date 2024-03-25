@@ -23,6 +23,14 @@ public class ResumeDao {
     private final JdbcTemplate template;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+    public List<Resume> getAllActiveResumes() {
+        String sql = """
+                select * from resumes
+                where isActive = true;
+                """;
+        return template.query(sql, new BeanPropertyRowMapper<>(Resume.class));
+    }
+
     public Integer createResumeAndReturnId(Resume resume) {
         String sql = """
                 insert into resumes (name, userId, categoryId, salary, isActive, createdTime, updateTime)

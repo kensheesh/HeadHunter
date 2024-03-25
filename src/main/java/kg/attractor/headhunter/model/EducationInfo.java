@@ -1,12 +1,14 @@
 package kg.attractor.headhunter.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Getter
 @Setter
+@NoArgsConstructor  // Для создания конструктора без параметров
+@AllArgsConstructor // Для создания конструктора со всеми параметрами
+@Builder
 public class EducationInfo {
     private Integer id;
     private Integer resumeId;

@@ -1,12 +1,12 @@
 package kg.attractor.headhunter.model;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
 @Setter
-@ToString
+@NoArgsConstructor  // Для создания конструктора без параметров
+@AllArgsConstructor // Для создания конструктора со всеми параметрами
+@Builder
 public class ContactInfo {
     private Integer id;
     private Integer resumeId;

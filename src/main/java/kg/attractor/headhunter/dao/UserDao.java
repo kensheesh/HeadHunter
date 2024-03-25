@@ -188,7 +188,6 @@ public class UserDao {
                 user.getEmail());
     }
 
-
     public void addAvatar(User user) {
         String sql = """
                 UPDATE users

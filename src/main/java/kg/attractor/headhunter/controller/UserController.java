@@ -68,6 +68,6 @@ public class UserController {
     @PostMapping("/avatar")
     public ResponseEntity<?> addAvatar(@RequestParam(value = "file", required = true) MultipartFile file, Authentication authentication) {
         userService.addAvatar(file, authentication);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("Avatar is added");
     }
 }

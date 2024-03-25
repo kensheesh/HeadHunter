@@ -1,13 +1,15 @@
 package kg.attractor.headhunter.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@NoArgsConstructor  // Для создания конструктора без параметров
+@AllArgsConstructor // Для создания конструктора со всеми параметрами
+@Builder
 public class Resume {
     private Integer id;
     private Integer userId;

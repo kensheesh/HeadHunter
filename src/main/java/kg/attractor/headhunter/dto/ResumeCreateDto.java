@@ -4,7 +4,6 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -16,8 +15,6 @@ public class ResumeCreateDto {
     private String authorEmail;
 
     @NotBlank
-    @NonNull
-    @NotEmpty
     @Size(min = 5)
     private String name;
 

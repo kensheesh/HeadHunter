@@ -30,9 +30,11 @@ public class EducationInfoDao {
                 .addValue("degree", educationInfo.getDegree()));
     }
 
-    // В классе EducationInfoDao
     public List<EducationInfo> getEducationInfoByResumeId(int resumeId) {
-        String sql = "SELECT * FROM educationInfo WHERE resumeId = ?";
+        String sql = """
+                select * from educationInfo
+                where resumeId = ?;
+                """;
         return template.query(sql, new BeanPropertyRowMapper<>(EducationInfo.class), resumeId);
     }
 

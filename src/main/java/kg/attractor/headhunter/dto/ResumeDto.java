@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResumeDto {
-    private String authorEmail;
+    private UserResumePrintDto user;
     private String name;
     private String categoryName;
     private BigDecimal salary;

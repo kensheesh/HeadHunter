@@ -41,7 +41,10 @@ public class WorkExperienceInfoDao {
 
     // В классе WorkExperienceInfoDao
     public List<WorkExperienceInfo> getWorkExperienceInfoByResumeId(int resumeId) {
-        String sql = "SELECT * FROM workExperienceInfo WHERE resumeId = ?";
+        String sql = """
+                select * from workExperienceInfo
+                where resumeId = ?;
+                """;
         return template.query(sql, new BeanPropertyRowMapper<>(WorkExperienceInfo.class), resumeId);
     }
 

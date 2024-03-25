@@ -1,37 +1,123 @@
-//package kg.attractor.headhunter.service.impl;
-//
-//import kg.attractor.headhunter.dao.*;
-//import kg.attractor.headhunter.dto.*;
-//import kg.attractor.headhunter.exception.*;
-//import kg.attractor.headhunter.model.*;
-//import kg.attractor.headhunter.service.ResumeService;
-//import lombok.RequiredArgsConstructor;
-//import lombok.SneakyThrows;
-//import lombok.extern.slf4j.Slf4j;
-//import org.modelmapper.ModelMapper;
-//import org.springframework.core.convert.ConverterNotFoundException;
-//import org.springframework.stereotype.Service;
-//
-//import java.math.BigDecimal;
-//import java.util.ArrayList;
-//import java.util.List;
-//import java.util.Optional;
-//import java.util.stream.Collectors;
-//
-//@Service
-//@Slf4j
-//@RequiredArgsConstructor
-//public class ResumeServiceImpl implements ResumeService {
-//    private final ModelMapper modelMapper;
-//    private final ResumeDao resumeDao;
-//    private final UserDao userDao;
-//    private final CategoryDao categoryDao;
-//    private final WorkExperienceInfoDao workExperienceInfoDao;
-//    private final EducationInfoDao educationInfoDao;
-//    private final ContactInfoDao contactInfoDao;
-//    private final ContactTypeDao contactTypeDao;
-//
-//    @Override
+package kg.attractor.headhunter.service.impl;
+
+import kg.attractor.headhunter.dao.*;
+import kg.attractor.headhunter.dto.*;
+import kg.attractor.headhunter.exception.UserNotFoundException;
+import kg.attractor.headhunter.model.*;
+import kg.attractor.headhunter.service.ResumeService;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+@Service
+@Slf4j
+@RequiredArgsConstructor
+public class ResumeServiceImpl implements ResumeService {
+    private final ModelMapper modelMapper;
+    private final ResumeDao resumeDao;
+    private final UserDao userDao;
+    private final CategoryDao categoryDao;
+    private final WorkExperienceInfoDao workExperienceInfoDao;
+    private final EducationInfoDao educationInfoDao;
+    private final ContactInfoDao contactInfoDao;
+    private final ContactTypeDao contactTypeDao;
+
+
+    @Override
+    @SneakyThrows
+    public List<ResumeDto> getAllActiveResumes(Authentication authentication) {
+        List<Resume> resumes = resumeDao.getAllActiveResumes();
+
+        List<ResumeDto> resumesDto = new ArrayList<>();
+
+        for (int i = 0; i < resumes.size(); i++) {
+            User userEntity = userDao.getUserById(resumes.get(i).getUserId()).orElseThrow(() -> new UserNotFoundException("Cannot find user with this id"));
+
+            UserResumePrintDto userDto = UserResumePrintDto.builder()
+                    .name(userEntity.getName())
+                    .surname(userEntity.getSurname())
+                    .age(userEntity.getAge())
+                    .email(userEntity.getEmail())
+                    .phoneNumber(userEntity.getPhoneNumber())
+                    .avatar(userEntity.getAvatar())
+                    .build();
+
+            String name = resumes.get(i).getName();
+            String categoryName = categoryDao.getCategoryById(resumes.get(i).getCategoryId()).getName();
+            BigDecimal salary = resumes.get(i).getSalary();
+            Boolean isActive = resumes.get(i).getIsActive();
+
+            //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+            List<WorkExperienceInfo> workExpInfos = workExperienceInfoDao.getWorkExperienceInfoByResumeId(resumes.get(i).getId());
+            List<WorkExperienceInfoDto> workExperienceInfoDtoFormat = new ArrayList<>();
+
+            for (WorkExperienceInfo workExpInfo : workExpInfos) {
+                WorkExperienceInfoDto workExperienceInfoDto = WorkExperienceInfoDto.builder()
+                        .years(workExpInfo.getYears())
+                        .companyName(workExpInfo.getCompanyName())
+                        .position(workExpInfo.getPosition())
+                        .responsibilities(workExpInfo.getResponsibilities())
+                        .build();
+                workExperienceInfoDtoFormat.add(workExperienceInfoDto);
+            }
+
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+            List<EducationInfo> educationInfos = educationInfoDao.getEducationInfoByResumeId(resumes.get(i).getId());
+            List<EducationInfoDto> educationInfoDtoFormat = new ArrayList<>();
+
+            for (EducationInfo educationInfo : educationInfos) {
+                EducationInfoDto educationInfoDto = EducationInfoDto.builder()
+                        .institution(educationInfo.getInstitution())
+                        .program(educationInfo.getProgram())
+                        .startDate(educationInfo.getStartDate())
+                        .endDate(educationInfo.getEndDate())
+                        .degree(educationInfo.getDegree())
+                        .build();
+                educationInfoDtoFormat.add(educationInfoDto);
+            }
+
+            //----------------------------------------------------------------------------------------------------------------------------------------------
+
+            List<ContactInfo> contactInfos = contactInfoDao.getContactInfoByResumeId(resumes.get(i).getId());
+            List<ContactInfoDto> contactInfoDtoFormat = new ArrayList<>();
+            for (ContactInfo contactInfo : contactInfos) {
+                ContactType contactType = contactTypeDao.getContactTypeById(contactInfo.getContactTypeId());
+                ContactInfoDto contactInfoDto = ContactInfoDto.builder()
+                        .contactType(contactType.getType())
+                        .value(contactInfo.getContent())
+                        .build();
+                contactInfoDtoFormat.add(contactInfoDto);
+            }
+
+
+            ResumeDto resumeDto = ResumeDto.builder()
+                    .user(userDto)
+                    .name(name)
+                    .categoryName(categoryName)
+                    .salary(salary)
+                    .workExpInfos(workExperienceInfoDtoFormat)
+                    .educationInfos(educationInfoDtoFormat)
+                    .contactInfos(contactInfoDtoFormat)
+                    .isActive(isActive)
+                    .build();
+
+            resumesDto.add(resumeDto);
+        }
+        return resumesDto;
+    }
+
+    //    @Override
 //    @SneakyThrows
 //    public void createResume(ResumeCreateDto resumeDto, int userId) {
 //        if (isEmployer(userId)) {
@@ -280,4 +366,4 @@
 //        Optional<User> user = userDao.getUserById(id);
 //        return modelMapper.map(user, UserDto.class);
 //    }
-//}
+}
