@@ -8,6 +8,7 @@ import kg.attractor.headhunter.exception.UserNotFoundException;
 import kg.attractor.headhunter.model.AccountType;
 import kg.attractor.headhunter.model.User;
 import kg.attractor.headhunter.service.UserService;
+import kg.attractor.headhunter.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -16,9 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -29,6 +30,7 @@ public class UserServiceImpl implements UserService {
     private BCryptPasswordEncoder passwordEncoder;
     private final UserDao userDao;
     private final ModelMapper modelMapper;
+    private final FileUtil fileUtil;
 
     @Override
     @SneakyThrows
@@ -153,7 +155,7 @@ public class UserServiceImpl implements UserService {
         }
 
         // Проверка существования пользователя по номеру телефона
-        userDao.getApplicantByPhoneNumber(userCreateDto.getPhoneNumber())
+        userDao.getUserByPhoneNumber(userCreateDto.getPhoneNumber())
                 .ifPresent(user -> {
                     throw new RuntimeException("User with phone number " + userCreateDto.getPhoneNumber() + " already exists");
                 });
@@ -166,10 +168,10 @@ public class UserServiceImpl implements UserService {
         user.setName(userCreateDto.getName());
         user.setSurname(userCreateDto.getAccountType().equals(AccountType.APPLICANT) ? userCreateDto.getSurname() : null);
         user.setEmail(userCreateDto.getEmail());
-        user.setPassword(userCreateDto.getPassword());
+        user.setPassword(passwordEncoder.encode(userCreateDto.getPassword()));
         user.setPhoneNumber(userCreateDto.getPhoneNumber());
         user.setAccountType(userCreateDto.getAccountType());
-
+        user.setRoleId(userDao.getRoleIdByAccountType(userCreateDto.getAccountType()));
         userDao.createUser(user);
     }
 
@@ -178,7 +180,6 @@ public class UserServiceImpl implements UserService {
     public void editUser(UserEditDto userEditDto, Authentication authentication) {
         User mayBeUser = getUserFromAuth(authentication.getPrincipal().toString());
         userDao.getUserByEmail(mayBeUser.getEmail()).orElseThrow(() -> new UserNotFoundException("Unexpected problem with authentication"));
-
         User user = userDao.getUserByEmail(mayBeUser.getEmail())
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
 
@@ -187,9 +188,8 @@ public class UserServiceImpl implements UserService {
         } else if (userEditDto.getName() != null) {
             throw new UserNotFoundException("Name cannot contain blanks");
         }
-
         user.setSurname(mayBeUser.getAccountType().equals(AccountType.APPLICANT) ? userEditDto.getSurname() : null);
-
+        user.setAge(userEditDto.getAge());
         if (userEditDto.getPassword() != null) {
             user.setPassword(passwordEncoder.encode(userEditDto.getPassword()));
         }
@@ -197,6 +197,16 @@ public class UserServiceImpl implements UserService {
         userDao.editUser(user);
     }
 
+    @Override
+    @SneakyThrows
+    public void addAvatar(MultipartFile file, Authentication authentication) {
+        User user = getUserFromAuth(authentication.getPrincipal().toString());
+        userDao.getUserByEmail(user.getEmail()).orElseThrow(() -> new UserNotFoundException("Can't find user with this email"));
+
+        String filename = fileUtil.saveUploadedFile(file, "avatars");
+        user.setAvatar(filename);
+        userDao.addAvatar(user);
+    }
 
 
     @SneakyThrows
@@ -204,7 +214,7 @@ public class UserServiceImpl implements UserService {
         int x = auth.indexOf("=");
         int y = auth.indexOf(",");
         String email = auth.substring(x + 1, y);
-        return userDao.getUserByEmail(email).orElseThrow(() -> new UserNotFoundException("can't find with this email"));
+        return userDao.getUserByEmail(email).orElseThrow(() -> new UserNotFoundException("can't find user with this email"));
     }
 
 }

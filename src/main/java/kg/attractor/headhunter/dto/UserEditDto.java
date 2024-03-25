@@ -1,7 +1,9 @@
 package kg.attractor.headhunter.dto;
 
-import jakarta.validation.constraints.*;
-import kg.attractor.headhunter.model.AccountType;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,13 +15,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserEditDto {
 
-    @Size(min = 2, max = 20, message = "Name should contain more than 3 books")
+    @Size(min = 2, max = 20, message = "Name should contain more than 2 letters")
     private String name;
 
-    @Size(min = 2, max = 20, message = "Surname should contain more than 3 books")
+    @Size(min = 2, max = 20, message = "Surname should contain more than 2 letters")
     private String surname;
 
-    @Positive
+    @Min(18)
     @Max(100)
     private Integer age;
 

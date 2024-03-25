@@ -1,15 +1,14 @@
 package kg.attractor.headhunter.dao;
 
+import kg.attractor.headhunter.model.AccountType;
 import kg.attractor.headhunter.model.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -27,6 +26,27 @@ public class UserDao {
                 select * from users
                 """;
         return template.query(sql, USER_ROW_MAPPER);
+    }
+
+    public Optional<User> getUserByPhoneNumber(String phoneNumber) {
+        String sql = """
+                select * from users
+                where phoneNumber like ?;
+                """;
+
+        return Optional.ofNullable(
+                DataAccessUtils.singleResult(
+                        template.query(sql, USER_ROW_MAPPER, phoneNumber)
+                )
+        );
+    }
+
+    public Integer getRoleIdByAccountType(AccountType accountType) {
+        if (accountType.equals(AccountType.EMPLOYER)) {
+            return 1;
+        } else {
+            return 2;
+        }
     }
 
     public List<User> getAllEmployers() {
@@ -149,7 +169,7 @@ public class UserDao {
                 .addValue("avatar", "base_avatar.jpg")
                 .addValue("accountType", user.getAccountType().name())
                 .addValue("enabled", true)
-                .addValue("role_id", 1)
+                .addValue("role_id", user.getRoleId())
         );
     }
 
@@ -169,13 +189,12 @@ public class UserDao {
     }
 
 
-//
-//    public void addAvatar(User user) {
-//        String sql = """
-//                UPDATE users
-//                SET avatar = ?
-//                WHERE id = ?;
-//                """;
-//        template.update(sql, user.getAvatar(), user.getId());
-//    }
+    public void addAvatar(User user) {
+        String sql = """
+                UPDATE users
+                SET avatar = ?
+                WHERE email like ?;
+                """;
+        template.update(sql, user.getAvatar(), user.getEmail());
+    }
 }

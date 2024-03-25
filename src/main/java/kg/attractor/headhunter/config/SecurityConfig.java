@@ -1,6 +1,5 @@
 package kg.attractor.headhunter.config;
 
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -13,11 +12,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import javax.sql.DataSource;
-import javax.swing.text.html.HTML;
 
 @Configuration
 @EnableWebSecurity
@@ -51,7 +48,6 @@ public class SecurityConfig {
                 .passwordEncoder(new BCryptPasswordEncoder());
     }
 
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -62,8 +58,8 @@ public class SecurityConfig {
                 .logout(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST , "/accounts").fullyAuthenticated()
-//                        .requestMatchers(HttpMethod.PUT, "/accounts").fullyAuthenticated()
+                        .requestMatchers(HttpMethod.PUT, "/accounts").fullyAuthenticated()
+                        .requestMatchers(HttpMethod.POST, "/accounts/avatar").fullyAuthenticated()
                         .anyRequest().permitAll())
         ;
         return http.build();

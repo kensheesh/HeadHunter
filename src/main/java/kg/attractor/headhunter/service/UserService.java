@@ -4,6 +4,7 @@ import kg.attractor.headhunter.dto.UserCreateDto;
 import kg.attractor.headhunter.dto.UserDto;
 import kg.attractor.headhunter.dto.UserEditDto;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ public interface UserService {
     List<UserDto> getAllEmployers();
 
     UserDto getUserById(Integer id);
+
     UserDto getUserByEmail(String email);
 
     List<UserDto> getEmployersByName(String name);
@@ -26,6 +28,8 @@ public interface UserService {
     UserDto getApplicantByPhoneNumber(String phoneNumber);
 
     void createUser(UserCreateDto userCreateDto, Authentication authentication);
+
     void editUser(UserEditDto userEditDto, Authentication authentication);
+    void addAvatar(MultipartFile file, Authentication authentication);
 
 }

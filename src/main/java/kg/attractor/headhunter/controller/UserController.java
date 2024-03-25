@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -62,5 +63,11 @@ public class UserController {
     public ResponseEntity<?> editUser(@Valid @RequestBody UserEditDto user, Authentication authentication) {
         userService.editUser(user, authentication);
         return ResponseEntity.ok("User is edited");
+    }
+
+    @PostMapping("/avatar")
+    public ResponseEntity<?> addAvatar(@RequestParam(value = "file", required = true) MultipartFile file, Authentication authentication) {
+        userService.addAvatar(file, authentication);
+        return ResponseEntity.ok().build();
     }
 }
