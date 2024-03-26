@@ -18,7 +18,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
 import javax.sql.DataSource;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -75,6 +74,7 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.GET, "/vacancies/employer").hasAuthority("EMPLOYER")
                         .requestMatchers(HttpMethod.GET, "/vacancies/{vacancyId}/respondents").hasAuthority("EMPLOYER")
+                        .requestMatchers(HttpMethod.GET, "/vacancies//{id}/responded-vacancies").hasAuthority("EMPLOYER")
                         .requestMatchers(HttpMethod.POST, "/vacancies").hasAuthority("EMPLOYER")
                         .requestMatchers(HttpMethod.PUT, "/vacancies/**").hasAuthority("EMPLOYER")
                         .requestMatchers(HttpMethod.GET, "/vacancies/**").hasAuthority("APPLICANT")
