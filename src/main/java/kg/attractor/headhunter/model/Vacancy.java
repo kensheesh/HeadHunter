@@ -1,22 +1,25 @@
 package kg.attractor.headhunter.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Vacancy {
-    private int id;
+    private Integer id;
     private String name;
     private String description;
-    private int categoryId;
-    private double salary;
-    private int experienceFrom;
-    private int experienceTo;
-    private boolean isActive;
-    private int authorId;
+    private Integer categoryId;
+    private BigDecimal salary;
+    private Integer experienceFrom;
+    private Integer experienceTo;
+    private Boolean isActive;
+    private Integer authorId;
     private LocalDateTime createdDate;
     private LocalDateTime updateTime;
 }

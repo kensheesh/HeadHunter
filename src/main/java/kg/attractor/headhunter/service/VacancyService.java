@@ -1,36 +1,30 @@
-//package kg.attractor.headhunter.service;
-//
-//import kg.attractor.headhunter.dto.VacancyDto;
-//import kg.attractor.headhunter.exception.UserNotFoundException;
-//import kg.attractor.headhunter.exception.VacancyNotFoundException;
-//
-//import java.util.List;
-//
-//public interface VacancyService {
-//    List<VacancyDto> getVacancies(int userId) throws UserNotFoundException;
-//
-//    VacancyDto getVacancyById(int id) throws VacancyNotFoundException;
-//
-//    List<VacancyDto> getVacanciesByName(String name) throws VacancyNotFoundException;
-//
-//    List<VacancyDto> getVacanciesByCategoryId(int categoryId) throws VacancyNotFoundException;
-//
-//    List<VacancyDto> getVacanciesByCategoryName(String categoryName, int userId) throws VacancyNotFoundException;
-//
-//    List<VacancyDto> getVacanciesByUserId(int userId) throws VacancyNotFoundException;
-//
-//    List<VacancyDto> getActiveVacancies();
-//
-//    List<VacancyDto> getActiveVacanciesByUserId(int userId) throws VacancyNotFoundException;
-//
-//    List<VacancyDto> getVacanciesBySalary(boolean bool);
-//
-//    List<VacancyDto> getVacanciesByUpdateTime(boolean bool);
-//
-//    void createVacancy(VacancyDto vacancyDto, int userId) throws UserNotFoundException;
-//
-//    void editVacancy(VacancyDto vacancyDto, int userId) throws UserNotFoundException;
-//
-//    void deleteVacancyById(int id, int userId) throws UserNotFoundException;
-//
-//}
+package kg.attractor.headhunter.service;
+
+import kg.attractor.headhunter.dto.VacancyCreateDto;
+import kg.attractor.headhunter.dto.VacancyDto;
+import kg.attractor.headhunter.dto.VacancyEditDto;
+import org.springframework.security.core.Authentication;
+
+import java.util.List;
+
+public interface VacancyService {
+
+    List<VacancyDto> getAllActiveVacancies();
+
+    List<VacancyDto> getAllActiveVacanciesByName(String title);
+
+    List<VacancyDto> getAllActiveVacanciesByCategoryName(String categoriesName);
+
+    List<VacancyDto> getAllVacanciesOfEmployer(Authentication authentication);
+
+    void createVacancyForEmployer(VacancyCreateDto vacancyDto, Authentication authentication);
+
+    void editVacancy(VacancyEditDto vacancyDto, Authentication authentication, Integer id);
+
+    void deleteVacancyById(Integer vacancyId, Authentication authentication);
+
+    List<VacancyDto> getVacanciesBySalary(boolean ascending);
+
+    List<VacancyDto> getVacanciesByUpdateTime(boolean ascending);
+
+}

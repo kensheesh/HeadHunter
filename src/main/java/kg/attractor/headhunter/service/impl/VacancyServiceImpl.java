@@ -1,225 +1,283 @@
-//package kg.attractor.headhunter.service.impl;
-//
-//import kg.attractor.headhunter.dao.VacancyDao;
-//import kg.attractor.headhunter.dto.VacancyDto;
-//import kg.attractor.headhunter.exception.UserNotFoundException;
-//import kg.attractor.headhunter.exception.VacancyNotFoundException;
-//import kg.attractor.headhunter.model.User;
-//import kg.attractor.headhunter.model.Vacancy;
-//import kg.attractor.headhunter.service.VacancyService;
-//import lombok.RequiredArgsConstructor;
-//import lombok.extern.slf4j.Slf4j;
-//import org.springframework.stereotype.Service;
-//
-//import java.util.List;
-//import java.util.Optional;
-//import java.util.stream.Collectors;
-//
-//@Service
-//@Slf4j
-//@RequiredArgsConstructor
-//public class VacancyServiceImpl implements VacancyService {
-//    private final VacancyDao vacancyDao;
-//    private final UserDao userDao;
-//
-//    private VacancyDto convertToDto(Vacancy e) {
-//        return VacancyDto.builder()
-//                .id(e.getId())
-//                .name(e.getName())
-//                .description(e.getDescription())
-//                .categoryId(e.getCategoryId())
-//                .salary(e.getSalary())
-//                .experienceFrom(e.getExperienceFrom())
-//                .experienceTo(e.getExperienceTo())
-//                .isActive(e.isActive())
-//                .authorId(e.getAuthorId())
-//                .createdDate(e.getCreatedDate())
-//                .updateTime(e.getUpdateTime())
-//                .build();
-//    }
-//
-//    @Override
-//    public List<VacancyDto> getVacancies(int userId) throws UserNotFoundException {
-//        Optional<User> user = userDao.getUserById(userId);
-//
-//        if (userId > userDao.getUsers().size() || userId < 1) {
-//            log.error("UserNotFoundException for ID: {}", userId);
-//            throw new UserNotFoundException("Don't have access");
-//        }
-//        if (user.isPresent()) {
-//            if (user.get().getAccountType().name().equals("EMPLOYER")) {
-//                log.error("Access denied for employer with ID: {}", userId);
-//                throw new UserNotFoundException("Don't have access");
-//            }
-//        }
-//
-//        return vacancyDao.getVacancies().stream()
-//                .map(this::convertToDto)
-//                .collect(Collectors.toList());
-//    }
-//
-//    @Override
-//    public VacancyDto getVacancyById(int id) throws VacancyNotFoundException {
-//        log.info("Fetching vacancy by ID: {}", id);
-//        Vacancy vacancy = vacancyDao.getVacancyById(id)
-//                .orElseThrow(() -> {
-//                    log.error("VacancyNotFoundException for ID: {}", id);
-//                    return new VacancyNotFoundException("Can't find vacancy with id: " + id);
-//                });
-//        VacancyDto dto = convertToDto(vacancy);
-//        log.info("Retrieved vacancy with ID: {}", id);
-//        return dto;
-//    }
-//
-//    @Override
-//    public List<VacancyDto> getVacanciesByName(String name) throws VacancyNotFoundException {
-//        List<Vacancy> vacancies = vacancyDao.getVacancyByName(name);
-//        if (vacancies.isEmpty()) {
-//            throw new VacancyNotFoundException("Can't find vacancy with this name: " + name);
-//        }
-//        return vacancies.stream().map(this::convertToDto).collect(Collectors.toList());
-//    }
-//
-//    @Override
-//    public List<VacancyDto> getVacanciesByCategoryId(int categoryId) throws VacancyNotFoundException {
-//        List<Vacancy> vacancies = vacancyDao.getVacanciesByCategoryId(categoryId);
-//        if (vacancies.isEmpty() || categoryId == 0) {
-//            throw new VacancyNotFoundException("Can't find vacancy with this category: " + categoryId);
-//        }
-//        return vacancies.stream().map(this::convertToDto).collect(Collectors.toList());
-//    }
-//
-//    @Override
-//    public List<VacancyDto> getVacanciesByCategoryName(String categoryName, int userId) throws VacancyNotFoundException {
-//        Optional<User> user = userDao.getUserById(userId);
-//
-//        if (userId > userDao.getUsers().size() || userId < 1) {
-//            throw new VacancyNotFoundException("Don't have access");
-//        }
-//        if (user.isPresent()) {
-//            if (user.get().getAccountType().name().equals("EMPLOYER")) {
-//                throw new VacancyNotFoundException("Don't have access");
-//            }
-//        }
-//
-//        List<Vacancy> vacancies = vacancyDao.getVacanciesByCategoryName(categoryName);
-//        if (vacancies.isEmpty()) {
-//            throw new VacancyNotFoundException("Can't find vacancies for category: " + categoryName);
-//        }
-//        return vacancies.stream().map(this::convertToDto).collect(Collectors.toList());
-//    }
-//
-//    @Override
-//    public List<VacancyDto> getVacanciesByUserId(int userId) throws VacancyNotFoundException {
-//        List<Vacancy> vacancies = vacancyDao.getVacanciesByUserId(userId);
-//        if (vacancies.isEmpty() || userId == 0) {
-//            throw new VacancyNotFoundException("Can't find vacancy with this userId: " + userId);
-//        }
-//        return vacancies.stream().map(this::convertToDto).collect(Collectors.toList());
-//    }
-//
-//    @Override
-//    public List<VacancyDto> getActiveVacancies() {
-//        return vacancyDao.getActiveVacancies().stream()
-//                .map(this::convertToDto)
-//                .collect(Collectors.toList());
-//    }
-//
-//    @Override
-//    public List<VacancyDto> getActiveVacanciesByUserId(int userId) throws VacancyNotFoundException {
-//        List<Vacancy> vacancies = vacancyDao.getActiveVacanciesByUserId(userId);
-//        if (vacancies.isEmpty() || userId == 0) {
-//            throw new VacancyNotFoundException("Can't find active vacancy with this userId: " + userId);
-//        }
-//        return vacancies.stream().map(this::convertToDto).collect(Collectors.toList());
-//    }
-//
-//    @Override
-//    public List<VacancyDto> getVacanciesBySalary(boolean ascending) {
-//        List<Vacancy> vacancies = ascending
-//                ? vacancyDao.getVacanciesBySalaryAscending()
-//                : vacancyDao.getVacanciesBySalaryDescending();
-//        return vacancies.stream().map(this::convertToDto).collect(Collectors.toList());
-//    }
-//
-//    @Override
-//    public List<VacancyDto> getVacanciesByUpdateTime(boolean ascending) {
-//        List<Vacancy> vacancies = ascending
-//                ? vacancyDao.getVacanciesByUpdateTimeAscending()
-//                : vacancyDao.getVacanciesByUpdateTimeDescending();
-//        return vacancies.stream().map(this::convertToDto).collect(Collectors.toList());
-//    }
-//
-//    @Override
-//    public void createVacancy(VacancyDto vacancyDto, int userId) throws UserNotFoundException {
-//        log.info("Creating vacancy: {} by user ID: {}", vacancyDto.getName(), userId);
-//        Optional<User> user = userDao.getUserById(userId);
-//
-//        if (userId > userDao.getUsers().size() || userId < 1) {
-//            throw new UserNotFoundException("Don't have access");
-//        }
-//        if (user.isPresent()) {
-//            if (user.get().getAccountType().name().equals("APPLICANT")) {
-//                throw new UserNotFoundException("Don't have access");
-//            }
-//        }
-//
-//        Vacancy vacancy = new Vacancy();
-//        vacancy.setName(vacancyDto.getName());
-//        vacancy.setDescription(vacancyDto.getDescription());
-//        vacancy.setCategoryId(vacancyDto.getCategoryId());
-//        vacancy.setSalary(vacancyDto.getSalary());
-//        vacancy.setExperienceFrom(vacancyDto.getExperienceFrom());
-//        vacancy.setExperienceTo(vacancyDto.getExperienceTo());
-//        vacancy.setActive(vacancyDto.isActive());
-//        vacancy.setAuthorId(vacancyDto.getAuthorId());
-//        vacancy.setCreatedDate(vacancyDto.getCreatedDate());
-//        vacancy.setUpdateTime(vacancyDto.getUpdateTime());
-//        log.info("Vacancy created successfully with ID: {}", vacancy.getId());
-//        vacancyDao.createVacancy(vacancy);
-//    }
-//
-//    @Override
-//    public void editVacancy(VacancyDto vacancyDto, int userId) throws UserNotFoundException {
-//        Optional<User> user = userDao.getUserById(userId);
-//
-//        if (userId > userDao.getUsers().size() || userId < 1) {
-//            throw new UserNotFoundException("Don't have access");
-//        }
-//        if (user.isPresent()) {
-//            if (user.get().getAccountType().name().equals("APPLICANT")) {
-//                throw new UserNotFoundException("Don't have access");
-//            }
-//        }
-//        Vacancy vacancy = new Vacancy();
-//        vacancy.setId(vacancyDto.getId());
-//        vacancy.setName(vacancyDto.getName());
-//        vacancy.setDescription(vacancyDto.getDescription());
-//        vacancy.setCategoryId(vacancyDto.getCategoryId());
-//        vacancy.setSalary(vacancyDto.getSalary());
-//        vacancy.setExperienceFrom(vacancyDto.getExperienceFrom());
-//        vacancy.setExperienceTo(vacancyDto.getExperienceTo());
-//        vacancy.setActive(vacancyDto.isActive());
-//        vacancy.setAuthorId(vacancyDto.getAuthorId());
-//        vacancy.setCreatedDate(vacancyDto.getCreatedDate());
-//        vacancy.setUpdateTime(vacancyDto.getUpdateTime());
-//
-//        vacancyDao.editVacancy(vacancy);
-//    }
-//
-//    @Override
-//    public void deleteVacancyById(int id, int userId) throws UserNotFoundException {
-//        Optional<User> user = userDao.getUserById(userId);
-//
-//        if (userId > userDao.getUsers().size() || userId < 1) {
-//            throw new UserNotFoundException("Don't have access");
-//        }
-//        if (user.isPresent()) {
-//            if (user.get().getAccountType().name().equals("APPLICANT")) {
-//                throw new UserNotFoundException("Don't have access");
-//            }
-//        }
-//
-//        vacancyDao.deleteVacancyById(id);
-//    }
-//}
+package kg.attractor.headhunter.service.impl;
+
+import kg.attractor.headhunter.dao.CategoryDao;
+import kg.attractor.headhunter.dao.UserDao;
+import kg.attractor.headhunter.dao.VacancyDao;
+import kg.attractor.headhunter.dto.UserForVacancyPrintDto;
+import kg.attractor.headhunter.dto.VacancyCreateDto;
+import kg.attractor.headhunter.dto.VacancyDto;
+import kg.attractor.headhunter.dto.VacancyEditDto;
+import kg.attractor.headhunter.exception.CategoryNotFoundException;
+import kg.attractor.headhunter.exception.ResumeNotFoundException;
+import kg.attractor.headhunter.exception.UserNotFoundException;
+import kg.attractor.headhunter.exception.VacancyNotFoundException;
+import kg.attractor.headhunter.model.Category;
+import kg.attractor.headhunter.model.User;
+import kg.attractor.headhunter.model.Vacancy;
+import kg.attractor.headhunter.service.VacancyService;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+@Slf4j
+@RequiredArgsConstructor
+public class VacancyServiceImpl implements VacancyService {
+    private final UserDao userDao;
+    private final VacancyDao vacancyDao;
+    private final CategoryDao categoryDao;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+
+    @Override
+    @SneakyThrows
+    public List<VacancyDto> getAllActiveVacancies() {
+        String x = passwordEncoder.encode("amazon");
+        System.out.println(x);
+        List<Vacancy> vacancies = vacancyDao.getAllActiveVacancies();
+
+        List<VacancyDto> vacancyDtoList = new ArrayList<>();
+
+        for (Vacancy vacancy : vacancies) {
+            User userEntity = userDao.getUserById(vacancy.getAuthorId()).orElseThrow(() -> new UserNotFoundException("Cannot find user with this id"));
+
+            UserForVacancyPrintDto userDto = UserForVacancyPrintDto.builder().name(userEntity.getName()).age(userEntity.getAge()).email(userEntity.getEmail()).phoneNumber(userEntity.getPhoneNumber()).avatar(userEntity.getAvatar()).build();
+
+            String name = vacancy.getName();
+            String description = vacancy.getDescription();
+            String categoryName = categoryDao.getCategoryById(vacancy.getCategoryId()).getName();
+            BigDecimal salary = vacancy.getSalary();
+            Integer experienceFrom = vacancy.getExperienceFrom();
+            Integer experienceTo = vacancy.getExperienceTo();
+            LocalDateTime createdDate = vacancy.getCreatedDate();
+            LocalDateTime updateTime = vacancy.getUpdateTime();
+            Boolean isActive = vacancy.getIsActive();
+
+            VacancyDto vacancyDto = VacancyDto.builder().user(userDto).name(name).description(description).categoryName(categoryName).salary(salary).experienceFrom(experienceFrom).experienceTo(experienceTo).createdDate(createdDate).updateTime(updateTime).isActive(isActive).build();
+            vacancyDtoList.add(vacancyDto);
+        }
+        return vacancyDtoList;
+    }
+
+    @Override
+    @SneakyThrows
+    public List<VacancyDto> getAllActiveVacanciesByName(String title) {
+        List<Vacancy> vacancies = vacancyDao.getAllActiveVacanciesByName(title);
+
+        List<VacancyDto> vacancyDtoList = new ArrayList<>();
+
+        for (Vacancy vacancy : vacancies) {
+            User userEntity = userDao.getUserById(vacancy.getAuthorId()).orElseThrow(() -> new UserNotFoundException("Cannot find user with this id"));
+
+            UserForVacancyPrintDto userDto = UserForVacancyPrintDto.builder().name(userEntity.getName()).age(userEntity.getAge()).email(userEntity.getEmail()).phoneNumber(userEntity.getPhoneNumber()).avatar(userEntity.getAvatar()).build();
+
+            String name = vacancy.getName();
+            String description = vacancy.getDescription();
+            String categoryName = categoryDao.getCategoryById(vacancy.getCategoryId()).getName();
+            BigDecimal salary = vacancy.getSalary();
+            Integer experienceFrom = vacancy.getExperienceFrom();
+            Integer experienceTo = vacancy.getExperienceTo();
+            LocalDateTime createdDate = vacancy.getCreatedDate();
+            LocalDateTime updateTime = vacancy.getUpdateTime();
+            Boolean isActive = vacancy.getIsActive();
+
+            VacancyDto vacancyDto = VacancyDto.builder().user(userDto).name(name).description(description).categoryName(categoryName).salary(salary).experienceFrom(experienceFrom).experienceTo(experienceTo).createdDate(createdDate).updateTime(updateTime).isActive(isActive).build();
+            vacancyDtoList.add(vacancyDto);
+        }
+        if (vacancyDtoList.isEmpty()) {
+            throw new ResumeNotFoundException("Cannot find any vacancies with name " + title);
+        }
+        return vacancyDtoList;
+    }
+
+    @Override
+    @SneakyThrows
+    public List<VacancyDto> getAllActiveVacanciesByCategoryName(String categoriesName) {
+        Category category = categoryDao.getCategoryByName(categoriesName).orElseThrow(() -> new CategoryNotFoundException("Cannot find any resume with category: " + categoriesName));
+
+        List<Vacancy> vacancies = vacancyDao.getAllActiveVacanciesByCategoryId(category.getId());
+
+        List<VacancyDto> vacancyDtoList = new ArrayList<>();
+
+        for (Vacancy vacancy : vacancies) {
+            User userEntity = userDao.getUserById(vacancy.getAuthorId()).orElseThrow(() -> new UserNotFoundException("Cannot find user with this id"));
+
+            UserForVacancyPrintDto userDto = UserForVacancyPrintDto.builder().name(userEntity.getName()).age(userEntity.getAge()).email(userEntity.getEmail()).phoneNumber(userEntity.getPhoneNumber()).avatar(userEntity.getAvatar()).build();
+
+            String name = vacancy.getName();
+            String description = vacancy.getDescription();
+            String categoryName = categoryDao.getCategoryById(vacancy.getCategoryId()).getName();
+            BigDecimal salary = vacancy.getSalary();
+            Integer experienceFrom = vacancy.getExperienceFrom();
+            Integer experienceTo = vacancy.getExperienceTo();
+            LocalDateTime createdDate = vacancy.getCreatedDate();
+            LocalDateTime updateTime = vacancy.getUpdateTime();
+            Boolean isActive = vacancy.getIsActive();
+
+            VacancyDto vacancyDto = VacancyDto.builder().user(userDto).name(name).description(description).categoryName(categoryName).salary(salary).experienceFrom(experienceFrom).experienceTo(experienceTo).createdDate(createdDate).updateTime(updateTime).isActive(isActive).build();
+            vacancyDtoList.add(vacancyDto);
+        }
+        if (vacancyDtoList.isEmpty()) {
+            throw new ResumeNotFoundException("Cannot find any vacancies with categoryName " + categoriesName);
+        }
+        return vacancyDtoList;
+    }
+
+    @SneakyThrows
+    public User getUserFromAuth(String auth) {
+        int x = auth.indexOf("=");
+        int y = auth.indexOf(",");
+        String email = auth.substring(x + 1, y);
+        return userDao.getUserByEmail(email).orElseThrow(() -> new UserNotFoundException("can't find user"));
+    }
+
+    @Override
+    @SneakyThrows
+    public List<VacancyDto> getAllVacanciesOfEmployer(Authentication authentication) {
+        User user = getUserFromAuth(authentication.getPrincipal().toString());
+
+        List<Vacancy> vacancies = vacancyDao.getAllVacanciesOfEmployer(user.getId());
+
+        List<VacancyDto> vacancyDtoList = new ArrayList<>();
+
+        for (Vacancy vacancy : vacancies) {
+            User userEntity = userDao.getUserById(vacancy.getAuthorId()).orElseThrow(() -> new UserNotFoundException("Cannot find user with this id"));
+
+            UserForVacancyPrintDto userDto = UserForVacancyPrintDto.builder().name(userEntity.getName()).age(userEntity.getAge()).email(userEntity.getEmail()).phoneNumber(userEntity.getPhoneNumber()).avatar(userEntity.getAvatar()).build();
+
+            String name = vacancy.getName();
+            String description = vacancy.getDescription();
+            String categoryName = categoryDao.getCategoryById(vacancy.getCategoryId()).getName();
+            BigDecimal salary = vacancy.getSalary();
+            Integer experienceFrom = vacancy.getExperienceFrom();
+            Integer experienceTo = vacancy.getExperienceTo();
+            LocalDateTime createdDate = vacancy.getCreatedDate();
+            LocalDateTime updateTime = vacancy.getUpdateTime();
+            Boolean isActive = vacancy.getIsActive();
+
+            VacancyDto vacancyDto = VacancyDto.builder().user(userDto).name(name).description(description).categoryName(categoryName).salary(salary).experienceFrom(experienceFrom).experienceTo(experienceTo).createdDate(createdDate).updateTime(updateTime).isActive(isActive).build();
+            vacancyDtoList.add(vacancyDto);
+        }
+        if (vacancyDtoList.isEmpty()) {
+            throw new ResumeNotFoundException("You don't have any vacancies");
+        }
+        return vacancyDtoList;
+    }
+
+    @Override
+    @SneakyThrows
+    public void createVacancyForEmployer(VacancyCreateDto vacancyDto, Authentication authentication) {
+        User user = getUserFromAuth(authentication.getPrincipal().toString());
+        Category category = categoryDao.getCategoryByName(vacancyDto.getCategoryName()).orElseThrow(() -> new CategoryNotFoundException("Cannot find this category"));
+        if (vacancyDto.getExperienceFrom() > vacancyDto.getExperienceTo()) {
+            throw new VacancyNotFoundException("ExperienceTo cannot be less then experienceFrom");
+        }
+
+        Vacancy vacancy = new Vacancy();
+        vacancy.setName(vacancyDto.getName());
+        vacancy.setDescription(vacancyDto.getDescription());
+        vacancy.setCategoryId(category.getId());
+        vacancy.setSalary(vacancyDto.getSalary());
+        vacancy.setExperienceFrom(vacancyDto.getExperienceFrom());
+        vacancy.setExperienceTo(vacancyDto.getExperienceTo());
+        vacancy.setIsActive(vacancyDto.getIsActive());
+        vacancy.setAuthorId(user.getId());
+        vacancyDao.createVacancy(vacancy);
+    }
+
+    @Override
+    @SneakyThrows
+    public void editVacancy(VacancyEditDto vacancyDto, Authentication authentication, Integer id) {
+        User user = getUserFromAuth(authentication.getPrincipal().toString());
+        Vacancy vacancy = vacancyDao.getVacancyById(id).orElseThrow(() -> new ResumeNotFoundException("Can't find vacancy with id " + id));
+
+        if (!vacancyDao.isEmployerHasVacancyById(user, id)) {
+            throw new ResumeNotFoundException("Can't find your vacancy with this id");
+        }
+
+        vacancy.setId(id);
+        if (vacancyDto.getName() != null) {
+            vacancy.setName(vacancyDto.getName());
+        }
+
+        if (vacancyDto.getDescription() != null) {
+            vacancy.setDescription(vacancyDto.getDescription());
+        }
+
+        Category category;
+        if (vacancyDto.getCategoryName() != null) {
+            category = categoryDao.getCategoryByName(vacancyDto.getCategoryName()).orElseThrow(() -> new CategoryNotFoundException("Cannot find this category"));
+            vacancy.setCategoryId(category.getId());
+        }
+
+        if (vacancyDto.getSalary() != null) {
+            vacancy.setSalary(vacancyDto.getSalary());
+        }
+
+        if (vacancyDto.getExperienceFrom() != null && vacancyDto.getExperienceTo() != null) {
+
+            vacancy.setExperienceFrom(vacancyDto.getExperienceFrom());
+            vacancy.setExperienceTo(vacancyDto.getExperienceTo());
+
+            if (vacancyDto.getExperienceFrom() > vacancyDto.getExperienceTo()) {
+                throw new VacancyNotFoundException("ExperienceTo cannot be less then experienceFrom");
+            }
+        }
+
+
+        if (vacancyDto.getIsActive() != null) {
+            vacancy.setIsActive(vacancyDto.getIsActive());
+        }
+
+        vacancyDao.editVacancy(vacancy);
+    }
+
+    @Override
+    @SneakyThrows
+    public void deleteVacancyById(Integer vacancyId, Authentication authentication) {
+        User user = getUserFromAuth(authentication.getPrincipal().toString());
+        vacancyDao.getVacancyById(vacancyId).orElseThrow(() -> new ResumeNotFoundException("Can't find vacancy with this id"));
+        if (!vacancyDao.isEmployerHasVacancyById(user, vacancyId)) {
+            throw new ResumeNotFoundException("Can't find your vacancy with this id");
+        }
+
+        vacancyDao.deleteVacancyById(vacancyId);
+    }
+
+    @Override
+    public List<VacancyDto> getVacanciesBySalary(boolean ascending) {
+        List<Vacancy> vacancies = ascending ? vacancyDao.getAllActiveVacanciesBySalaryAscending() : vacancyDao.getAllActiveVacanciesBySalaryDescending();
+        return vacancies.stream().map(this::convertToDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<VacancyDto> getVacanciesByUpdateTime(boolean ascending) {
+        List<Vacancy> vacancies = ascending ? vacancyDao.getAllActiveVacanciesByUpdateTimeAscending() : vacancyDao.getAllActiveVacanciesByUpdateTimeDescending();
+        return vacancies.stream().map(this::convertToDto).collect(Collectors.toList());
+    }
+
+    @SneakyThrows
+    private VacancyDto convertToDto(Vacancy vacancy) {
+        User user = userDao.getUserById(vacancy.getAuthorId()).orElseThrow(() -> new UserNotFoundException("asdf"));
+        return VacancyDto.builder().name(vacancy.getName()).description(vacancy.getDescription()).categoryName(categoryDao.getCategoryById(vacancy.getCategoryId()).getName()).salary(vacancy.getSalary()).experienceFrom(vacancy.getExperienceFrom()).experienceTo(vacancy.getExperienceTo()).isActive(vacancy.getIsActive()).createdDate(vacancy.getCreatedDate()).updateTime(vacancy.getUpdateTime()).user(convertUserToUserForVacancyPrintDto(user)).build();
+    }
+
+    private UserForVacancyPrintDto convertUserToUserForVacancyPrintDto(User user) {
+        if (user == null) {
+            return null;
+        }
+
+        return UserForVacancyPrintDto.builder().name(user.getName()).age(user.getAge()).email(user.getEmail()).phoneNumber(user.getPhoneNumber()).avatar(user.getAvatar()).build();
+    }
+}

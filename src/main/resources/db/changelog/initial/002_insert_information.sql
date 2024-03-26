@@ -4,7 +4,7 @@ VALUES ('Криштиану', 'Роналду', 28, 'ronaldo@example.com', 'se31
        ('Александр', 'Арнольд', 34, 'alex.arnold@example.com', 'arnold', '555-0401', '', 'APPLICANT'),
        ('Netflix', null, 28, 'netflix@corp.com', 'netfilx', '555-0402', '', 'EMPLOYER'),
        ('Хабиб', 'Нурмагамедов', 31, 'habib@example.com', 'habib', '555-0403', '', 'APPLICANT'),
-       ('Amazon', null, 27, 'amazon@corp.com', 'amazon', '555-0404', '', 'EMPLOYER'),
+       ('Amazon', null, 27, 'amazon@corp.com', '$2a$10$HJEdu9WYUo75BUwZl1fzMOlsycJqr33njYDR/xWlkEdpwnoamg2YS', '555-0404', '', 'EMPLOYER'),
        ('Мухаммед', 'Салах', 26, 'salah@example.com', 'salah', '555-0405', '', 'APPLICANT');
 
 

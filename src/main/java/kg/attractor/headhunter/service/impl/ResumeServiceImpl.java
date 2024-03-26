@@ -466,8 +466,11 @@ public class ResumeServiceImpl implements ResumeService {
     @Override
     @SneakyThrows
     public void deleteResumeById(Integer resumeId, Authentication authentication) {
-        getUserFromAuth(authentication.getPrincipal().toString());
+        User user = getUserFromAuth(authentication.getPrincipal().toString());
         resumeDao.getResumeById(resumeId).orElseThrow(() -> new ResumeNotFoundException("Can't find resume with this id"));
+        if (!resumeDao.isApplicantHasResumeById(user, resumeId)) {
+            throw new ResumeNotFoundException("Can't find your resume with this id");
+        }
 
         resumeDao.deleteApplicantsResumeById(resumeId);
     }
