@@ -1,9 +1,7 @@
 package kg.attractor.headhunter.exception.handler;
 
-import kg.attractor.headhunter.exception.CategoryNotFoundException;
-import kg.attractor.headhunter.exception.EducationInfoNotFoundException;
-import kg.attractor.headhunter.exception.ResumeNotFoundException;
-import kg.attractor.headhunter.exception.UserNotFoundException;
+import kg.attractor.headhunter.exception.*;
+import kg.attractor.headhunter.model.WorkExperienceInfo;
 import kg.attractor.headhunter.service.ErrorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -24,7 +22,6 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
-    private final ErrorService errorService;
 
     private ResponseEntity<Map<String, List<String>>> createErrorResponse(HttpStatus status, String message) {
         List<String> errors = Collections.singletonList(message);
@@ -75,5 +72,18 @@ public class GlobalExceptionHandler {
         return createErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
-    // Добавьте другие обработчики исключений по аналогии
+    @ExceptionHandler(WorkExperienceNotFoundException.class)
+    public ResponseEntity<Map<String, List<String>>> handleEducationInfoNotFoundException(WorkExperienceNotFoundException ex) {
+        return createErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    @ExceptionHandler(ContactInfoNotFound.class)
+    public ResponseEntity<Map<String, List<String>>> handleEducationInfoNotFoundException(ContactInfoNotFound ex) {
+        return createErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    @ExceptionHandler(VacancyNotFoundException.class)
+    public ResponseEntity<Map<String, List<String>>> handleEducationInfoNotFoundException(VacancyNotFoundException ex) {
+        return createErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
 }

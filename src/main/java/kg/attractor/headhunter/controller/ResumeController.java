@@ -8,6 +8,7 @@ import kg.attractor.headhunter.service.ResumeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,49 +46,19 @@ public class ResumeController {
     @PostMapping
     public ResponseEntity<?> createResumeForApplicant(@Valid @RequestBody ResumeCreateDto resumeDto, Authentication authentication) {
         resumeService.createResumeForApplicant(resumeDto, authentication);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("Resume is successfully created");
     }
 
-    @PutMapping
-    public ResponseEntity<?> editResumeForApplicant(@Valid @RequestBody ResumeEditDto resumeEditDto, Authentication authentication) {
-        resumeService.editResumeForApplicant(resumeEditDto, authentication);
+    @PutMapping("/{id}")
+    public ResponseEntity<?> editResumeForApplicant(@Valid @RequestBody ResumeEditDto resumeEditDto, Authentication authentication, @PathVariable Integer id) {
+        resumeService.editResumeForApplicant(resumeEditDto, authentication, id);
+        return ResponseEntity.ok("Resume is successfully edited");
     }
-//
-//    @PutMapping
-//    public ResponseEntity<?> editResumeForUserId(@Valid @RequestBody ResumeEditDto resumeDto,
-//                                                 @RequestParam int userId) {
-//        resumeService.editResume(resumeDto, userId);
-//        return ResponseEntity.ok().build();
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<?> deleteResumeByIdForUserid(@PathVariable int id,
-//                                                       @RequestParam int userId) {
-//        resumeService.deleteResumeById(id, userId);
-//        return ResponseEntity.ok().build();
-//    }
-//
-////    @GetMapping
-////    public ResponseEntity<?> getAllResumesForUserId(@RequestParam int userId) {
-////        return ResponseEntity.ok(resumeService.getUsersAllResumes(userId));
-////    }
-//
-//    @GetMapping("/active")
-//    public ResponseEntity<?> getActiveResumesForUserId(@RequestParam int userId) {
-//        return ResponseEntity.ok(resumeService.getUsersActiveResumes(userId));
-//    }
-//
-//    @GetMapping("/title/{name}")
-//    public ResponseEntity<?> getResumeByTitleForUserId(@PathVariable String name,
-//                                                       @RequestParam int userId) {
-//        List<ResumeDto> resumeDto = resumeService.getUsersResumeByTitle(name, userId);
-//        return ResponseEntity.ok(resumeDto);
-//    }
-//
-//    @GetMapping("/categoryName/{categoryName}")
-//    public ResponseEntity<?> getResumesByCategoryNameForUserId(@PathVariable String categoryName,
-//                                                               @RequestParam int userId) {
-//        List<ResumeDto> resumeDto = resumeService.getUsersResumesByCategoryName(categoryName, userId);
-//        return ResponseEntity.ok(resumeDto);
-//    }
+
+    @DeleteMapping("/{resumeId}")
+    public ResponseEntity<?> deleteResumeByIdForUserid(@PathVariable int resumeId, Authentication authentication) {
+        resumeService.deleteResumeById(resumeId, authentication);
+        return ResponseEntity.ok("Resume is successfully deleted");
+    }
+
 }

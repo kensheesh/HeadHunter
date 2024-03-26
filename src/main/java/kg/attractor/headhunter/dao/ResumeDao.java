@@ -22,8 +22,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ResumeDao {
     private final JdbcTemplate template;
-    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
     public List<Resume> getAllActiveResumes() {
         String sql = """
                 select * from resumes
@@ -58,8 +56,6 @@ public class ResumeDao {
         return template.query(sql, new BeanPropertyRowMapper<>(Resume.class), id);
     }
 
-//------------------------------------------------------------------------------------------------------------------------------------------------------
-
     public Integer createResumeAndReturnId(Resume resume) {
         String sql = """
                 insert into resumes (name, userId, categoryId, salary, isActive, createdTime, updateTime)
@@ -86,11 +82,11 @@ public class ResumeDao {
     public void editResume(Resume resume) {
         String sql = """
                 UPDATE resumes
-                SET name = ?, salary = ?, isActive = ?, updateTime = ?
+                SET name = ?, categoryId = ?, salary = ?, isActive = ?, updateTime = ?
                 WHERE id = ?;
                 """;
 
-        template.update(sql, resume.getName(), resume.getSalary(), resume.getIsActive(), Timestamp.valueOf(LocalDateTime.now()), resume.getId());
+        template.update(sql, resume.getName(), resume.getCategoryId(), resume.getSalary(), resume.getIsActive(), Timestamp.valueOf(LocalDateTime.now()), resume.getId());
     }
 
     public boolean isApplicantHasResumeById(User user, Integer resumeId) {
@@ -103,40 +99,12 @@ public class ResumeDao {
         return count != null && count > 0;
     }
 
-
-    public List<Resume> getResumesByUserIdAndName(int userId, String name) {
+    public void deleteApplicantsResumeById(int id) {
         String sql = """
-                select * from resumes
-                where userId = ? and name = ?;
+                delete from resumes
+                where id = ?;
                 """;
-        return template.query(sql, new BeanPropertyRowMapper<>(Resume.class), userId, name);
-    }
-
-    public List<Resume> getResumesByUserIdAndCategoryName(int userId, int categoryId) {
-
-        String sql = """
-                select * from resumes
-                where userId = ? and categoryId = ?;
-                """;
-        return template.query(sql, new BeanPropertyRowMapper<>(Resume.class), userId, categoryId);
-    }
-
-    public List<Resume> getActiveResumesByUserId(int userId) {
-        String sql = """
-                select * from resumes
-                where UserId = ? and isActive = true;
-                """;
-        return template.query(sql, new BeanPropertyRowMapper<>(Resume.class), userId);
-    }
-
-    //
-    public List<Resume> getResumesByUserId(int userId) {
-        String sql = """
-                select * from resumes
-                where userId = ?;
-                """;
-
-        return template.query(sql, new BeanPropertyRowMapper<>(Resume.class), userId);
+        template.update(sql, id);
     }
 
     public Optional<Resume> getResumeById(int id) {
@@ -150,10 +118,5 @@ public class ResumeDao {
                         template.query(sql, new BeanPropertyRowMapper<>(Resume.class), id)
                 )
         );
-    }
-
-    public void deleteResumeById(int id) {
-        String sql = "DELETE FROM resumes WHERE id = ?";
-        template.update(sql, id);
     }
 }

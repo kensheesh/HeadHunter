@@ -33,4 +33,13 @@ public class ContactInfoDao {
         return template.query(sql, new BeanPropertyRowMapper<>(ContactInfo.class), resumeId);
     }
 
+    public void editContactInfo(ContactInfo contactInfo) {
+        String sql = """
+                update contactsInfo
+                set ContactTypeId = ?, content = ?
+                where id = ?;
+                """;
+        template.update(sql, contactInfo.getContactTypeId(), contactInfo.getContent(), contactInfo.getId());
+    }
+
 }

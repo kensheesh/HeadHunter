@@ -18,19 +18,7 @@ public interface ResumeService {
 
     void createResumeForApplicant(ResumeCreateDto resumeDto, Authentication authentication);
 
-    void editResumeForApplicant(ResumeEditDto resumeEditDto, Authentication authentication);
-//    List<ResumeDto> getUsersResumeByTitle(String name, int userId);
-//
-//    List<ResumeDto> getUsersResumesByCategoryName(String categoryName, int userId);
-//
-//    List<ResumeDto> getUsersActiveResumes(int userId);
-//
-//    void createResume(ResumeCreateDto resumeCreateDto, int userId);
-//
-//    void editResume(ResumeEditDto resumeDto, int userId);
-//
-//    //
-//    void deleteResumeById(int id, int userId);
+    void editResumeForApplicant(ResumeEditDto resumeEditDto, Authentication authentication, Integer id);
 
-//    UserDto getUserById(int id);
+    void deleteResumeById(Integer resumeId, Authentication authentication);
 }

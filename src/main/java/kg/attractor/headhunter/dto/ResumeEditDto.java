@@ -15,8 +15,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResumeEditDto {
-    private Integer id;
-
 //    @NotBlank(message = "Name cannot be null or blank")
     @Size(min = 2, max = 20)
     private String name;
@@ -35,8 +33,8 @@ public class ResumeEditDto {
     @Valid
     private List<EducationInfoEditDto> educationInfos;
 
-//    @NotEmpty(message = "Contact info list cannot be empty")
-    private List<ContactInfoDto> contactInfos;
+
+    private List<ContactInfoEditDto> contactInfos;
 
     private Boolean isActive;
 }
