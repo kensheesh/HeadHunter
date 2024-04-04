@@ -198,6 +198,40 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     @SneakyThrows
+    public List<VacancyDto> getAllVacanciesOfEmployerById(Integer userId) {
+        User user = userDao.getUserById(userId).orElseThrow(() -> new UserNotFoundException("Cant find user"));
+
+        List<Vacancy> vacancies = vacancyDao.getAllVacanciesOfEmployer(user.getId());
+
+        List<VacancyDto> vacancyDtoList = new ArrayList<>();
+
+        for (Vacancy vacancy : vacancies) {
+            User userEntity = userDao.getUserById(vacancy.getAuthorId()).orElseThrow(() -> new UserNotFoundException("Cannot find user with this id"));
+
+            UserForVacancyPrintDto userDto = UserForVacancyPrintDto.builder().name(userEntity.getName()).age(userEntity.getAge()).email(userEntity.getEmail()).phoneNumber(userEntity.getPhoneNumber()).avatar(userEntity.getAvatar()).build();
+
+            String name = vacancy.getName();
+            String description = vacancy.getDescription();
+            String categoryName = categoryDao.getCategoryById(vacancy.getCategoryId()).getName();
+            BigDecimal salary = vacancy.getSalary();
+            Integer experienceFrom = vacancy.getExperienceFrom();
+            Integer experienceTo = vacancy.getExperienceTo();
+            LocalDateTime createdDate = vacancy.getCreatedDate();
+            LocalDateTime updateTime = vacancy.getUpdateTime();
+            Boolean isActive = vacancy.getIsActive();
+
+            VacancyDto vacancyDto = VacancyDto.builder().user(userDto).name(name).description(description).categoryName(categoryName).salary(salary).experienceFrom(experienceFrom).experienceTo(experienceTo).createdDate(createdDate).updateTime(updateTime).isActive(isActive).build();
+            vacancyDtoList.add(vacancyDto);
+        }
+        if (vacancyDtoList.isEmpty()) {
+            throw new ResumeNotFoundException("You don't have any vacancies");
+        }
+        return vacancyDtoList;
+    }
+
+
+    @Override
+    @SneakyThrows
     public void editVacancy(VacancyEditDto vacancyDto, Authentication authentication, Integer id) {
         User user = getUserFromAuth(authentication.getPrincipal().toString());
         Vacancy vacancy = vacancyDao.getVacancyById(id).orElseThrow(() -> new ResumeNotFoundException("Can't find vacancy with id " + id));

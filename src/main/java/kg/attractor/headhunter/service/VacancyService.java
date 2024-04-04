@@ -16,6 +16,7 @@ public interface VacancyService {
     List<VacancyDto> getAllActiveVacanciesByCategoryName(String categoriesName);
 
     List<VacancyDto> getAllVacanciesOfEmployer(Authentication authentication);
+    List<VacancyDto> getAllVacanciesOfEmployerById(Integer userId);
 
     void createVacancyForEmployer(VacancyCreateDto vacancyDto, Authentication authentication);
 

@@ -279,6 +279,68 @@ public class ResumeServiceImpl implements ResumeService {
         return resumesDto;
     }
 
+    @SneakyThrows
+    @Override
+    public List<ResumeDto> getAllResumesOfApplicantById(Integer userId) {
+        User user = userDao.getUserById(userId).orElseThrow(() -> new UserNotFoundException("can't find"));
+
+        List<Resume> resumes = resumeDao.getAllResumesOfApplicant(user.getId());
+
+        List<ResumeDto> resumesDto = new ArrayList<>();
+
+        for (Resume resume : resumes) {
+            User userEntity = userDao.getUserById(resume.getUserId()).orElseThrow(() -> new UserNotFoundException("Cannot find user with this id"));
+
+            UserResumePrintDto userDto = UserResumePrintDto.builder().name(userEntity.getName()).surname(userEntity.getSurname()).age(userEntity.getAge()).email(userEntity.getEmail()).phoneNumber(userEntity.getPhoneNumber()).avatar(userEntity.getAvatar()).build();
+
+            String name = resume.getName();
+            String categoryName = categoryDao.getCategoryById(resume.getCategoryId()).getName();
+            BigDecimal salary = resume.getSalary();
+            Boolean isActive = resume.getIsActive();
+
+            //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+            List<WorkExperienceInfo> workExpInfos = workExperienceInfoDao.getWorkExperienceInfoByResumeId(resume.getId());
+            List<WorkExperienceInfoDto> workExperienceInfoDtoFormat = new ArrayList<>();
+
+            for (WorkExperienceInfo workExpInfo : workExpInfos) {
+                WorkExperienceInfoDto workExperienceInfoDto = WorkExperienceInfoDto.builder().years(workExpInfo.getYears()).companyName(workExpInfo.getCompanyName()).position(workExpInfo.getPosition()).responsibilities(workExpInfo.getResponsibilities()).build();
+                workExperienceInfoDtoFormat.add(workExperienceInfoDto);
+            }
+
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+            List<EducationInfo> educationInfos = educationInfoDao.getEducationInfoByResumeId(resume.getId());
+            List<EducationInfoDto> educationInfoDtoFormat = new ArrayList<>();
+
+            for (EducationInfo educationInfo : educationInfos) {
+                EducationInfoDto educationInfoDto = EducationInfoDto.builder().institution(educationInfo.getInstitution()).program(educationInfo.getProgram()).startDate(educationInfo.getStartDate()).endDate(educationInfo.getEndDate()).degree(educationInfo.getDegree()).build();
+                educationInfoDtoFormat.add(educationInfoDto);
+            }
+
+            //----------------------------------------------------------------------------------------------------------------------------------------------
+
+            List<ContactInfo> contactInfos = contactInfoDao.getContactInfoByResumeId(resume.getId());
+            List<ContactInfoDto> contactInfoDtoFormat = new ArrayList<>();
+            for (ContactInfo contactInfo : contactInfos) {
+                ContactType contactType = contactTypeDao.getContactTypeById(contactInfo.getContactTypeId());
+                ContactInfoDto contactInfoDto = ContactInfoDto.builder().contactType(contactType.getType()).value(contactInfo.getContent()).build();
+                contactInfoDtoFormat.add(contactInfoDto);
+            }
+
+
+            ResumeDto resumeDto = ResumeDto.builder().user(userDto).name(name).categoryName(categoryName).salary(salary).workExpInfos(workExperienceInfoDtoFormat).educationInfos(educationInfoDtoFormat).contactInfos(contactInfoDtoFormat).isActive(isActive).build();
+
+            resumesDto.add(resumeDto);
+        }
+        if (resumesDto.isEmpty()) {
+            throw new ResumeNotFoundException("You don't have any resumes");
+        }
+
+        return resumesDto;
+
+    }
+
     @Override
     @SneakyThrows
     public void createResumeForApplicant(ResumeCreateDto resumeDto, Authentication authentication) {

@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import java.util.List;
 
 public interface ResumeService {
+    List<ResumeDto> getAllResumesOfApplicantById(Integer userId);
     List<ResumeDto> getAllActiveResumes(Authentication authentication);
 
     List<ResumeDto> getAllResumesByName(String title, Authentication authentication);
