@@ -1,4 +1,4 @@
-package kg.attractor.headhunter.controller;
+package kg.attractor.headhunter.controller.api;
 
 import jakarta.validation.Valid;
 import kg.attractor.headhunter.dto.UserCreateDto;
@@ -14,9 +14,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@RequestMapping("/accounts")
+@RequestMapping("api/accounts")
 @RequiredArgsConstructor
-public class UserController {
+
+public class UserRestController {
     private final UserService userService;
 
     @GetMapping("/applicants")
@@ -53,9 +54,9 @@ public class UserController {
         }
     }
 
-    @PostMapping()
+    @PostMapping("api")
     public ResponseEntity<?> createUser(@Valid @RequestBody UserCreateDto user, Authentication authentication) {
-        userService.createUser(user, authentication);
+        userService.createUser(user);
         return ResponseEntity.ok("User is created");
     }
 

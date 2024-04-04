@@ -148,7 +148,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @SneakyThrows
-    public void createUser(UserCreateDto userCreateDto, Authentication authentication) {
+    public void createUser(UserCreateDto userCreateDto) {
         // Проверка существования пользователя по email
         if (userDao.isExists(userCreateDto.getEmail())) {
             throw new RuntimeException("User with email " + userCreateDto.getEmail() + " already exists");

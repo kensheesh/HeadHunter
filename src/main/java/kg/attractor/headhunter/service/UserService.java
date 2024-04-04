@@ -27,7 +27,7 @@ public interface UserService {
 
     UserDto getApplicantByPhoneNumber(String phoneNumber);
 
-    void createUser(UserCreateDto userCreateDto, Authentication authentication);
+    void createUser(UserCreateDto userCreateDto);
 
     void editUser(UserEditDto userEditDto, Authentication authentication);
     void addAvatar(MultipartFile file, Authentication authentication);

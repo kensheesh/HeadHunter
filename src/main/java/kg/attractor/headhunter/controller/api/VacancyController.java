@@ -1,4 +1,4 @@
-package kg.attractor.headhunter.controller;
+package kg.attractor.headhunter.controller.api;
 
 import jakarta.validation.Valid;
 import kg.attractor.headhunter.dto.VacancyCreateDto;

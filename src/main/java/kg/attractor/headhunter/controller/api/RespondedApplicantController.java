@@ -1,4 +1,4 @@
-package kg.attractor.headhunter.controller;
+package kg.attractor.headhunter.controller.api;
 
 import kg.attractor.headhunter.dto.VacancyForRespondedDto;
 import kg.attractor.headhunter.service.impl.RespondedApplicantServiceImpl;
