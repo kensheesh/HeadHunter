@@ -39,6 +39,13 @@ public class VacancyServiceImpl implements VacancyService {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+    @Override
+    @SneakyThrows
+    public VacancyDto getVacancyById(Integer id) {
+        Vacancy vacancy = vacancyDao.getVacancyById(id).orElseThrow(() -> new VacancyNotFoundException("Can't find vacancy with id: " + id));
+        return VacancyDto.builder().name(vacancy.getName()).description(vacancy.getDescription()).categoryName(categoryDao.getCategoryById(vacancy.getCategoryId()).getName()).salary(vacancy.getSalary()).experienceFrom(vacancy.getExperienceFrom()).experienceTo(vacancy.getExperienceTo()).isActive(vacancy.getIsActive()).createdDate(vacancy.getCreatedDate()).updateTime(vacancy.getUpdateTime()).build();
+    }
+
 
     @Override
     @SneakyThrows

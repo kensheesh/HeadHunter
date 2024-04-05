@@ -63,21 +63,21 @@ public class SecurityConfig {
                 .logout(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.PUT, "/accounts").fullyAuthenticated()
-                        .requestMatchers(HttpMethod.POST, "/accounts/avatar").fullyAuthenticated()
-
-                        .requestMatchers(HttpMethod.GET, "/resumes/applicant").hasAuthority("APPLICANT")
-                        .requestMatchers(HttpMethod.POST, "/resumes").hasAuthority("APPLICANT")
-                        .requestMatchers(HttpMethod.PUT, "/resumes/**").hasAuthority("APPLICANT")
-                        .requestMatchers(HttpMethod.GET, "/resumes/**").hasAuthority("EMPLOYER")
-                        .requestMatchers(HttpMethod.DELETE, "/resumes/**").hasAuthority("APPLICANT")
-
-                        .requestMatchers(HttpMethod.GET, "/vacancies/employer").hasAuthority("EMPLOYER")
-                        .requestMatchers(HttpMethod.GET, "/vacancies/{vacancyId}/respondents").hasAuthority("EMPLOYER")
-                        .requestMatchers(HttpMethod.GET, "/vacancies//{id}/responded-vacancies").hasAuthority("EMPLOYER")
-                        .requestMatchers(HttpMethod.POST, "/vacancies").hasAuthority("EMPLOYER")
-                        .requestMatchers(HttpMethod.PUT, "/vacancies/**").hasAuthority("EMPLOYER")
-                        .requestMatchers(HttpMethod.GET, "/vacancies/**").hasAuthority("APPLICANT")
+//                        .requestMatchers(HttpMethod.PUT, "/accounts").fullyAuthenticated()
+//                        .requestMatchers(HttpMethod.POST, "/accounts/avatar").fullyAuthenticated()
+//
+//                        .requestMatchers(HttpMethod.GET, "/resumes/applicant").hasAuthority("APPLICANT")
+//                        .requestMatchers(HttpMethod.POST, "/resumes").hasAuthority("APPLICANT")
+//                        .requestMatchers(HttpMethod.PUT, "/resumes/**").hasAuthority("APPLICANT")
+//                        .requestMatchers(HttpMethod.GET, "/resumes/**").hasAuthority("EMPLOYER")
+//                        .requestMatchers(HttpMethod.DELETE, "/resumes/**").hasAuthority("APPLICANT")
+//
+//                        .requestMatchers(HttpMethod.GET, "/vacancies/employer").hasAuthority("EMPLOYER")
+//                        .requestMatchers(HttpMethod.GET, "/vacancies/{vacancyId}/respondents").hasAuthority("EMPLOYER")
+//                        .requestMatchers(HttpMethod.GET, "/vacancies//{id}/responded-vacancies").hasAuthority("EMPLOYER")
+//                        .requestMatchers(HttpMethod.POST, "/vacancies").hasAuthority("EMPLOYER")
+//                        .requestMatchers(HttpMethod.PUT, "/vacancies/**").hasAuthority("EMPLOYER")
+//                        .requestMatchers(HttpMethod.GET, "/vacancies/**").hasAuthority("APPLICANT")
 
                         .anyRequest().permitAll())
                 .exceptionHandling(exception -> exception

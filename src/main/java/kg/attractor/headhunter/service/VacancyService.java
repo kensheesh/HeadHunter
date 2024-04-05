@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import java.util.List;
 
 public interface VacancyService {
+    VacancyDto getVacancyById(Integer id);
 
     List<VacancyDto> getAllActiveVacancies();
 

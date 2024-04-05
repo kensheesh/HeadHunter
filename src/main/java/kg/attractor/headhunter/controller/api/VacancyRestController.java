@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/vacancies")
 @RequiredArgsConstructor
-public class VacancyController {
+public class VacancyRestController {
     private final VacancyServiceImpl vacancyService;
 
     @GetMapping
