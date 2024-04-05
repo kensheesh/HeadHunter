@@ -30,6 +30,7 @@ public interface UserService {
     void createUser(UserCreateDto userCreateDto);
 
     void editUser(UserEditDto userEditDto, Authentication authentication);
+    void editUserById(UserEditDto userEditDto, Integer userId);
     void addAvatar(MultipartFile file, Authentication authentication);
 
 }

@@ -53,7 +53,7 @@
                                     </small>
                                 </p> </#if>
                             </h5>
-                            <a class="btn btn btn-secondary mt-4" href="/users/profile/edit${user.id}">Редактировать</a>
+                            <a class="btn btn btn-secondary mt-4" href="/users/edit/${user.id}">Редактировать</a>
                         </div>
                     </div>
                 </div>

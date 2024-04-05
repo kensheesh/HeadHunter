@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserEditDto {
-
     @Size(min = 2, max = 20, message = "Name should contain more than 2 letters")
     private String name;
 

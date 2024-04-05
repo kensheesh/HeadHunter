@@ -24,7 +24,7 @@
                         <div class="card-body rounded-0">
                             <h5 class="card-title">${vacancy.name}</h5>
                             <p class="card-text">Salary: ${vacancy.salary}</p>
-                            <p class="card-text">Updated on: ${vacancy.updateTime?string("yy:MM:dd")}</p>
+                            <p class="card-text">Published on: ${vacancy.updateTime}</p>
                         </div>
                     </div>
                 </a>

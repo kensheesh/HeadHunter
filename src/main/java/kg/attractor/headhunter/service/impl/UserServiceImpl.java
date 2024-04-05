@@ -199,6 +199,29 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @SneakyThrows
+    public void editUserById(UserEditDto userEditDto, Integer userId) {
+        User mayBeUser = userDao.getUserById(userId).orElseThrow(() -> new UserNotFoundException("Can't find user with id: " + userId));
+
+        userDao.getUserByEmail(mayBeUser.getEmail()).orElseThrow(() -> new UserNotFoundException("Unexpected problem with authentication"));
+        User user = userDao.getUserByEmail(mayBeUser.getEmail())
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+
+        if (userEditDto.getName() != null && !userEditDto.getName().isBlank()) {
+            user.setName(userEditDto.getName());
+        } else if (userEditDto.getName() != null) {
+            throw new UserNotFoundException("Name cannot contain blanks");
+        }
+        user.setSurname(mayBeUser.getAccountType().equals(AccountType.APPLICANT) ? userEditDto.getSurname() : null);
+        user.setAge(userEditDto.getAge());
+        if (userEditDto.getPassword() != null) {
+            user.setPassword(passwordEncoder.encode(userEditDto.getPassword()));
+        }
+        userDao.editUser(user);
+    }
+
+    @Override
+    @SneakyThrows
     public void addAvatar(MultipartFile file, Authentication authentication) {
         User user = getUserFromAuth(authentication.getPrincipal().toString());
         userDao.getUserByEmail(user.getEmail()).orElseThrow(() -> new UserNotFoundException("Can't find user with this email"));
