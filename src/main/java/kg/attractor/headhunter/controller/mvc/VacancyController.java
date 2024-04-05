@@ -14,9 +14,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class VacancyController {
     private final VacancyService vacancyService;
 
+    @GetMapping
+    public String viewAllVacancies(Model model) {
+        model.addAttribute("vacancies", vacancyService.getAllActiveVacancies());
+        return "all_vacancies";
+    }
+
     @GetMapping("/{vacancyId}")
     public String getResumeById(@PathVariable Integer vacancyId, Model model) {
         model.addAttribute("vacancy", vacancyService.getVacancyById(vacancyId));
         return "vacancy_info";
     }
+
+
 }

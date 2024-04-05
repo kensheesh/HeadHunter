@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class VacancyDto {
+    private Integer id;
 
     private UserForVacancyPrintDto user;
 

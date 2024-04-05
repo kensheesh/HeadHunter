@@ -39,14 +39,17 @@
             </div>
         </div>
         <div class="row mb-3">
-            <div class="col-md-3 text-secondary">Дата создания:</div>
-            <div class="col-md-9">${vacancy.createdDate}</div>
+            <div class="col-md-3 text-secondary">Дата публикации:</div>
+            <div class="col-md-9">${vacancy.updateTime}</div>
         </div>
         <div class="row mb-3">
             <div class="col-md-3 text-secondary">Профиль компании:</div>
             <div class="col-md-9">
                 <a href="/companies/{employerId}" class="btn btn-primary rounded-0">Перейти к профилю компании</a>
             </div>
+        </div>
+        <div class="col-md-12 d-flex justify-content-center mt-5">
+            <button class="btn btn-success btn-block w-50">Откликнуться</button>
         </div>
     </div>
 </div>

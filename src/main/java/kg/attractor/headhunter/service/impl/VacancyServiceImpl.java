@@ -43,7 +43,15 @@ public class VacancyServiceImpl implements VacancyService {
     @SneakyThrows
     public VacancyDto getVacancyById(Integer id) {
         Vacancy vacancy = vacancyDao.getVacancyById(id).orElseThrow(() -> new VacancyNotFoundException("Can't find vacancy with id: " + id));
-        return VacancyDto.builder().name(vacancy.getName()).description(vacancy.getDescription()).categoryName(categoryDao.getCategoryById(vacancy.getCategoryId()).getName()).salary(vacancy.getSalary()).experienceFrom(vacancy.getExperienceFrom()).experienceTo(vacancy.getExperienceTo()).isActive(vacancy.getIsActive()).createdDate(vacancy.getCreatedDate()).updateTime(vacancy.getUpdateTime()).build();
+        User user = userDao.getUserById(vacancy.getAuthorId()).orElseThrow(() -> new UserNotFoundException("can't find user with this id"));
+        UserForVacancyPrintDto userDto = new UserForVacancyPrintDto();
+        userDto.setId(user.getId());
+        userDto.setName(user.getName());
+        userDto.setAge(user.getAge());
+        userDto.setEmail(user.getEmail());
+        userDto.setPhoneNumber(user.getPhoneNumber());
+        userDto.setAvatar(user.getAvatar());
+        return VacancyDto.builder().id(vacancy.getId()).name(vacancy.getName()).description(vacancy.getDescription()).categoryName(categoryDao.getCategoryById(vacancy.getCategoryId()).getName()).salary(vacancy.getSalary()).experienceFrom(vacancy.getExperienceFrom()).experienceTo(vacancy.getExperienceTo()).isActive(vacancy.getIsActive()).createdDate(vacancy.getCreatedDate()).updateTime(vacancy.getUpdateTime()).user(userDto).build();
     }
 
 
@@ -59,8 +67,9 @@ public class VacancyServiceImpl implements VacancyService {
         for (Vacancy vacancy : vacancies) {
             User userEntity = userDao.getUserById(vacancy.getAuthorId()).orElseThrow(() -> new UserNotFoundException("Cannot find user with this id"));
 
-            UserForVacancyPrintDto userDto = UserForVacancyPrintDto.builder().name(userEntity.getName()).age(userEntity.getAge()).email(userEntity.getEmail()).phoneNumber(userEntity.getPhoneNumber()).avatar(userEntity.getAvatar()).build();
+            UserForVacancyPrintDto userDto = UserForVacancyPrintDto.builder().id(userEntity.getId()).name(userEntity.getName()).age(userEntity.getAge()).email(userEntity.getEmail()).phoneNumber(userEntity.getPhoneNumber()).avatar(userEntity.getAvatar()).build();
 
+            Integer id = vacancy.getId();
             String name = vacancy.getName();
             String description = vacancy.getDescription();
             String categoryName = categoryDao.getCategoryById(vacancy.getCategoryId()).getName();
@@ -71,7 +80,7 @@ public class VacancyServiceImpl implements VacancyService {
             LocalDateTime updateTime = vacancy.getUpdateTime();
             Boolean isActive = vacancy.getIsActive();
 
-            VacancyDto vacancyDto = VacancyDto.builder().user(userDto).name(name).description(description).categoryName(categoryName).salary(salary).experienceFrom(experienceFrom).experienceTo(experienceTo).createdDate(createdDate).updateTime(updateTime).isActive(isActive).build();
+            VacancyDto vacancyDto = VacancyDto.builder().id(id).user(userDto).name(name).description(description).categoryName(categoryName).salary(salary).experienceFrom(experienceFrom).experienceTo(experienceTo).createdDate(createdDate).updateTime(updateTime).isActive(isActive).build();
             vacancyDtoList.add(vacancyDto);
         }
         return vacancyDtoList;

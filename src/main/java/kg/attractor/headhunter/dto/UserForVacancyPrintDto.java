@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserForVacancyPrintDto {
+    private Integer id;
     private String name;
     private Integer age;
     private String email;
