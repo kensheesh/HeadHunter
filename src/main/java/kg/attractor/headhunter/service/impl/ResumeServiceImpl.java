@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -297,6 +298,7 @@ public class ResumeServiceImpl implements ResumeService {
             String categoryName = categoryDao.getCategoryById(resume.getCategoryId()).getName();
             BigDecimal salary = resume.getSalary();
             Boolean isActive = resume.getIsActive();
+            LocalDateTime updateTime = LocalDateTime.now();
 
             //-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -329,12 +331,9 @@ public class ResumeServiceImpl implements ResumeService {
             }
 
 
-            ResumeDto resumeDto = ResumeDto.builder().user(userDto).name(name).categoryName(categoryName).salary(salary).workExpInfos(workExperienceInfoDtoFormat).educationInfos(educationInfoDtoFormat).contactInfos(contactInfoDtoFormat).isActive(isActive).build();
+            ResumeDto resumeDto = ResumeDto.builder().user(userDto).name(name).categoryName(categoryName).salary(salary).workExpInfos(workExperienceInfoDtoFormat).educationInfos(educationInfoDtoFormat).contactInfos(contactInfoDtoFormat).isActive(isActive).updateTime(updateTime).build();
 
             resumesDto.add(resumeDto);
-        }
-        if (resumesDto.isEmpty()) {
-            throw new ResumeNotFoundException("You don't have any resumes");
         }
 
         return resumesDto;

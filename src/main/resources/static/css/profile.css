@@ -1,24 +1,11 @@
-.elem-container {
-    margin-bottom: 20px;
+
+/* profile.css */
+
+.company-label {
+    color: #888; /* Пример: светло-серый цвет */
+    font-weight: normal; /* Можно также использовать другие значения, например, lighter или 400 */
 }
 
-.header-top {
-    color: #333;
-    font-size: 24px;
-}
-
-.user-info {
-    border: 1px solid #ccc;
-    padding: 10px;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-}
-
-.lined-green-edit {
-    color: #28a745;
-}
-
-.lined-red a {
-    color: #dc3545;
-    text-decoration: underline;
+.marg {
+    margin-left: 300px;
 }

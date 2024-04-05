@@ -223,9 +223,9 @@ public class VacancyServiceImpl implements VacancyService {
             VacancyDto vacancyDto = VacancyDto.builder().user(userDto).name(name).description(description).categoryName(categoryName).salary(salary).experienceFrom(experienceFrom).experienceTo(experienceTo).createdDate(createdDate).updateTime(updateTime).isActive(isActive).build();
             vacancyDtoList.add(vacancyDto);
         }
-        if (vacancyDtoList.isEmpty()) {
-            throw new ResumeNotFoundException("You don't have any vacancies");
-        }
+//        if (vacancyDtoList.isEmpty()) {
+//            throw new ResumeNotFoundException("You don't have any vacancies");
+//        }
         return vacancyDtoList;
     }
 
