@@ -1,4 +1,10 @@
 <head>
+    <style>
+        .avatar {
+            width: 150px;
+            height: 150px;
+        }
+    </style>
     <meta charset="UTF-8">
     <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
           name="viewport">
@@ -6,14 +12,14 @@
     <title>Profile</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="../static/css/profile.css">
+    <#--    <link rel="stylesheet" href="../static/css/profile.css">-->
 
 </head>
-<body class="bg-secondary">
+<body class="bg-secondary-subtle">
 <div>
     <div class="container">
         <div class="elem-container">
-            <h1 class="header-top d-flex justify-content-center pt-3">Личный кабинет
+            <h1 class="header-top d-flex justify-content-center pt-3 text-dark-emphasis">Личный кабинет
                 <#if user.accountType=="EMPLOYER">
                     Работодателя
                 <#else>
@@ -23,43 +29,38 @@
         </div>
 
         <div class="row mt-5 ms-1 mb-5">
-            <div class="col-md-4 card bg-dark text-white" style="max-width: 540px;">
+            <div class="col-4 bg-white text-dark-emphasis" style="width: 27rem; height: 10rem">
                 <div class="row ms-2">
-                    <div class="col-md-5 d-flex align-items-center">
-                        <#--                        <img alt="profile" src="../../../../data/avatars/base_avatar.jpeg"/>-->
-                        <p class="fs-6 text-white-50 ms-2 my-1 py-0">Профильное фото</p>
+                    <div class="col-5 mt-2 ">
+                        <img class="avatar rounded-circle" src="/users/avatars/${user.id}" alt="photo">
                     </div>
                     <div class="col">
-                        <div class="card-body">
-                            <h5 class="card-title text-white">
-                                <div class="fs-5 text-white">
+                        <div class="card-body mt-3">
+                            <h5 class="card-title">
+                                <div class="fs-5">
                                     <#if user.accountType=="EMPLOYER">
-                                    <#assign str = profile.companyName!"Наименование компании не указано">
-                                    <span class="company-label">Компания:</span>
+                                    <#assign str = profile.companyName>
+                                    <span>Компания:</span>
                                     ${str}
-
                                     <#else>
                                     <#assign variable1 = profile.name>
                                     <#assign variable2 = profile.surname>
-
-                                    <#assign combinedValue = variable1! + variable2!>
-                                    <#assign result = combinedValue!"Пользователь не указал свое имя и фамилию">
-
-                                    Имя: ${result}
+                                    <#assign combinedValue = variable1 + " " + variable2>
+                                    <#assign result = combinedValue>
+                                    ${result}
                                 </div>
                                 <p class="card-text mt-2">
-                                    <small class="fs-6 text-white-50">Возраст:
+                                    <small class="fs-6">Возраст:
                                         <#if user.age?has_content>${user.age}<#else> отсутствует</#if>
                                     </small>
                                 </p> </#if>
                             </h5>
-                            <a class="btn btn btn-secondary mt-4" href="/users/edit/${user.id}">Редактировать</a>
+                            <a class="btn btn-dark rounded-3 bg-body-secondary border border-primary border-1 text-dark-emphasis mt-4 border-opacity-75"
+                               style="height: 2.5rem; width: 12rem" href="/users/edit/${user.id}">Редактировать</a>
                         </div>
                     </div>
                 </div>
             </div>
-
-
             <div class="d-flex align-items-center col-md-2 ms-auto">
                 <#if user.accountType=="EMPLOYER">
                     <a class="btn btn-success btn-lg py-3 px-2 rounded-4" href="vacancies/add_vacancy/${user.id}">+<br>Создать<br>вакансию</a>

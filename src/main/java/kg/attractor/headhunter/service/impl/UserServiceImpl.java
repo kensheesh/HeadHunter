@@ -1,5 +1,6 @@
 package kg.attractor.headhunter.service.impl;
 
+import com.sun.security.auth.UnixNumericGroupPrincipal;
 import kg.attractor.headhunter.dao.UserDao;
 import kg.attractor.headhunter.dto.UserCreateDto;
 import kg.attractor.headhunter.dto.UserDto;
@@ -14,12 +15,16 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -31,6 +36,33 @@ public class UserServiceImpl implements UserService {
     private final UserDao userDao;
     private final ModelMapper modelMapper;
     private final FileUtil fileUtil;
+
+    @SneakyThrows
+    @Override
+    public ResponseEntity<?> getPhoto(Integer id) {
+        User user = userDao.getUserById(id).orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        if (!((user.getAvatar() == null) && !user.getAvatar().isEmpty())) {
+            String extension = getFilePath(user.getAvatar());
+            if (extension != null && extension.equalsIgnoreCase("png")) {
+                return fileUtil.getOutputFile(user.getAvatar(), "avatars", MediaType.IMAGE_PNG);
+            } else if (extension != null && extension.equalsIgnoreCase("jpeg")) {
+                return fileUtil.getOutputFile(user.getAvatar(), "avatars", MediaType.IMAGE_JPEG);
+            }
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return null;
+    }
+
+    private String getFilePath(String avatar) {
+        int x = avatar.lastIndexOf(".");
+        if (x != -1 && x < avatar.length() - 1) {
+            return avatar.substring(x + 1);
+        }
+        return null;
+    }
+
 
     @Override
     @SneakyThrows
@@ -228,6 +260,15 @@ public class UserServiceImpl implements UserService {
 
         String filename = fileUtil.saveUploadedFile(file, "avatars");
         user.setAvatar(filename);
+        userDao.addAvatar(user);
+    }
+
+    @Override
+    @SneakyThrows
+    public void uploadUserAvatar(Integer id, MultipartFile file) {
+        User user = userDao.getUserById(id).orElseThrow(() -> new UserNotFoundException("User not found"));
+        String fileName = fileUtil.saveUploadedFile(file, "avatars");
+        user.setAvatar(fileName);
         userDao.addAvatar(user);
     }
 

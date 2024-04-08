@@ -87,5 +87,4 @@ public class ProfileServiceImpl implements ProfileService {
         a.setAge(user.getAge());
         return a;
     }
-
 }
