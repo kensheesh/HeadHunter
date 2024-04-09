@@ -193,8 +193,8 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     @SneakyThrows
-    public void createVacancyForEmployer(VacancyCreateDto vacancyDto, Authentication authentication) {
-        User user = getUserFromAuth(authentication.getPrincipal().toString());
+    public void createVacancyForEmployer(VacancyCreateDto vacancyDto, Integer userId) {
+        User user = userDao.getUserById(userId).orElseThrow(() -> new UserNotFoundException("Can't find user"));
         Category category = categoryDao.getCategoryByName(vacancyDto.getCategoryName()).orElseThrow(() -> new CategoryNotFoundException("Cannot find this category"));
         if (vacancyDto.getExperienceFrom() > vacancyDto.getExperienceTo()) {
             throw new VacancyNotFoundException("ExperienceTo cannot be less then experienceFrom");
@@ -226,6 +226,7 @@ public class VacancyServiceImpl implements VacancyService {
 
             UserForVacancyPrintDto userDto = UserForVacancyPrintDto.builder().name(userEntity.getName()).age(userEntity.getAge()).email(userEntity.getEmail()).phoneNumber(userEntity.getPhoneNumber()).avatar(userEntity.getAvatar()).build();
 
+            Integer id = vacancy.getId();
             String name = vacancy.getName();
             String description = vacancy.getDescription();
             String categoryName = categoryDao.getCategoryById(vacancy.getCategoryId()).getName();
@@ -236,7 +237,7 @@ public class VacancyServiceImpl implements VacancyService {
             LocalDateTime updateTime = vacancy.getUpdateTime();
             Boolean isActive = vacancy.getIsActive();
 
-            VacancyDto vacancyDto = VacancyDto.builder().user(userDto).name(name).description(description).categoryName(categoryName).salary(salary).experienceFrom(experienceFrom).experienceTo(experienceTo).createdDate(createdDate).updateTime(updateTime).isActive(isActive).build();
+            VacancyDto vacancyDto = VacancyDto.builder().user(userDto).id(id).name(name).description(description).categoryName(categoryName).salary(salary).experienceFrom(experienceFrom).experienceTo(experienceTo).createdDate(createdDate).updateTime(updateTime).isActive(isActive).build();
             vacancyDtoList.add(vacancyDto);
         }
 //        if (vacancyDtoList.isEmpty()) {
@@ -248,13 +249,12 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     @SneakyThrows
-    public void editVacancy(VacancyEditDto vacancyDto, Authentication authentication, Integer id) {
-        User user = getUserFromAuth(authentication.getPrincipal().toString());
+    public void editVacancy(VacancyEditDto vacancyDto, Integer id) {
         Vacancy vacancy = vacancyDao.getVacancyById(id).orElseThrow(() -> new ResumeNotFoundException("Can't find vacancy with id " + id));
 
-        if (!vacancyDao.isEmployerHasVacancyById(user, id)) {
-            throw new ResumeNotFoundException("Can't find your vacancy with this id");
-        }
+//        if (!vacancyDao.isEmployerHasVacancyById(user, id)) {
+//            throw new ResumeNotFoundException("Can't find your vacancy with this id");
+//        }
 
         vacancy.setId(id);
         if (vacancyDto.getName() != null) {
@@ -286,8 +286,10 @@ public class VacancyServiceImpl implements VacancyService {
         }
 
 
-        if (vacancyDto.getIsActive() != null) {
-            vacancy.setIsActive(vacancyDto.getIsActive());
+        if (Boolean.TRUE.equals(vacancyDto.getIsActive())) {
+            vacancy.setIsActive(true);
+        } else {
+            vacancy.setIsActive(false);
         }
 
         vacancyDao.editVacancy(vacancy);

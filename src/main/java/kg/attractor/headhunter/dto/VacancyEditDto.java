@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class VacancyEditDto {
 
-    @Size(min = 2, max = 20)
+    @Size(min = 2, max = 40)
     private String name;
 
     @Size(min = 2, max = 100)

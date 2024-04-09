@@ -19,9 +19,9 @@ public interface VacancyService {
     List<VacancyDto> getAllVacanciesOfEmployer(Authentication authentication);
     List<VacancyDto> getAllVacanciesOfEmployerById(Integer userId);
 
-    void createVacancyForEmployer(VacancyCreateDto vacancyDto, Authentication authentication);
+    void createVacancyForEmployer(VacancyCreateDto vacancyDto, Integer userId);
 
-    void editVacancy(VacancyEditDto vacancyDto, Authentication authentication, Integer id);
+    void editVacancy(VacancyEditDto vacancyDto, Integer id);
 
     void deleteVacancyById(Integer vacancyId, Authentication authentication);
 

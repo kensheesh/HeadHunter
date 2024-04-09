@@ -16,6 +16,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
@@ -56,13 +57,23 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy
-                        .STATELESS))
+//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy
+//                        .STATELESS))
                 .httpBasic(Customizer.withDefaults())
-                .formLogin(AbstractHttpConfigurer::disable)
-                .logout(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
+
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .loginProcessingUrl("/login")
+                        .defaultSuccessUrl("/")
+                        .permitAll())
+                .logout(logout -> logout
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                        .permitAll())
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(AntPathRequestMatcher.antMatcher("/")).permitAll()
+
+
 //                        .requestMatchers(HttpMethod.PUT, "/accounts").fullyAuthenticated()
 //                        .requestMatchers(HttpMethod.POST, "/accounts/avatar").fullyAuthenticated()
 //

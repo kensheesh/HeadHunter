@@ -35,17 +35,17 @@ public class VacancyRestController {
         return ResponseEntity.ok(vacancyService.getAllVacanciesOfEmployer(authentication));
     }
 
-    @PostMapping
-    public ResponseEntity<?> createVacancy(@Valid @RequestBody VacancyCreateDto vacancyDto, Authentication authentication) {
-        vacancyService.createVacancyForEmployer(vacancyDto, authentication);
-        return ResponseEntity.ok("Vacancy is created");
-    }
+//    @PostMapping
+//    public ResponseEntity<?> createVacancy(@Valid @RequestBody VacancyCreateDto vacancyDto, Authentication authentication) {
+//        vacancyService.createVacancyForEmployer(vacancyDto, authentication);
+//        return ResponseEntity.ok("Vacancy is created");
+//    }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> editVacancyForEmployer(@Valid @RequestBody VacancyEditDto vacancyEditDto, Authentication authentication, @PathVariable Integer id) {
-        vacancyService.editVacancy(vacancyEditDto, authentication, id);
-        return ResponseEntity.ok("Vacancy is successfully edited");
-    }
+//    @PutMapping("/{id}")
+//    public ResponseEntity<?> editVacancyForEmployer(@Valid @RequestBody VacancyEditDto vacancyEditDto, Authentication authentication, @PathVariable Integer id) {
+//        vacancyService.editVacancy(vacancyEditDto, authentication, id);
+//        return ResponseEntity.ok("Vacancy is successfully edited");
+//    }
 
     @DeleteMapping("/{vacancyId}")
     public ResponseEntity<?> deleteVacancyById(@PathVariable Integer vacancyId, Authentication authentication) {

@@ -1,6 +1,5 @@
 package kg.attractor.headhunter.service.impl;
 
-import com.sun.security.auth.UnixNumericGroupPrincipal;
 import kg.attractor.headhunter.dao.UserDao;
 import kg.attractor.headhunter.dto.UserCreateDto;
 import kg.attractor.headhunter.dto.UserDto;
@@ -24,7 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -280,5 +278,24 @@ public class UserServiceImpl implements UserService {
         String email = auth.substring(x + 1, y);
         return userDao.getUserByEmail(email).orElseThrow(() -> new UserNotFoundException("can't find user with this email"));
     }
+
+    public UserDto mapToUserDto(User user) {
+        if (user != null) {
+            return UserDto.builder()
+                    .id(user.getId())
+                    .name(user.getName())
+                    .surname(user.getSurname())
+                    .age(user.getAge())
+                    .email(user.getEmail())
+                    .password(user.getPassword())
+                    .phoneNumber(user.getPhoneNumber())
+                    .avatar(user.getAvatar())
+                    .accountType(user.getAccountType())
+                    .build();
+        } else {
+            return null;
+        }
+    }
+
 
 }

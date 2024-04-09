@@ -63,7 +63,7 @@
             </div>
             <div class="d-flex align-items-center col-md-2 ms-auto">
                 <#if user.accountType=="EMPLOYER">
-                    <a class="btn btn-success btn-lg py-3 px-2 rounded-4" href="vacancies/add_vacancy/${user.id}">+<br>Создать<br>вакансию</a>
+                    <a class="btn btn-success btn-lg py-3 px-2 rounded-4" href="/vacancies/create/${user.id}">+<br>Создать<br>вакансию</a>
                 <#else>
                     <a class="btn btn-success btn-lg py-3 px-2 rounded-4 me-3" href="resumes/add_resume${user.id}">+<br>Создать<br>резюме</a>
                     <a class="btn btn-dark btn-lg py-5 px-2 rounded-4 text-white" href="resumes/responded${user.id}">Отклики</a>
@@ -72,8 +72,8 @@
         </div>
 
 
-        <div class="mt-5 pb-5">
-            <h2 class="section-header mb-3">
+        <div class="">
+            <h2 class="">
                 <div class=""><#if user.accountType=="EMPLOYER">
                         Вакансии:
                     <#else>
@@ -81,36 +81,22 @@
                     </#if>
                 </div>
             </h2>
-            <div class="d-flex justify-content mx-3 ms-0 ps-0">
-                <#if items??>
-                    <#list items as item>
-                        <div class="card bg-body-secondary text-black rounded-4 p-2 me-3">
-                            <div class="card-body card-add-border fw-bold fs-4 pb-0 ps-1 ms-0 mb-2">
-                                <#if item.name??>
-                                    ${item.name}
-                                <#else>
-                                    ${item.name}
-                                </#if>
-                            </div>
-                            <p class="p-2 py-0 pb-0 mb-0">Дата обновления:</p>
-                            <div class="p-2 pt-1"><#if item.updateTime?has_content>${item.updateTime}<#else></#if> </div>
-                            <div class="d-flex justify-content-center ">
-                                <button class="btn btn-primary p-2 ms-0">Обновить</button>
-                                <button class="btn btn btn-secondary p-2 ms-2">Редактировать</button>
-                            </div>
+            <#list items as item>
+                <div class="card mb-3">
+                    <div class="card-body rounded-0">
+                        <h5 class="card-title">${item.name}</h5>
+                        <p class="card-text">Дата обновления: ${item.updateTime}</p>
+                        <div class="d-flex justify-content-center">
+                            <a href="#" class="btn btn-primary me-2">Обновить</a>
+                            <a href="/vacancies/edit/${item.id}" class="btn btn-secondary">Редактировать</a>
                         </div>
+                    </div>
+                </div>
+            </#list>
 
-                    </#list>
-                <#else>
-                    Пользователь ещё не создал
-                    <#if user.accountType=="EMPLOYER">
-                        ни одной вакансии
-                    <#else>
-                        ни одного резюме
-                    </#if>
-                </#if>
-            </div>
+
         </div>
     </div>
 </div>
+
 </body>

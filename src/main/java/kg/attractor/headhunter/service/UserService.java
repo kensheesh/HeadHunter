@@ -3,6 +3,7 @@ package kg.attractor.headhunter.service;
 import kg.attractor.headhunter.dto.UserCreateDto;
 import kg.attractor.headhunter.dto.UserDto;
 import kg.attractor.headhunter.dto.UserEditDto;
+import kg.attractor.headhunter.model.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,4 +40,6 @@ public interface UserService {
     void addAvatar(MultipartFile file, Authentication authentication);
 
     void uploadUserAvatar(Integer id, MultipartFile file);
+
+    UserDto mapToUserDto(User user);
 }
