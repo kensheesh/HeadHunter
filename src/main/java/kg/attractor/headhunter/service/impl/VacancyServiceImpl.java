@@ -19,6 +19,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -55,11 +59,38 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
 
-    @Override
+//    @Override
+//    @SneakyThrows
+//    public List<VacancyDto> getAllActiveVacancies() {
+//
+//        List<Vacancy> vacancies = vacancyDao.getAllActiveVacancies();
+//
+//        List<VacancyDto> vacancyDtoList = new ArrayList<>();
+//
+//        for (Vacancy vacancy : vacancies) {
+//            User userEntity = userDao.getUserById(vacancy.getAuthorId()).orElseThrow(() -> new UserNotFoundException("Cannot find user with this id"));
+//
+//            UserForVacancyPrintDto userDto = UserForVacancyPrintDto.builder().id(userEntity.getId()).name(userEntity.getName()).age(userEntity.getAge()).email(userEntity.getEmail()).phoneNumber(userEntity.getPhoneNumber()).avatar(userEntity.getAvatar()).build();
+//
+//            Integer id = vacancy.getId();
+//            String name = vacancy.getName();
+//            String description = vacancy.getDescription();
+//            String categoryName = categoryDao.getCategoryById(vacancy.getCategoryId()).getName();
+//            BigDecimal salary = vacancy.getSalary();
+//            Integer experienceFrom = vacancy.getExperienceFrom();
+//            Integer experienceTo = vacancy.getExperienceTo();
+//            LocalDateTime createdDate = vacancy.getCreatedDate();
+//            LocalDateTime updateTime = vacancy.getUpdateTime();
+//            Boolean isActive = vacancy.getIsActive();
+//
+//            VacancyDto vacancyDto = VacancyDto.builder().id(id).user(userDto).name(name).description(description).categoryName(categoryName).salary(salary).experienceFrom(experienceFrom).experienceTo(experienceTo).createdDate(createdDate).updateTime(updateTime).isActive(isActive).build();
+//            vacancyDtoList.add(vacancyDto);
+//        }
+//        return vacancyDtoList;
+//    }
+
     @SneakyThrows
-    public List<VacancyDto> getAllActiveVacancies() {
-        String x = passwordEncoder.encode("amazon");
-        System.out.println(x);
+    public Page<VacancyDto> getAllActiveVacancies(int pageNumber, int pageSize) {
         List<Vacancy> vacancies = vacancyDao.getAllActiveVacancies();
 
         List<VacancyDto> vacancyDtoList = new ArrayList<>();
@@ -83,7 +114,20 @@ public class VacancyServiceImpl implements VacancyService {
             VacancyDto vacancyDto = VacancyDto.builder().id(id).user(userDto).name(name).description(description).categoryName(categoryName).salary(salary).experienceFrom(experienceFrom).experienceTo(experienceTo).createdDate(createdDate).updateTime(updateTime).isActive(isActive).build();
             vacancyDtoList.add(vacancyDto);
         }
-        return vacancyDtoList;
+
+        return toPage(vacancyDtoList, PageRequest.of(pageNumber, pageSize));
+    }
+
+
+    private Page<VacancyDto> toPage(List<VacancyDto> resumes, Pageable pageable) {
+        if (pageable.getOffset() >= resumes.size()) {
+            return Page.empty();
+        }
+        int startIndex = (int) pageable.getOffset();
+        int endIndex = (int) ((pageable.getOffset() + pageable.getPageSize() > resumes.size() ?
+                resumes.size() : pageable.getOffset() + pageable.getPageSize()));
+        List<VacancyDto> subList = resumes.subList(startIndex, endIndex);
+        return new PageImpl<>(subList, pageable, resumes.size());
     }
 
     @Override

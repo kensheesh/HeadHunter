@@ -5,6 +5,8 @@ import kg.attractor.headhunter.dto.*;
 import kg.attractor.headhunter.service.UserService;
 import kg.attractor.headhunter.service.VacancyService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,12 +21,12 @@ public class VacancyController {
     private final VacancyService vacancyService;
     private final UserService userService;
 
-    @GetMapping
-    public String viewAllVacancies(Model model) {
-        model.addAttribute("vacancies", vacancyService.getAllActiveVacancies());
+    @GetMapping()
+    public String viewAllVacancies(Model model, @RequestParam(name = "page", defaultValue = "0") Integer page) {
+        Page<VacancyDto> vacanciesPage = vacancyService.getAllActiveVacancies(page, 5);
+        model.addAttribute("vacanciesPage", vacanciesPage);
         return "vacancies/all_vacancies";
     }
-
 
 
     @GetMapping("/{vacancyId}")

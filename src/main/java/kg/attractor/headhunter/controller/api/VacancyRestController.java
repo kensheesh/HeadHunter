@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.*;
 public class VacancyRestController {
     private final VacancyServiceImpl vacancyService;
 
-    @GetMapping
-    public ResponseEntity<?> getAllActiveVacancies() {
-        return ResponseEntity.ok(vacancyService.getAllActiveVacancies());
-    }
+//    @GetMapping
+//    public ResponseEntity<?> getAllActiveVacancies() {
+//        return ResponseEntity.ok(vacancyService.getAllActiveVacancies());
+//    }
 
     @GetMapping("/name/{name}")
     public ResponseEntity<?> getActiveVacanciesByName(@PathVariable String name) {
