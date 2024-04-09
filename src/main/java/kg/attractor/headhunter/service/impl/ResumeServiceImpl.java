@@ -9,6 +9,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -49,6 +53,7 @@ public class ResumeServiceImpl implements ResumeService {
                 .avatar(userEntity.getAvatar())
                 .build();
 
+        Integer id = resume.getId();
         String name = resume.getName();
         String categoryName = categoryDao.getCategoryById(resume.getCategoryId()).getName();
         BigDecimal salary = resume.getSalary();
@@ -93,6 +98,7 @@ public class ResumeServiceImpl implements ResumeService {
         }
 
         return ResumeDto.builder()
+                .id(id)
                 .user(userDto)
                 .name(name)
                 .categoryName(categoryName)
@@ -107,7 +113,7 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     @SneakyThrows
-    public List<ResumeDto> getAllActiveResumes(Authentication authentication) {
+    public Page<ResumeDto> getAllActiveResumes(int pageNumber, int pageSize) {
         List<Resume> resumes = resumeDao.getAllActiveResumes();
 
         List<ResumeDto> resumesDto = new ArrayList<>();
@@ -117,10 +123,13 @@ public class ResumeServiceImpl implements ResumeService {
 
             UserResumePrintDto userDto = UserResumePrintDto.builder().name(userEntity.getName()).surname(userEntity.getSurname()).age(userEntity.getAge()).email(userEntity.getEmail()).phoneNumber(userEntity.getPhoneNumber()).avatar(userEntity.getAvatar()).build();
 
+            Integer id = resume.getId();
             String name = resume.getName();
             String categoryName = categoryDao.getCategoryById(resume.getCategoryId()).getName();
             BigDecimal salary = resume.getSalary();
             Boolean isActive = resume.getIsActive();
+            LocalDateTime updateTime = resume.getUpdateTime();
+
 
             //-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -153,7 +162,8 @@ public class ResumeServiceImpl implements ResumeService {
             }
 
 
-            ResumeDto resumeDto = ResumeDto.builder().user(userDto).name(name).categoryName(categoryName).salary(salary).workExpInfos(workExperienceInfoDtoFormat).educationInfos(educationInfoDtoFormat).contactInfos(contactInfoDtoFormat).isActive(isActive).build();
+            ResumeDto resumeDto = ResumeDto.builder()                .id(id)
+                    .user(userDto).name(name).categoryName(categoryName).salary(salary).workExpInfos(workExperienceInfoDtoFormat).educationInfos(educationInfoDtoFormat).contactInfos(contactInfoDtoFormat).isActive(isActive).updateTime(updateTime).build();
 
             resumesDto.add(resumeDto);
         }
@@ -161,7 +171,19 @@ public class ResumeServiceImpl implements ResumeService {
             throw new ResumeNotFoundException("Cannot find any resume!");
         }
 
-        return resumesDto;
+        return toPage(resumesDto, PageRequest.of(pageNumber, pageSize));
+    }
+
+    @SneakyThrows
+    private Page<ResumeDto> toPage(List<ResumeDto> resumes, Pageable pageable){
+        if (pageable.getOffset() >= resumes.size()){
+            return Page.empty();
+        }
+        int startIndex = (int) pageable.getOffset();
+        int endIndex = (int) ((pageable.getOffset() + pageable.getPageSize() > resumes.size() ?
+                resumes.size() : pageable.getOffset() + pageable.getPageSize()));
+        List<ResumeDto> subList = resumes.subList(startIndex, endIndex);
+        return new PageImpl<>(subList, pageable, resumes.size());
     }
 
 

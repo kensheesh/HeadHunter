@@ -14,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResumeDto {
+    private Integer id;
     private UserResumePrintDto user;
     private String name;
     private String categoryName;

@@ -1,12 +1,10 @@
 package kg.attractor.headhunter.controller.mvc;
 
 import jakarta.validation.Valid;
-import kg.attractor.headhunter.dto.ContactInfoDto;
-import kg.attractor.headhunter.dto.EducationInfoDto;
-import kg.attractor.headhunter.dto.ResumeCreateDto;
-import kg.attractor.headhunter.dto.WorkExperienceInfoDto;
+import kg.attractor.headhunter.dto.*;
 import kg.attractor.headhunter.service.ResumeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +20,17 @@ import java.util.List;
 public class ResumeController {
     private final ResumeService resumeService;
 
+
+    @GetMapping()
+    public String resumesGet(Model model, @RequestParam(name = "page", defaultValue = "0") Integer page) {
+        Page<ResumeDto> resumesPage = resumeService.getAllActiveResumes(page,5);
+        model.addAttribute("resumesPage", resumesPage);
+        return "resumes/all_resumes";
+    }
     @GetMapping("/{resumeId}")
     public String getResume(@PathVariable Integer resumeId, Model model) {
         model.addAttribute("resume", resumeService.getResumeById(resumeId));
-        return "resume_info";
+        return "resumes/resume_info";
     }
 
     @GetMapping("/create")

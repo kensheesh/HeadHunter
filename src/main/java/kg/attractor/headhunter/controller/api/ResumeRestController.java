@@ -18,11 +18,11 @@ import java.util.List;
 public class ResumeRestController {
     private final ResumeService resumeService;
 
-    @GetMapping
-    public ResponseEntity<?> getAllActiveResumesByName(Authentication authentication) {
-        List<ResumeDto> resumes = resumeService.getAllActiveResumes(authentication);
-        return ResponseEntity.ok(resumes);
-    }
+//    @GetMapping
+//    public ResponseEntity<?> getAllActiveResumesByName(Authentication authentication) {
+//        List<ResumeDto> resumes = resumeService.getAllActiveResumes(authentication);
+//        return ResponseEntity.ok(resumes);
+//    }
 
     @GetMapping("/name/{name}")
     public ResponseEntity<?> getAllActiveResumesByName(@PathVariable String name, Authentication authentication) {
