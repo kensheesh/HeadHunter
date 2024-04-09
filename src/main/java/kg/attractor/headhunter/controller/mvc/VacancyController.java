@@ -25,6 +25,8 @@ public class VacancyController {
         return "vacancies/all_vacancies";
     }
 
+
+
     @GetMapping("/{vacancyId}")
     public String getResumeById(@PathVariable Integer vacancyId, Model model) {
         model.addAttribute("vacancy", vacancyService.getVacancyById(vacancyId));

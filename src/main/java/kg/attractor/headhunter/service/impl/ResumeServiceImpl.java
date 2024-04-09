@@ -416,16 +416,22 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     @SneakyThrows
-    public void createResumeForApplicant(ResumeCreateDto resumeDto, Authentication authentication) {
-        User user = getUserFromAuth(authentication.getPrincipal().toString());
+    public void createResumeForApplicant(ResumeCreateDto resumeDto) {
+//        User user = getUserFromAuth(authentication.getPrincipal().toString());
         Category category = categoryDao.getCategoryByName(resumeDto.getCategoryName()).orElseThrow(() -> new CategoryNotFoundException("Cannot find this category"));
 
         Resume resume = new Resume();
-        resume.setUserId(user.getId());
+        resume.setUserId(1);
         resume.setName(resumeDto.getName());
         resume.setCategoryId(category.getId());
         resume.setSalary(resumeDto.getSalary());
-        resume.setIsActive(resumeDto.getIsActive());
+
+        if (Boolean.TRUE.equals(resumeDto.getIsActive())) {
+            resume.setIsActive(true);
+        } else {
+            resume.setIsActive(false);
+        }
+
         Integer resumeId = resumeDao.createResumeAndReturnId(resume);
 
         if (resumeDto.getWorkExpInfos() != null && !resumeDto.getWorkExpInfos().isEmpty()) {

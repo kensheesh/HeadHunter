@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -28,14 +29,13 @@ public class ResumeCreateDto {
     @Max(1000000)
     private BigDecimal salary;
 
-    @Valid
-    private List<WorkExperienceInfoDto> workExpInfos;
+    @Builder.Default // Initialize the list
+    private List<WorkExperienceInfoDto> workExpInfos = new ArrayList<>();
+    @Builder.Default // Initialize the list
+    private List<EducationInfoDto> educationInfos = new ArrayList<>();
+    @Builder.Default // Initialize the list
+    private List<ContactInfoDto> contactInfos = new ArrayList<>();
 
-    @Valid
-    private List<EducationInfoDto> educationInfos;
-
-    @NotEmpty(message = "Contact info list cannot be empty")
-    private List<ContactInfoDto> contactInfos;
 
     private Boolean isActive;
 }

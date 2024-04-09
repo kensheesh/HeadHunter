@@ -42,11 +42,11 @@ public class ResumeRestController {
         return ResponseEntity.ok(resumes);
     }
 
-    @PostMapping
-    public ResponseEntity<?> createResumeForApplicant(@Valid @RequestBody ResumeCreateDto resumeDto, Authentication authentication) {
-        resumeService.createResumeForApplicant(resumeDto, authentication);
-        return ResponseEntity.ok("Resume is successfully created");
-    }
+//    @PostMapping
+//    public ResponseEntity<?> createResumeForApplicant(@Valid @RequestBody ResumeCreateDto resumeDto, Authentication authentication) {
+//        resumeService.createResumeForApplicant(resumeDto, authentication);
+//        return ResponseEntity.ok("Resume is successfully created");
+//    }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> editResumeForApplicant(@Valid @RequestBody ResumeEditDto resumeEditDto, Authentication authentication, @PathVariable Integer id) {
