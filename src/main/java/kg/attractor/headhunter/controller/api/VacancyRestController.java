@@ -25,10 +25,10 @@ public class VacancyRestController {
         return ResponseEntity.ok(vacancyService.getAllActiveVacanciesByName(name));
     }
 
-    @GetMapping("/categoryName/{categoryName}")
-    public ResponseEntity<?> getVacanciesByCategoryId(@PathVariable String categoryName) {
-        return ResponseEntity.ok(vacancyService.getAllActiveVacanciesByCategoryName(categoryName));
-    }
+//    @GetMapping("/categoryName/{categoryName}")
+//    public ResponseEntity<?> getVacanciesByCategoryId(@PathVariable String categoryName) {
+//        return ResponseEntity.ok(vacancyService.getAllActiveVacanciesByCategoryName(categoryName));
+//    }
 
     @GetMapping("/employer")
     public ResponseEntity<?> getVacanciesByCategoryId(Authentication authentication) {

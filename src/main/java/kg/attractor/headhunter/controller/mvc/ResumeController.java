@@ -1,6 +1,5 @@
 package kg.attractor.headhunter.controller.mvc;
 
-import jakarta.validation.Valid;
 import kg.attractor.headhunter.dto.*;
 import kg.attractor.headhunter.service.ResumeService;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +22,11 @@ public class ResumeController {
 
     @GetMapping()
     public String resumesGet(Model model, @RequestParam(name = "page", defaultValue = "0") Integer page) {
-        Page<ResumeDto> resumesPage = resumeService.getAllActiveResumes(page,5);
+        Page<ResumeDto> resumesPage = resumeService.getAllActiveResumes(page, 5);
         model.addAttribute("resumesPage", resumesPage);
         return "resumes/all_resumes";
     }
+
     @GetMapping("/{resumeId}")
     public String getResume(@PathVariable Integer resumeId, Model model) {
         model.addAttribute("resume", resumeService.getResumeById(resumeId));

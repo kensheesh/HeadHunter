@@ -162,7 +162,7 @@ public class ResumeServiceImpl implements ResumeService {
             }
 
 
-            ResumeDto resumeDto = ResumeDto.builder()                .id(id)
+            ResumeDto resumeDto = ResumeDto.builder().id(id)
                     .user(userDto).name(name).categoryName(categoryName).salary(salary).workExpInfos(workExperienceInfoDtoFormat).educationInfos(educationInfoDtoFormat).contactInfos(contactInfoDtoFormat).isActive(isActive).updateTime(updateTime).build();
 
             resumesDto.add(resumeDto);
@@ -175,8 +175,8 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @SneakyThrows
-    private Page<ResumeDto> toPage(List<ResumeDto> resumes, Pageable pageable){
-        if (pageable.getOffset() >= resumes.size()){
+    private Page<ResumeDto> toPage(List<ResumeDto> resumes, Pageable pageable) {
+        if (pageable.getOffset() >= resumes.size()) {
             return Page.empty();
         }
         int startIndex = (int) pageable.getOffset();

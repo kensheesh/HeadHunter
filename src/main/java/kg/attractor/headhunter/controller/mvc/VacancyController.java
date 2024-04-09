@@ -1,15 +1,13 @@
 package kg.attractor.headhunter.controller.mvc;
 
 import jakarta.validation.Valid;
-import kg.attractor.headhunter.dto.*;
+import kg.attractor.headhunter.dto.VacancyCreateDto;
+import kg.attractor.headhunter.dto.VacancyDto;
+import kg.attractor.headhunter.dto.VacancyEditDto;
 import kg.attractor.headhunter.service.UserService;
 import kg.attractor.headhunter.service.VacancyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +25,17 @@ public class VacancyController {
         model.addAttribute("vacanciesPage", vacanciesPage);
         return "vacancies/all_vacancies";
     }
+
+    @GetMapping("/filter")
+    public String filterVacanciesByCategory(Model model, @RequestParam(name = "category") String categoryName,
+                                            @RequestParam(name = "page", defaultValue = "0") Integer page) {
+        Page<VacancyDto> filteredVacancies = vacancyService.getAllActiveVacanciesByCategoryName(categoryName, page, 5);
+        model.addAttribute("vacanciesPage", filteredVacancies);
+        model.addAttribute("selectedCategory", categoryName); // Добавляем выбранную категорию в модель
+        return "vacancies/all_vacancies";
+    }
+
+
 
 
     @GetMapping("/{vacancyId}")

@@ -24,6 +24,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -142,6 +143,7 @@ public class VacancyServiceImpl implements VacancyService {
 
             UserForVacancyPrintDto userDto = UserForVacancyPrintDto.builder().name(userEntity.getName()).age(userEntity.getAge()).email(userEntity.getEmail()).phoneNumber(userEntity.getPhoneNumber()).avatar(userEntity.getAvatar()).build();
 
+            Integer id = vacancy.getId();
             String name = vacancy.getName();
             String description = vacancy.getDescription();
             String categoryName = categoryDao.getCategoryById(vacancy.getCategoryId()).getName();
@@ -152,7 +154,7 @@ public class VacancyServiceImpl implements VacancyService {
             LocalDateTime updateTime = vacancy.getUpdateTime();
             Boolean isActive = vacancy.getIsActive();
 
-            VacancyDto vacancyDto = VacancyDto.builder().user(userDto).name(name).description(description).categoryName(categoryName).salary(salary).experienceFrom(experienceFrom).experienceTo(experienceTo).createdDate(createdDate).updateTime(updateTime).isActive(isActive).build();
+            VacancyDto vacancyDto = VacancyDto.builder().id(id).user(userDto).name(name).description(description).categoryName(categoryName).salary(salary).experienceFrom(experienceFrom).experienceTo(experienceTo).createdDate(createdDate).updateTime(updateTime).isActive(isActive).build();
             vacancyDtoList.add(vacancyDto);
         }
         if (vacancyDtoList.isEmpty()) {
@@ -163,7 +165,7 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     @SneakyThrows
-    public List<VacancyDto> getAllActiveVacanciesByCategoryName(String categoriesName) {
+    public Page<VacancyDto> getAllActiveVacanciesByCategoryName(String categoriesName, int pageNumber, int pageSize) {
         Category category = categoryDao.getCategoryByName(categoriesName).orElseThrow(() -> new CategoryNotFoundException("Cannot find any resume with category: " + categoriesName));
 
         List<Vacancy> vacancies = vacancyDao.getAllActiveVacanciesByCategoryId(category.getId());
@@ -191,7 +193,7 @@ public class VacancyServiceImpl implements VacancyService {
         if (vacancyDtoList.isEmpty()) {
             throw new ResumeNotFoundException("Cannot find any vacancies with categoryName " + categoriesName);
         }
-        return vacancyDtoList;
+        return toPage(vacancyDtoList, PageRequest.of(pageNumber, pageSize));
     }
 
     @SneakyThrows

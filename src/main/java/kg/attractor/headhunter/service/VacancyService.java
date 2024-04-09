@@ -15,7 +15,7 @@ public interface VacancyService {
 
     List<VacancyDto> getAllActiveVacanciesByName(String title);
 
-    List<VacancyDto> getAllActiveVacanciesByCategoryName(String categoriesName);
+    public Page<VacancyDto> getAllActiveVacanciesByCategoryName(String categoriesName, int pageNumber, int pageSize);
 
     List<VacancyDto> getAllVacanciesOfEmployer(Authentication authentication);
     List<VacancyDto> getAllVacanciesOfEmployerById(Integer userId);
