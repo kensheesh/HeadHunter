@@ -88,7 +88,7 @@
                         <p class="card-text">Дата обновления: ${item.updateTime}</p>
                         <div class="d-flex justify-content-center">
                             <a href="#" class="btn btn-primary me-2">Обновить</a>
-                            <a href="/vacancies/edit/${item.id}" class="btn btn-secondary">Редактировать</a>
+                            <a href="/vacancies/edit/" class="btn btn-secondary">Редактировать</a>
                         </div>
                     </div>
                 </div>
