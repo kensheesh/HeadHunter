@@ -27,8 +27,8 @@ databaseChangeLog:
             sql: |
               insert into users(name, age, email, password, phoneNumber, avatar, accountType, enabled, role_id)
               VALUES
-              ('John Doe', 30,'asdf@asdf.asdf', '$2a$12$gia1VaPRIlJ5rHQ6dI6ZkOUiFCDNRzWXqxybDny9j7LUveUfw3r2u', '1234567890', 'avatar.jpg',
+              ('John Doe', 30,'asdf@asdf.asdf', '$2a$12$gia1VaPRIlJ5rHQ6dI6ZkOUiFCDNRzWXqxybDny9j7LUveUfw3r2u', '1234567890', 'base_avatar.png',
               'EMPLOYER', TRUE, (select id from roles where role = 'EMPLOYER')),
 
-              ('Jane Doe', 25, 'qwe@qwe.qwe', '$2a$12$R2WIT.PXQfBf.iHJCnl1RusjOWeIONtWXC5us4IDZB5o/SYLKpMqe', '0987654321', 'avatar.jpg',
+              ('Jane Doe', 25, 'qwe@qwe.qwe', '$2a$12$R2WIT.PXQfBf.iHJCnl1RusjOWeIONtWXC5us4IDZB5o/SYLKpMqe', '0987654321', 'base_avatar.png',
               'APPLICANT', TRUE, (select id from roles where role = 'APPLICANT'));

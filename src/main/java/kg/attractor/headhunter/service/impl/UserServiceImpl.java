@@ -4,6 +4,7 @@ import kg.attractor.headhunter.dao.UserDao;
 import kg.attractor.headhunter.dto.UserCreateDto;
 import kg.attractor.headhunter.dto.UserDto;
 import kg.attractor.headhunter.dto.UserEditDto;
+import kg.attractor.headhunter.dto.UserPasswordChangeDto;
 import kg.attractor.headhunter.exception.UserNotFoundException;
 import kg.attractor.headhunter.model.AccountType;
 import kg.attractor.headhunter.model.User;
@@ -37,9 +38,8 @@ public class UserServiceImpl implements UserService {
 
     @SneakyThrows
     @Override
-    public ResponseEntity<?> getPhoto(Integer id) {
-        User user = userDao.getUserById(id).orElseThrow(() -> new UserNotFoundException("User not found"));
-
+    public ResponseEntity<?> getPhoto(Authentication authentication) {
+        User user = getUserFromAuth(authentication.getPrincipal().toString());
         if (!((user.getAvatar() == null) && !user.getAvatar().isEmpty())) {
             String extension = getFilePath(user.getAvatar());
             if (extension != null && extension.equalsIgnoreCase("png")) {
@@ -111,6 +111,13 @@ public class UserServiceImpl implements UserService {
     @SneakyThrows
     public UserDto getUserById(Integer id) {
         User user = userDao.getUserById(id).orElseThrow(() -> new UserNotFoundException("Can't find user with id: " + id));
+        return modelMapper.map(user, UserDto.class);
+    }
+
+    @Override
+    @SneakyThrows
+    public UserDto getUserByAuth(Authentication authentication) {
+        User user = getUserFromAuth(authentication.getPrincipal().toString());
         return modelMapper.map(user, UserDto.class);
     }
 
@@ -263,11 +270,27 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @SneakyThrows
-    public void uploadUserAvatar(Integer id, MultipartFile file) {
-        User user = userDao.getUserById(id).orElseThrow(() -> new UserNotFoundException("User not found"));
+    public void uploadUserAvatar(Authentication authentication, MultipartFile file) {
+        User user = getUserFromAuth(authentication.getPrincipal().toString());
+
         String fileName = fileUtil.saveUploadedFile(file, "avatars");
         user.setAvatar(fileName);
         userDao.addAvatar(user);
+    }
+
+    @SneakyThrows
+    @Override
+    public void editUserPassword(UserPasswordChangeDto userDto, Authentication authentication) {
+        User user = getUserFromAuth(authentication.getPrincipal().toString());
+
+        if(!userDto.getPassword().equals(userDto.getConfirmPassword())) {
+            throw new UserNotFoundException("Passwords aren't the same!");
+        }
+
+        String password = passwordEncoder.encode(userDto.getPassword());
+
+        user.setPassword(password);
+        userDao.editUser(user);
     }
 
 
@@ -296,6 +319,4 @@ public class UserServiceImpl implements UserService {
             return null;
         }
     }
-
-
 }

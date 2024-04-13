@@ -6,12 +6,6 @@
     <title>Http server Index page</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-            crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
-            integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
-            crossorigin="anonymous"></script>
 </head>
 
 <body class="bg-body-secondary">
@@ -21,13 +15,12 @@
              style="width: 28rem; height: 25.4rem;">
             <div class="card-body">
                 <h5 class="card-title fs-4 mb-5 fw-bolder">Вход</h5>
-                <form action="/users/register" class="mb-5 fs-6 fw-medium lh-sm" method="post">
-
+                <form action="/login" method="post" id="login" class="mb-5 fs-6 fw-medium lh-sm">
                     <div class="d-flex flex-row align-items-center mb-4 pb-1">
                         <i class="fas fa-envelope fa-lg fa-fw"></i>
                         <div class="form-outline flex-fill">
                             <label class="form-label" for="email">E-mail</label>
-                            <input type="email" id="email" name="email" class="form-control rounded-0"/>
+                            <input type="email" id="email" name="username" class="form-control rounded-0"/>
                         </div>
                     </div>
 
@@ -40,7 +33,7 @@
                     </div>
 
                     <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4 mt-4 pt-3">
-                        <button type="submit" class="btn btn-primary btn-lg px-5 rounded-0">Войти</button>
+                        <input type="submit" class="btn btn-primary btn-lg px-5 rounded-0" value="Login">
                     </div>
                 </form>
             </div>
@@ -59,4 +52,15 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.getElementById("login").addEventListener('submit', login);
+    function login(event) {
+        let form = event.target;
+        let fromjsonUser = new FormData(form);
+        let user = Object.fromEntries(fromjsonUser);
+        let userInJsonToJS = JSON.stringify(user)
+        localStorage.setItem('user', userInJsonToJS);
+    }
+</script>
 </body>

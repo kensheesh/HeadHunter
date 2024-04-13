@@ -3,6 +3,7 @@ package kg.attractor.headhunter.service;
 import kg.attractor.headhunter.dto.UserCreateDto;
 import kg.attractor.headhunter.dto.UserDto;
 import kg.attractor.headhunter.dto.UserEditDto;
+import kg.attractor.headhunter.dto.UserPasswordChangeDto;
 import kg.attractor.headhunter.model.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -11,13 +12,15 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface UserService {
-    ResponseEntity<?> getPhoto(Integer id);
+    ResponseEntity<?> getPhoto(Authentication authentication);
 
     List<UserDto> getAllApplicants();
 
     List<UserDto> getAllEmployers();
 
     UserDto getUserById(Integer id);
+
+    UserDto getUserByAuth(Authentication authentication);
 
     UserDto getUserByEmail(String email);
 
@@ -39,7 +42,9 @@ public interface UserService {
 
     void addAvatar(MultipartFile file, Authentication authentication);
 
-    void uploadUserAvatar(Integer id, MultipartFile file);
+    void uploadUserAvatar(Authentication authentication, MultipartFile file);
 
     UserDto mapToUserDto(User user);
+
+    void editUserPassword(UserPasswordChangeDto user, Authentication authentication);
 }

@@ -17,12 +17,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 @RequiredArgsConstructor
 public class MainController {
-    private final UserService userService;
     private final UserDao userDao;
 
     @GetMapping
     public String getMainPage(Model model) {
-
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         if (auth.getName().equals("anonymousUser")) {

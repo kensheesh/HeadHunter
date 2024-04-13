@@ -5,14 +5,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -57,11 +55,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy
-//                        .STATELESS))
-                .httpBasic(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
-
+                .httpBasic(Customizer.withDefaults())
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
@@ -71,8 +66,9 @@ public class SecurityConfig {
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                         .permitAll())
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(AntPathRequestMatcher.antMatcher("/register")).permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/")).permitAll()
-
+                        .requestMatchers(AntPathRequestMatcher.antMatcher("/vacancies")).permitAll()
 
 //                        .requestMatchers(HttpMethod.PUT, "/accounts").fullyAuthenticated()
 //                        .requestMatchers(HttpMethod.POST, "/accounts/avatar").fullyAuthenticated()
@@ -90,7 +86,8 @@ public class SecurityConfig {
 //                        .requestMatchers(HttpMethod.PUT, "/vacancies/**").hasAuthority("EMPLOYER")
 //                        .requestMatchers(HttpMethod.GET, "/vacancies/**").hasAuthority("APPLICANT")
 
-                        .anyRequest().permitAll())
+                        .anyRequest().authenticated())
+
                 .exceptionHandling(exception -> exception
                         .accessDeniedHandler(customAccessDeniedHandler()));
         ;

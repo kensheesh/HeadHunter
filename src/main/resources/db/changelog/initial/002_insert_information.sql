@@ -1,11 +1,11 @@
 INSERT INTO users (name, surname, age, email, password, phoneNumber, avatar, accountType)
-VALUES ('Криштиану', 'Роналду', 28, 'ronaldo@example.com', 'se3111curepasfs', '555-0101', '', 'APPLICANT'),
-       ('Apple', null, 35, 'apple@corp.com', 'apple', '555-0102', '', 'EMPLOYER'),
-       ('Александр', 'Арнольд', 34, 'alex.arnold@example.com', 'arnold', '555-0401', '', 'APPLICANT'),
-       ('Netflix', null, 28, 'netflix@corp.com', 'netfilx', '555-0402', '', 'EMPLOYER'),
-       ('Хабиб', 'Нурмагамедов', 31, 'habib@example.com', 'habib', '555-0403', '', 'APPLICANT'),
-       ('Amazon', null, 27, 'amazon@corp.com', '$2a$10$HJEdu9WYUo75BUwZl1fzMOlsycJqr33njYDR/xWlkEdpwnoamg2YS', '555-0404', '', 'EMPLOYER'),
-       ('Мухаммед', 'Салах', 26, 'salah@example.com', 'salah', '555-0405', '', 'APPLICANT');
+VALUES ('Криштиану', 'Роналду', 28, 'ronaldo@example.com', '$2a$10$0NXLvLR38w3e1dUQy/TSHO.JaxVQxNPTNHg1RmacauJczIbpOQA9u', '555-0101', 'base_avatar.png', 'APPLICANT'),
+       ('Apple', null, 35, 'apple@corp.com', '$2a$10$0NXLvLR38w3e1dUQy/TSHO.JaxVQxNPTNHg1RmacauJczIbpOQA9u', '555-0102', 'base_avatar.png', 'EMPLOYER'),
+       ('Александр', 'Арнольд', 34, 'alex.arnold@example.com', '$2a$10$0NXLvLR38w3e1dUQy/TSHO.JaxVQxNPTNHg1RmacauJczIbpOQA9u', '555-0401', 'base_avatar.png', 'APPLICANT'),
+       ('Netflix', null, 28, 'netflix@corp.com', '$2a$10$0NXLvLR38w3e1dUQy/TSHO.JaxVQxNPTNHg1RmacauJczIbpOQA9u', '555-0402', 'base_avatar.png', 'EMPLOYER'),
+       ('Хабиб', 'Нурмагамедов', 31, 'habib@example.com', '$2a$10$0NXLvLR38w3e1dUQy/TSHO.JaxVQxNPTNHg1RmacauJczIbpOQA9u', '555-0403', 'base_avatar.png', 'APPLICANT'),
+       ('Amazon', null, 27, 'amazon@corp.com', '$2a$10$0NXLvLR38w3e1dUQy/TSHO.JaxVQxNPTNHg1RmacauJczIbpOQA9u', '555-0404', 'base_avatar.png', 'EMPLOYER'),
+       ('Мухаммед', 'Салах', 26, 'salah@example.com', '$2a$10$0NXLvLR38w3e1dUQy/TSHO.JaxVQxNPTNHg1RmacauJczIbpOQA9u', '555-0405', 'base_avatar.png', 'APPLICANT');
 
 
 INSERT INTO categories (name)

@@ -72,3 +72,14 @@ VALUES ('Production Manager', (SELECT id FROM users WHERE email = 'ronaldo@examp
         (SELECT id FROM categories WHERE name = 'Электромобили и зеленая энергия'), 105000, FALSE, NOW(), NOW()),
        ('Marketing Analyst', (SELECT id FROM users WHERE email = 'habib@example.com'),
         (SELECT id FROM categories WHERE name = 'Маркетинг'), 90000, TRUE, NOW(), NOW());
+
+
+UPDATE users
+SET enabled = TRUE,
+    role_id = (SELECT id FROM roles WHERE role = 'EMPLOYER')
+WHERE email IN ('apple@corp.com', 'netflix@corp.com', 'amazon@corp.com');
+
+UPDATE users
+SET enabled = TRUE,
+    role_id = (SELECT id FROM roles WHERE role = 'APPLICANT')
+WHERE email IN ('ronaldo@example.com', 'alex.arnold@example.com', 'habib@example.com', 'salah@example.com');
