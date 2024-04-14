@@ -1,5 +1,6 @@
 package kg.attractor.headhunter.service.impl;
 
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import kg.attractor.headhunter.dao.*;
 import kg.attractor.headhunter.dto.*;
 import kg.attractor.headhunter.exception.*;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,10 +115,69 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     @SneakyThrows
-    public Page<ResumeDto> getAllActiveResumes(int pageNumber, int pageSize) {
+    public Page<ResumeViewAllDto> getAllActiveResumes(int pageNumber, int pageSize, String category) {
+        if (!category.equalsIgnoreCase("default")) {
+            Category categoryFromDB = categoryDao.getCategoryByName(category).orElseThrow(() -> new CategoryNotFoundException("Cannot find any resume with category: " + category));
+
+            List<Resume> resumes = resumeDao.getAllResumesByCategoryId(categoryFromDB.getId());
+
+            List<ResumeViewAllDto> resumesDto = new ArrayList<>();
+
+            for (Resume resume : resumes) {
+                User userEntity = userDao.getUserById(resume.getUserId()).orElseThrow(() -> new UserNotFoundException("Cannot find user with this id"));
+
+                UserResumePrintDto userDto = UserResumePrintDto.builder().name(userEntity.getName()).surname(userEntity.getSurname()).age(userEntity.getAge()).email(userEntity.getEmail()).phoneNumber(userEntity.getPhoneNumber()).avatar(userEntity.getAvatar()).build();
+
+                Integer id = resume.getId();
+                String name = resume.getName();
+                String categoryName = categoryDao.getCategoryById(resume.getCategoryId()).getName();
+                BigDecimal salary = resume.getSalary();
+                Boolean isActive = resume.getIsActive();
+                LocalDateTime updateTime = resume.getUpdateTime();
+                String formattedUpdateTime = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(updateTime);
+
+                //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+                List<WorkExperienceInfo> workExpInfos = workExperienceInfoDao.getWorkExperienceInfoByResumeId(resume.getId());
+                List<WorkExperienceInfoDto> workExperienceInfoDtoFormat = new ArrayList<>();
+
+                for (WorkExperienceInfo workExpInfo : workExpInfos) {
+                    WorkExperienceInfoDto workExperienceInfoDto = WorkExperienceInfoDto.builder().years(workExpInfo.getYears()).companyName(workExpInfo.getCompanyName()).position(workExpInfo.getPosition()).responsibilities(workExpInfo.getResponsibilities()).build();
+                    workExperienceInfoDtoFormat.add(workExperienceInfoDto);
+                }
+
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+                List<EducationInfo> educationInfos = educationInfoDao.getEducationInfoByResumeId(resume.getId());
+                List<EducationInfoDto> educationInfoDtoFormat = new ArrayList<>();
+
+                for (EducationInfo educationInfo : educationInfos) {
+                    EducationInfoDto educationInfoDto = EducationInfoDto.builder().institution(educationInfo.getInstitution()).program(educationInfo.getProgram()).startDate(educationInfo.getStartDate()).endDate(educationInfo.getEndDate()).degree(educationInfo.getDegree()).build();
+                    educationInfoDtoFormat.add(educationInfoDto);
+                }
+
+                //----------------------------------------------------------------------------------------------------------------------------------------------
+
+                List<ContactInfo> contactInfos = contactInfoDao.getContactInfoByResumeId(resume.getId());
+                List<ContactInfoDto> contactInfoDtoFormat = new ArrayList<>();
+                for (ContactInfo contactInfo : contactInfos) {
+                    ContactType contactType = contactTypeDao.getContactTypeById(contactInfo.getContactTypeId());
+                    ContactInfoDto contactInfoDto = ContactInfoDto.builder().contactType(contactType.getType()).value(contactInfo.getContent()).build();
+                    contactInfoDtoFormat.add(contactInfoDto);
+                }
+
+
+                ResumeViewAllDto resumeDto = ResumeViewAllDto.builder().id(id).user(userDto).name(name).categoryName(categoryName).salary(salary).workExpInfos(workExperienceInfoDtoFormat).educationInfos(educationInfoDtoFormat).contactInfos(contactInfoDtoFormat).isActive(isActive).updateTime(formattedUpdateTime).build();
+
+                resumesDto.add(resumeDto);
+            }
+
+            return toPage(resumesDto, PageRequest.of(pageNumber, pageSize));
+        }
+
         List<Resume> resumes = resumeDao.getAllActiveResumes();
 
-        List<ResumeDto> resumesDto = new ArrayList<>();
+        List<ResumeViewAllDto> resumesDto = new ArrayList<>();
 
         for (Resume resume : resumes) {
             User userEntity = userDao.getUserById(resume.getUserId()).orElseThrow(() -> new UserNotFoundException("Cannot find user with this id"));
@@ -129,7 +190,7 @@ public class ResumeServiceImpl implements ResumeService {
             BigDecimal salary = resume.getSalary();
             Boolean isActive = resume.getIsActive();
             LocalDateTime updateTime = resume.getUpdateTime();
-
+            String formattedUpdateTime = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(updateTime);
 
             //-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -162,9 +223,8 @@ public class ResumeServiceImpl implements ResumeService {
             }
 
 
-            ResumeDto resumeDto = ResumeDto.builder().id(id)
-                    .user(userDto).name(name).categoryName(categoryName).salary(salary).workExpInfos(workExperienceInfoDtoFormat).educationInfos(educationInfoDtoFormat).contactInfos(contactInfoDtoFormat).isActive(isActive).updateTime(updateTime).build();
-
+            ResumeViewAllDto resumeDto = ResumeViewAllDto.builder().id(id)
+                    .user(userDto).name(name).categoryName(categoryName).salary(salary).workExpInfos(workExperienceInfoDtoFormat).educationInfos(educationInfoDtoFormat).contactInfos(contactInfoDtoFormat).isActive(isActive).updateTime(formattedUpdateTime).build();
             resumesDto.add(resumeDto);
         }
         if (resumesDto.isEmpty()) {
@@ -174,15 +234,15 @@ public class ResumeServiceImpl implements ResumeService {
         return toPage(resumesDto, PageRequest.of(pageNumber, pageSize));
     }
 
-    @SneakyThrows
-    private Page<ResumeDto> toPage(List<ResumeDto> resumes, Pageable pageable) {
+
+    private Page<ResumeViewAllDto> toPage(List<ResumeViewAllDto> resumes, Pageable pageable) {
         if (pageable.getOffset() >= resumes.size()) {
             return Page.empty();
         }
         int startIndex = (int) pageable.getOffset();
         int endIndex = (int) ((pageable.getOffset() + pageable.getPageSize() > resumes.size() ?
                 resumes.size() : pageable.getOffset() + pageable.getPageSize()));
-        List<ResumeDto> subList = resumes.subList(startIndex, endIndex);
+        List<ResumeViewAllDto> subList = resumes.subList(startIndex, endIndex);
         return new PageImpl<>(subList, pageable, resumes.size());
     }
 

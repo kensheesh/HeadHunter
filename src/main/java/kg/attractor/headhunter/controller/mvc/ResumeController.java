@@ -1,9 +1,16 @@
 package kg.attractor.headhunter.controller.mvc;
 
+import kg.attractor.headhunter.dao.UserDao;
 import kg.attractor.headhunter.dto.*;
+import kg.attractor.headhunter.exception.UserNotFoundException;
+import kg.attractor.headhunter.model.AccountType;
+import kg.attractor.headhunter.model.User;
 import kg.attractor.headhunter.service.ResumeService;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,17 +25,41 @@ import java.util.List;
 @RequestMapping("/resumes")
 public class ResumeController {
     private final ResumeService resumeService;
+    private final UserDao userDao;
 
 
-    @GetMapping()
-    public String getAllActiveResumes(Model model, @RequestParam(name = "page", defaultValue = "0") Integer page) {
-        Page<ResumeDto> resumesPage = resumeService.getAllActiveResumes(page, 5);
+    @GetMapping
+    public String getAllActiveResumes(Model model, @RequestParam(name = "page", defaultValue = "0") Integer page,
+                                      @RequestParam(name = "category", defaultValue = "default") String category) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (category.equalsIgnoreCase("выбрать категорию (все)")) {
+            category = "default";
+        }
+        if (auth.getName().equals("anonymousUser")) {
+            model.addAttribute("username", null);
+        } else {
+            model.addAttribute("username", auth.getName());
+            AccountType accountType = getUserFromAuth(auth.getPrincipal().toString()).getAccountType();
+            model.addAttribute("type", accountType);
+        }
+
+        Page<ResumeViewAllDto> resumesPage = resumeService.getAllActiveResumes(page, 5, category);
         model.addAttribute("resumesPage", resumesPage);
+        model.addAttribute("category", category);
         return "resumes/all_resumes";
     }
 
     @GetMapping("/{resumeId}")
     public String getResume(@PathVariable Integer resumeId, Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth.getName().equals("anonymousUser")) {
+            model.addAttribute("username", null);
+        } else {
+            model.addAttribute("username", auth.getName());
+            AccountType accountType = getUserFromAuth(auth.getPrincipal().toString()).getAccountType();
+            model.addAttribute("type", accountType);
+        }
+
         model.addAttribute("resume", resumeService.getResumeById(resumeId));
         return "resumes/resume_info";
     }
@@ -141,5 +172,13 @@ public class ResumeController {
         resumeService.createResumeForApplicant(resumeDto);
 
         return "redirect:/resumes";
+    }
+
+    @SneakyThrows
+    public User getUserFromAuth(String auth) {
+        int x = auth.indexOf("=");
+        int y = auth.indexOf(",");
+        String email = auth.substring(x + 1, y);
+        return userDao.getUserByEmail(email).orElseThrow(() -> new UserNotFoundException("can't find user with this email"));
     }
 }

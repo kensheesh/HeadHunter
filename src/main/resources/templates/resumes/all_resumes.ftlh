@@ -55,30 +55,65 @@
 
 <div class="container mt-5">
     <h1 class="text-center mb-4">Резюме</h1>
+    <h3>Сортировать по категориям</h3>
+    <form class="row mb-4" id="categoryForm">
+        <div class="col-4">
+            <select class="form-select border-dark" aria-label="выбрать категорию"
+                    name="category" id="category">
+                <option selected>выбрать категорию (все)</option>
+                <option value="Медицина" class="form-brd-radius col-6">Медицина</option>
+                <option value="Информационные технологии">Информационные технологии</option>
+                <option value="Маркетинг">Маркетинг</option>
+                <option value="HrРекрутинг">HrРекрутинг</option>
+                <option value="Бухгалтерия">Бухгалтерия</option>
+                <option value="Образование">Образование</option>
+                <option value="Производство">Производство</option>
+                <option value="Строительство">Строительство</option>
+                <option value="Искусство и дизайн">Искусство и дизайн</option>
+                <option value="Путешествия и туризм">Путешествия и туризм</option>
+                <option value="Искусственный интеллект">Искусственный интеллект</option>
+                <option value="Экология и устойчивое развитие">Экология и устойчивое развитие</option>
+                <option value="Кибербезопасность">Кибербезопасность</option>
+                <option value="Финансовые технологии (FinTech)">Финансовые технологии (FinTech)</option>
+                <option value="Электромобили и зеленая энергия">Электромобили и зеленая энергия</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary col-2 ms-3"> OK</button>
+    </form>
 
-    <div class="row">
-        <#list resumesPage.content as resume>
-            <div class="col-md-12">
-                <a href="/resumes/${resume.id}" class="text-decoration-none text-dark">
-                    <div class="card vacancy-card rounded-0">
-                        <div class="card-body rounded-0">
-                            <h5 class="card-title">${resume.name}</h5>
-                            <p class="card-text">Зарплата: ${resume.salary}</p>
-                            <p class="card-text">Опубликовано: ${resume.updateTime}</p>
+    <#if resumesPage.content?size == 0>
+        <p>No resumes found.</p>
+    <#else>
+        <div class="row">
+            <#list resumesPage.content as resume>
+                <div class="col-md-12">
+                    <a href="/resumes/${resume.id}" class="text-decoration-none text-dark">
+                        <div class="card vacancy-card rounded-0">
+                            <div class="card-body rounded-0">
+                                <h5 class="card-title">${resume.name}</h5>
+                                <p class="card-text">Зарплата: ${resume.salary}</p>
+                                <p class="card-text">Опубликовано: ${resume.updateTime}</p>
+                            </div>
                         </div>
-                    </div>
-                </a>
-            </div>
-        </#list>
-    </div>
+                    </a>
+                </div>
+            </#list>
+        </div>
+    </#if>
+
 
     <div class="row mt-4">
         <div class="col text-center">
             <#if resumesPage.hasPrevious()>
-                <a href="/resumes?page=${resumesPage.previousPageable().pageNumber}" class="btn btn-primary">Предыдущая</a>
+                <a href="/resumes?page=${resumesPage.previousPageable().pageNumber}&category=${category}"
+                   class="btn btn-primary">Предыдущая</a>
             </#if>
+            <#list 0..resumesPage.totalPages - 1 as page>
+                <a href="/resumes?page=${page}&category=${category}" class="btn btn-primary">${page + 1}</a>
+            </#list>
+
             <#if resumesPage.hasNext()>
-                <a href="/resumes?page=${resumesPage.nextPageable().pageNumber}"
+                <a href="/resumes?page=${resumesPage.nextPageable().pageNumber}&category=${category}"
                    class="btn btn-primary">Следующая</a>
             </#if>
         </div>
