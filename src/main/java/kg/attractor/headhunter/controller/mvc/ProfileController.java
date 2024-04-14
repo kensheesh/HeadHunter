@@ -7,14 +7,14 @@ import kg.attractor.headhunter.dto.UserPasswordChangeDto;
 import kg.attractor.headhunter.service.ProfileService;
 import kg.attractor.headhunter.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
@@ -23,14 +23,11 @@ import org.springframework.web.multipart.MultipartFile;
 public class ProfileController {
     private final ProfileService profileService;
     private final UserService userService;
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
 
     @GetMapping
     public String profile(Model user, Model content, Authentication authentication) {
         user.addAttribute("user", profileService.getUserDto(authentication));
         content.addAttribute("items", profileService.getProfileContent(authentication));
-        System.out.println(passwordEncoder.encode("Test1!"));
         return "profile/profile";
     }
 
@@ -57,6 +54,7 @@ public class ProfileController {
     public ResponseEntity<?> getAvatarById(Authentication authentication) {
         return userService.getPhoto(authentication);
     }
+
     @PostMapping("/avatars")
     public String uploadAvatar(@RequestBody MultipartFile file, Authentication authentication) {
         userService.uploadUserAvatar(authentication, file);

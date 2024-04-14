@@ -26,6 +26,20 @@
                             <label for="categoryName" class="form-label">Category:</label>
                             <select class="form-select" id="categoryName" name="categoryName">
                                 <option value="Медицина" class="form-brd-radius col-6">Медицина</option>
+                                <option value="Информационные технологии">Информационные технологии</option>
+                                <option value="Маркетинг">Маркетинг</option>
+                                <option value="HrРекрутинг">HrРекрутинг</option>
+                                <option value="Бухгалтерия">Бухгалтерия</option>
+                                <option value="Образование">Образование</option>
+                                <option value="Производство">Производство</option>
+                                <option value="Строительство">Строительство</option>
+                                <option value="Искусство и дизайн">Искусство и дизайн</option>
+                                <option value="Путешествия и туризм">Путешествия и туризм</option>
+                                <option value="Искусственный интеллект">Искусственный интеллект</option>
+                                <option value="Экология и устойчивое развитие">Экология и устойчивое развитие</option>
+                                <option value="Кибербезопасность">Кибербезопасность</option>
+                                <option value="Финансовые технологии (FinTech)">Финансовые технологии (FinTech)</option>
+                                <option value="Электромобили и зеленая энергия">Электромобили и зеленая энергия</option>
                             </select>
                         </div>
                         <div class="mb-3">

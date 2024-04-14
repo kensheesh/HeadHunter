@@ -33,7 +33,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    <a class="nav-link active" aria-current="page" href="/">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/profile">Profile</a>
@@ -102,9 +102,9 @@
             </div>
             <div class="d-flex align-items-center col-md-2 ms-auto">
                 <#if user.accountType=="EMPLOYER">
-                    <a class="btn btn-success btn-lg py-3 px-2 rounded-4" href="/vacancies/create/${user.id}">+<br>Создать<br>вакансию</a>
+                    <a class="btn btn-primary btn-lg py-3 px-2 rounded-4" href="/vacancies/create/${user.id}">+<br>Создать<br>вакансию</a>
                 <#else>
-                    <a class="btn btn-success btn-lg py-3 px-2 rounded-4 me-3" href="resumes/add_resume${user.id}">+<br>Создать<br>резюме</a>
+                    <a class="btn btn-primary btn-lg py-3 px-2 rounded-4 me-3" href="resumes/add_resume${user.id}">+<br>Создать<br>резюме</a>
                     <a class="btn btn-dark btn-lg py-5 px-2 rounded-4 text-white" href="resumes/responded${user.id}">Отклики</a>
                 </#if>
             </div>
@@ -112,21 +112,23 @@
 
         <div class="">
             <h2 class="">
-                <div class=""><#if user.accountType=="EMPLOYER">
-                        Вакансии:
-                    <#else>
-                        Резюме:
-                    </#if>
-                </div>
+                <#if user.accountType=="EMPLOYER">
+                    Вакансии:
+                <#else>
+                    Резюме:
+                </#if>
             </h2>
             <#list items as item>
                 <div class="card mb-3">
                     <div class="card-body rounded-0">
                         <h5 class="card-title">${item.name}</h5>
                         <p class="card-text">Дата обновления: ${item.updateTime}</p>
+                        <#--                         не получилось конвертировать из LocalDateTime в формат(dd-MM-yyyy) используя freemarker,
+                                                     читал доки, лазил в stackoverflow, не нашел ответа, вечно кидает ошибку :(
+                                                     -->
                         <div class="d-flex justify-content-center">
-                            <a href="#" class="btn btn-primary me-2">Обновить</a>
-                            <a href="/vacancies/edit/" class="btn btn-secondary">Редактировать</a>
+                            <a href="/profile" class="btn btn-primary me-2">Обновить</a>
+                            <a href="/vacancies/edit/${user.id}" class="btn btn-secondary">Редактировать</a>
                         </div>
                     </div>
                 </div>
@@ -136,4 +138,6 @@
     </div>
 </div>
 
+<script>
+</script>
 </body>

@@ -21,7 +21,7 @@ public class ResumeController {
 
 
     @GetMapping()
-    public String resumesGet(Model model, @RequestParam(name = "page", defaultValue = "0") Integer page) {
+    public String getAllActiveResumes(Model model, @RequestParam(name = "page", defaultValue = "0") Integer page) {
         Page<ResumeDto> resumesPage = resumeService.getAllActiveResumes(page, 5);
         model.addAttribute("resumesPage", resumesPage);
         return "resumes/all_resumes";

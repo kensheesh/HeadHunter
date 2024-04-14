@@ -37,10 +37,13 @@ public class ProfileServiceImpl implements ProfileService {
     @SneakyThrows
     public List<?> getProfileContent(Authentication authentication) {
         User user = getUserFromAuth(authentication.getPrincipal().toString());
+
         if (user.getAccountType().equals(AccountType.APPLICANT)) {
             return resumeService.getAllResumesOfApplicantById(user.getId());
+
         } else if (user.getAccountType().equals(AccountType.EMPLOYER)) {
             return vacancyService.getAllVacanciesOfEmployerById(user.getId());
+
         } else throw new NoSuchElementException("User type is not found");
     }
 

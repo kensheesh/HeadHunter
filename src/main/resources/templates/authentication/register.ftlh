@@ -2,6 +2,12 @@
 <html lang="ru">
 
 <head>
+    <style>
+        .navbar-links a {
+            margin-right: 10px;
+        }
+
+    </style>
     <meta charset="UTF-8">
     <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
           name="viewport">
@@ -12,6 +18,24 @@
 </head>
 
 <body class="bg-body-secondary">
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/">Home</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
 <div class="container">
     <div class="d-flex justify-content-center">
         <div class="card rounded-0 p-4 pb-1 mt-5 text-black shadow-sm"
@@ -24,7 +48,6 @@
                         <select class="form-select rounded-0" id="accountType" name="accountType">
                             <option value="APPLICANT">Соискатель</option>
                             <option value="EMPLOYER">Работодатель</option>
-
                         </select>
                     </div>
 
@@ -99,12 +122,13 @@
             if (selectedValue === 'EMPLOYER') {
                 nameInput.previousElementSibling.textContent = 'Имя компании';
                 surnameField.style.display = 'none';
-                emailField.style.marginTop = '-30px';
+                emailField.style.marginTop = '-40px';
 
             } else {
                 nameInput.previousElementSibling.textContent = 'Имя';
-                surnameField.style.display = 'flex';
-                emailField.style.marginTop = '0px';
+                surnameField.style.display = 'block';
+                emailField.style.marginTop = '-10px';
+
             }
         });
     });

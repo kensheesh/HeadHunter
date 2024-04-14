@@ -1,13 +1,21 @@
 package kg.attractor.headhunter.controller.mvc;
 
 import jakarta.validation.Valid;
+import kg.attractor.headhunter.dao.UserDao;
 import kg.attractor.headhunter.dto.VacancyCreateDto;
 import kg.attractor.headhunter.dto.VacancyDto;
 import kg.attractor.headhunter.dto.VacancyEditDto;
+import kg.attractor.headhunter.dto.VacancyViewAllDto;
+import kg.attractor.headhunter.exception.UserNotFoundException;
+import kg.attractor.headhunter.model.AccountType;
+import kg.attractor.headhunter.model.User;
 import kg.attractor.headhunter.service.UserService;
 import kg.attractor.headhunter.service.VacancyService;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,28 +26,41 @@ import org.springframework.web.bind.annotation.*;
 public class VacancyController {
     private final VacancyService vacancyService;
     private final UserService userService;
+    private final UserDao userDao;
 
-    @GetMapping()
-    public String viewAllVacancies(Model model, @RequestParam(name = "page", defaultValue = "0") Integer page) {
-        Page<VacancyDto> vacanciesPage = vacancyService.getAllActiveVacancies(page, 5);
+    @GetMapping
+    public String viewAllVacancies(Model model, @RequestParam(name = "page", defaultValue = "0") Integer page,
+                                   @RequestParam(name = "category", defaultValue = "default") String category) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (category.equalsIgnoreCase("выбрать категорию (все)")) {
+            category = "default";
+        }
+
+        if (auth.getName().equals("anonymousUser")) {
+            model.addAttribute("username", null);
+        } else {
+            model.addAttribute("username", auth.getName());
+            AccountType accountType = getUserFromAuth(auth.getPrincipal().toString()).getAccountType();
+            model.addAttribute("type", accountType);
+        }
+
+        Page<VacancyViewAllDto> vacanciesPage = vacancyService.getAllActiveVacancies(page, 5, category);
         model.addAttribute("vacanciesPage", vacanciesPage);
+        model.addAttribute("category", category);
         return "vacancies/all_vacancies";
     }
-
-    @GetMapping("/filter")
-    public String filterVacanciesByCategory(Model model, @RequestParam(name = "category") String categoryName,
-                                            @RequestParam(name = "page", defaultValue = "0") Integer page) {
-        Page<VacancyDto> filteredVacancies = vacancyService.getAllActiveVacanciesByCategoryName(categoryName, page, 5);
-        model.addAttribute("vacanciesPage", filteredVacancies);
-        model.addAttribute("selectedCategory", categoryName); // Добавляем выбранную категорию в модель
-        return "vacancies/all_vacancies";
-    }
-
-
-
 
     @GetMapping("/{vacancyId}")
-    public String getResumeById(@PathVariable Integer vacancyId, Model model) {
+    public String getVacancyById(@PathVariable Integer vacancyId, Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth.getName().equals("anonymousUser")) {
+            model.addAttribute("username", null);
+        } else {
+            model.addAttribute("username", auth.getName());
+            AccountType accountType = getUserFromAuth(auth.getPrincipal().toString()).getAccountType();
+            model.addAttribute("type", accountType);
+        }
         model.addAttribute("vacancy", vacancyService.getVacancyById(vacancyId));
         return "vacancies/vacancy_info";
     }
@@ -70,4 +91,11 @@ public class VacancyController {
         return "redirect:/vacancies";
     }
 
+    @SneakyThrows
+    public User getUserFromAuth(String auth) {
+        int x = auth.indexOf("=");
+        int y = auth.indexOf(",");
+        String email = auth.substring(x + 1, y);
+        return userDao.getUserByEmail(email).orElseThrow(() -> new UserNotFoundException("can't find user with this email"));
+    }
 }

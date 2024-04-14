@@ -15,6 +15,44 @@
     </style>
 </head>
 <body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/">Home</a>
+                </li>
+                <#if username??>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/profile">Profile</a>
+                    </li>
+                </#if>
+                <li class="nav-item">
+                    <a class="nav-link" href="/vacancies">Vacancies</a>
+                </li>
+                <#if username??>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/resumes">Resumes</a>
+                    </li>
+                </#if>
+            </ul>
+            <div class="right-buttons">
+                <#if username??>
+                    <a class="btn btn-primary btn-sign-in" href="/logout" id="logout">Log Out</a>
+                <#else>
+                    <a class="btn btn-primary btn-sign-in" href="/login">Sign In</a>
+                    <a class="btn btn-primary btn-sign-up" href="/register" style="width: 8rem">Sign Up</a>
+                </#if>
+            </div>
+        </div>
+    </div>
+</nav>
+
 <div class="container mt-5">
     <h1 class="text-center mb-4">Резюме</h1>
 

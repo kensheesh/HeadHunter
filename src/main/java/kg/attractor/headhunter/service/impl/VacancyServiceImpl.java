@@ -3,10 +3,7 @@ package kg.attractor.headhunter.service.impl;
 import kg.attractor.headhunter.dao.CategoryDao;
 import kg.attractor.headhunter.dao.UserDao;
 import kg.attractor.headhunter.dao.VacancyDao;
-import kg.attractor.headhunter.dto.UserForVacancyPrintDto;
-import kg.attractor.headhunter.dto.VacancyCreateDto;
-import kg.attractor.headhunter.dto.VacancyDto;
-import kg.attractor.headhunter.dto.VacancyEditDto;
+import kg.attractor.headhunter.dto.*;
 import kg.attractor.headhunter.exception.CategoryNotFoundException;
 import kg.attractor.headhunter.exception.ResumeNotFoundException;
 import kg.attractor.headhunter.exception.UserNotFoundException;
@@ -18,18 +15,16 @@ import kg.attractor.headhunter.service.VacancyService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.parameters.P;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,8 +36,6 @@ public class VacancyServiceImpl implements VacancyService {
     private final UserDao userDao;
     private final VacancyDao vacancyDao;
     private final CategoryDao categoryDao;
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
 
     @Override
     @SneakyThrows
@@ -91,11 +84,43 @@ public class VacancyServiceImpl implements VacancyService {
 //    }
 
     @SneakyThrows
-    public Page<VacancyDto> getAllActiveVacancies(int pageNumber, int pageSize) {
+    public Page<VacancyViewAllDto> getAllActiveVacancies(int pageNumber, int pageSize, String category) {
+
+        if (!category.equalsIgnoreCase("default")) {
+            System.out.println(category);
+            Category categoryFromDB = categoryDao.getCategoryByName(category).orElseThrow(() -> new CategoryNotFoundException("Cannot find any resume with category: " + category));
+
+            List<Vacancy> vacancies = vacancyDao.getAllActiveVacanciesByCategoryId(categoryFromDB.getId());
+            List<VacancyViewAllDto> vacancyDtoList = new ArrayList<>();
+
+            for (Vacancy vacancy : vacancies) {
+                User userEntity = userDao.getUserById(vacancy.getAuthorId()).orElseThrow(() -> new UserNotFoundException("Cannot find user with this id"));
+
+                UserForVacancyPrintDto userDto = UserForVacancyPrintDto.builder().name(userEntity.getName()).age(userEntity.getAge()).email(userEntity.getEmail()).phoneNumber(userEntity.getPhoneNumber()).avatar(userEntity.getAvatar()).build();
+
+                Integer id = vacancy.getId();
+                String name = vacancy.getName();
+                String description = vacancy.getDescription();
+                String categoryName = categoryDao.getCategoryById(vacancy.getCategoryId()).getName();
+                BigDecimal salary = vacancy.getSalary();
+                Integer experienceFrom = vacancy.getExperienceFrom();
+                Integer experienceTo = vacancy.getExperienceTo();
+                LocalDateTime createdDate = vacancy.getCreatedDate();
+                String formattedCreatedDate = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(createdDate);
+
+                LocalDateTime updateTime = vacancy.getUpdateTime();
+                String formattedUpdateTime = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(updateTime);
+
+                Boolean isActive = vacancy.getIsActive();
+
+                VacancyViewAllDto vacancyDto = VacancyViewAllDto.builder().id(id).user(userDto).name(name).description(description).categoryName(categoryName).salary(salary).experienceFrom(experienceFrom).experienceTo(experienceTo).createdDate(formattedCreatedDate).updateTime(formattedUpdateTime).isActive(isActive).build();
+                vacancyDtoList.add(vacancyDto);
+            }
+            return toPage(vacancyDtoList, PageRequest.of(pageNumber, pageSize));
+        }
+
         List<Vacancy> vacancies = vacancyDao.getAllActiveVacancies();
-
-        List<VacancyDto> vacancyDtoList = new ArrayList<>();
-
+        List<VacancyViewAllDto> vacancyDtoList = new ArrayList<>();
         for (Vacancy vacancy : vacancies) {
             User userEntity = userDao.getUserById(vacancy.getAuthorId()).orElseThrow(() -> new UserNotFoundException("Cannot find user with this id"));
 
@@ -109,25 +134,28 @@ public class VacancyServiceImpl implements VacancyService {
             Integer experienceFrom = vacancy.getExperienceFrom();
             Integer experienceTo = vacancy.getExperienceTo();
             LocalDateTime createdDate = vacancy.getCreatedDate();
+            String formattedCreatedDate = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(createdDate);
+
             LocalDateTime updateTime = vacancy.getUpdateTime();
+            String formattedUpdateTime = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(updateTime);
+
             Boolean isActive = vacancy.getIsActive();
 
-            VacancyDto vacancyDto = VacancyDto.builder().id(id).user(userDto).name(name).description(description).categoryName(categoryName).salary(salary).experienceFrom(experienceFrom).experienceTo(experienceTo).createdDate(createdDate).updateTime(updateTime).isActive(isActive).build();
+            VacancyViewAllDto vacancyDto = VacancyViewAllDto.builder().id(id).user(userDto).name(name).description(description).categoryName(categoryName).salary(salary).experienceFrom(experienceFrom).experienceTo(experienceTo).createdDate(formattedCreatedDate).updateTime(formattedUpdateTime).isActive(isActive).build();
             vacancyDtoList.add(vacancyDto);
         }
-
         return toPage(vacancyDtoList, PageRequest.of(pageNumber, pageSize));
     }
 
 
-    private Page<VacancyDto> toPage(List<VacancyDto> resumes, Pageable pageable) {
+    private Page<VacancyViewAllDto> toPage(List<VacancyViewAllDto> resumes, Pageable pageable) {
         if (pageable.getOffset() >= resumes.size()) {
             return Page.empty();
         }
         int startIndex = (int) pageable.getOffset();
         int endIndex = (int) ((pageable.getOffset() + pageable.getPageSize() > resumes.size() ?
                 resumes.size() : pageable.getOffset() + pageable.getPageSize()));
-        List<VacancyDto> subList = resumes.subList(startIndex, endIndex);
+        List<VacancyViewAllDto> subList = resumes.subList(startIndex, endIndex);
         return new PageImpl<>(subList, pageable, resumes.size());
     }
 
@@ -165,7 +193,7 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     @SneakyThrows
-    public Page<VacancyDto> getAllActiveVacanciesByCategoryName(String categoriesName, int pageNumber, int pageSize) {
+    public List<VacancyDto> getAllActiveVacanciesByCategoryName(String categoriesName) {
         Category category = categoryDao.getCategoryByName(categoriesName).orElseThrow(() -> new CategoryNotFoundException("Cannot find any resume with category: " + categoriesName));
 
         List<Vacancy> vacancies = vacancyDao.getAllActiveVacanciesByCategoryId(category.getId());
@@ -193,7 +221,7 @@ public class VacancyServiceImpl implements VacancyService {
         if (vacancyDtoList.isEmpty()) {
             throw new ResumeNotFoundException("Cannot find any vacancies with categoryName " + categoriesName);
         }
-        return toPage(vacancyDtoList, PageRequest.of(pageNumber, pageSize));
+        return (vacancyDtoList);
     }
 
     @SneakyThrows
@@ -286,9 +314,6 @@ public class VacancyServiceImpl implements VacancyService {
             VacancyDto vacancyDto = VacancyDto.builder().user(userDto).id(id).name(name).description(description).categoryName(categoryName).salary(salary).experienceFrom(experienceFrom).experienceTo(experienceTo).createdDate(createdDate).updateTime(updateTime).isActive(isActive).build();
             vacancyDtoList.add(vacancyDto);
         }
-//        if (vacancyDtoList.isEmpty()) {
-//            throw new ResumeNotFoundException("You don't have any vacancies");
-//        }
         return vacancyDtoList;
     }
 
