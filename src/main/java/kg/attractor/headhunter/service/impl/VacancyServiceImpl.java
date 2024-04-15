@@ -52,6 +52,24 @@ public class VacancyServiceImpl implements VacancyService {
         return VacancyDto.builder().id(vacancy.getId()).name(vacancy.getName()).description(vacancy.getDescription()).categoryName(categoryDao.getCategoryById(vacancy.getCategoryId()).getName()).salary(vacancy.getSalary()).experienceFrom(vacancy.getExperienceFrom()).experienceTo(vacancy.getExperienceTo()).isActive(vacancy.getIsActive()).createdDate(vacancy.getCreatedDate()).updateTime(vacancy.getUpdateTime()).user(userDto).build();
     }
 
+    @Override
+    @SneakyThrows
+    public VacancyViewEditDto getVacancyByIdForEdit(Integer id) {
+        Vacancy vacancy = vacancyDao.getVacancyById(id).orElseThrow(() -> new VacancyNotFoundException("Can't find vacancy with id: " + id));
+        User user = userDao.getUserById(vacancy.getAuthorId()).orElseThrow(() -> new UserNotFoundException("can't find user with this id"));
+        UserForVacancyPrintDto userDto = new UserForVacancyPrintDto();
+        userDto.setId(user.getId());
+        userDto.setName(user.getName());
+        userDto.setAge(user.getAge());
+        userDto.setEmail(user.getEmail());
+        userDto.setPhoneNumber(user.getPhoneNumber());
+        userDto.setAvatar(user.getAvatar());
+
+        Integer salary = vacancy.getSalary().intValue();
+        System.out.println(salary);
+        return VacancyViewEditDto.builder().id(vacancy.getId()).name(vacancy.getName()).description(vacancy.getDescription()).categoryName(categoryDao.getCategoryById(vacancy.getCategoryId()).getName()).salary(salary).experienceFrom(vacancy.getExperienceFrom()).experienceTo(vacancy.getExperienceTo()).isActive(vacancy.getIsActive()).createdDate(vacancy.getCreatedDate()).updateTime(vacancy.getUpdateTime()).user(userDto).build();
+    }
+
 
 //    @Override
 //    @SneakyThrows
@@ -281,7 +299,11 @@ public class VacancyServiceImpl implements VacancyService {
         vacancy.setSalary(vacancyDto.getSalary());
         vacancy.setExperienceFrom(vacancyDto.getExperienceFrom());
         vacancy.setExperienceTo(vacancyDto.getExperienceTo());
-        vacancy.setIsActive(vacancyDto.getIsActive());
+        if (vacancyDto.getIsActive() == null) {
+            vacancy.setIsActive(false);
+        } else {
+            vacancy.setIsActive(vacancyDto.getIsActive());
+        }
         vacancy.setAuthorId(user.getId());
         vacancyDao.createVacancy(vacancy);
     }

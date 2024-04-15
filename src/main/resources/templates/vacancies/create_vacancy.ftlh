@@ -16,7 +16,7 @@
                     <h2 class="text-center">Create Vacancy</h2>
                 </div>
                 <div class="card-body">
-                    <form action="/vacancies/create/${user.id}" method="post">
+                    <form action="/vacancies/create" method="post" id="vacancyForm">
                         <div class="mb-3">
                             <label for="name" class="form-label">Vacancy Name:</label>
                             <input type="text" class="form-control" id="name" name="name"
@@ -64,10 +64,9 @@
                                        placeholder="To">
                             </div>
                         </div>
-                        <div class="mb-3 form-check">
-                            <input type="hidden" name="isActive" value="false">
-                            <input type="checkbox" class="form-check-input" id="isActiveCheckbox">
-                            <label class="form-check-label" for="isActiveCheckbox">Active</label>
+                        <div class="mb-3">
+                            <label class="form-check-label" for="isActive">Is Active:</label>
+                            <input class="form-check-input" type="checkbox" id="isActive" name="isActive">
                         </div>
                         <div class="d-grid gap-2">
                             <button class="btn btn-primary" type="submit">Create Vacancy</button>
@@ -80,18 +79,5 @@
     </div>
 </div>
 
-<script>
-    function submitForm() {
-        var form = document.getElementById('vacancyForm');
-        var isActiveCheckbox = document.getElementById('isActiveCheckbox');
-
-        if (isActiveCheckbox.checked) {
-            form.elements['isActive'].value = 'true';
-        } else {
-            form.elements['isActive'].value = 'false';
-        }
-        form.submit();
-    }
-</script>
 </body>
 </html>

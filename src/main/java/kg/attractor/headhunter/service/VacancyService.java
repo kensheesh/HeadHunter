@@ -1,9 +1,6 @@
 package kg.attractor.headhunter.service;
 
-import kg.attractor.headhunter.dto.VacancyCreateDto;
-import kg.attractor.headhunter.dto.VacancyDto;
-import kg.attractor.headhunter.dto.VacancyEditDto;
-import kg.attractor.headhunter.dto.VacancyViewAllDto;
+import kg.attractor.headhunter.dto.*;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 
@@ -11,6 +8,7 @@ import java.util.List;
 
 public interface VacancyService {
     VacancyDto getVacancyById(Integer id);
+    VacancyViewEditDto getVacancyByIdForEdit(Integer id);
 
     Page<VacancyViewAllDto> getAllActiveVacancies(int pageNumber, int pageSize, String category);
 

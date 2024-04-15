@@ -102,7 +102,7 @@
             </div>
             <div class="d-flex align-items-center col-md-2 ms-auto">
                 <#if user.accountType=="EMPLOYER">
-                    <a class="btn btn-primary btn-lg py-3 px-2 rounded-4" href="/vacancies/create/${user.id}">+<br>Создать<br>вакансию</a>
+                    <a class="btn btn-primary btn-lg py-3 px-2 rounded-4" href="/vacancies/create">+<br>Создать<br>вакансию</a>
                 <#else>
                     <a class="btn btn-primary btn-lg py-3 px-2 rounded-4 me-3" href="resumes/add_resume${user.id}">+<br>Создать<br>резюме</a>
                     <a class="btn btn-dark btn-lg py-5 px-2 rounded-4 text-white" href="resumes/responded${user.id}">Отклики</a>
@@ -123,12 +123,13 @@
                     <div class="card-body rounded-0">
                         <h5 class="card-title">${item.name}</h5>
                         <p class="card-text">Дата обновления: ${item.updateTime}</p>
-                        <#--                         не получилось конвертировать из LocalDateTime в формат(dd-MM-yyyy) используя freemarker,
-                                                     читал доки, лазил в stackoverflow, не нашел ответа, вечно кидает ошибку :(
-                                                     -->
                         <div class="d-flex justify-content-center">
                             <a href="/profile" class="btn btn-primary me-2">Обновить</a>
-                            <a href="/vacancies/edit/${user.id}" class="btn btn-secondary">Редактировать</a>
+                            <a href="/vacancies/edit/${item.id}" class="btn btn-secondary">Редактировать</a>
+                            <form action="/vacancies/delete/${item.id}" method="post" style="height: 0.5rem" class="ms-2">
+                                <input type="hidden" name="_method" value="delete">
+                                <button class="btn btn-danger" type="submit">Удалить</button>
+                            </form>
                         </div>
                     </div>
                 </div>

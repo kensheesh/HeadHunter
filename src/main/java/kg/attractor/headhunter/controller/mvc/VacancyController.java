@@ -2,10 +2,7 @@ package kg.attractor.headhunter.controller.mvc;
 
 import jakarta.validation.Valid;
 import kg.attractor.headhunter.dao.UserDao;
-import kg.attractor.headhunter.dto.VacancyCreateDto;
-import kg.attractor.headhunter.dto.VacancyDto;
-import kg.attractor.headhunter.dto.VacancyEditDto;
-import kg.attractor.headhunter.dto.VacancyViewAllDto;
+import kg.attractor.headhunter.dto.*;
 import kg.attractor.headhunter.exception.UserNotFoundException;
 import kg.attractor.headhunter.model.AccountType;
 import kg.attractor.headhunter.model.User;
@@ -65,22 +62,24 @@ public class VacancyController {
         return "vacancies/vacancy_info";
     }
 
-    @GetMapping("/create/{userId}")
-    public String createVacancy(Model model, @PathVariable Integer userId) {
-        model.addAttribute("user", userService.getUserById(userId));
+    @GetMapping("/create")
+    public String createVacancy(Model model, Authentication authentication) {
+        model.addAttribute("user", userService.getUserByAuth(authentication));
         return "vacancies/create_vacancy";
     }
 
-    @PostMapping("/create/{userId}")
-    public String createVacancy(@Valid VacancyCreateDto vacancyDto, @PathVariable Integer userId) {
-        vacancyService.createVacancyForEmployer(vacancyDto, userId);
-        return "redirect:/users/" + userId;
+    @PostMapping("/create")
+    public String createVacancy(@Valid VacancyCreateDto vacancyDto, Authentication authentication) {
+        System.out.println(vacancyDto.getIsActive());
+        UserDto user = userService.getUserByAuth(authentication);
+        vacancyService.createVacancyForEmployer(vacancyDto, user.getId());
+        return "redirect:/profile";
     }
 
 
     @GetMapping("/edit/{vacancyId}")
     public String editVacancy(Model model, @PathVariable Integer vacancyId) {
-        VacancyDto vacancyDto = vacancyService.getVacancyById(vacancyId);
+        VacancyViewEditDto vacancyDto = vacancyService.getVacancyByIdForEdit(vacancyId);
         model.addAttribute("vacancy", vacancyDto);
         return "vacancies/edit_vacancy";
     }
@@ -88,7 +87,13 @@ public class VacancyController {
     @PostMapping("/edit/{vacancyId}")
     public String editVacancy(@Valid VacancyEditDto vacancyEditDto, @PathVariable Integer vacancyId) {
         vacancyService.editVacancy(vacancyEditDto, vacancyId);
-        return "redirect:/vacancies";
+        return "redirect:/profile";
+    }
+
+    @PostMapping("/delete/{vacancyId}")
+    public String deleteVacancy(@PathVariable Integer vacancyId, Authentication authentication) {
+        vacancyService.deleteVacancyById(vacancyId, authentication);
+        return "redirect:/profile";
     }
 
     @SneakyThrows
