@@ -1,6 +1,5 @@
 package kg.attractor.headhunter.service.impl;
 
-import io.swagger.v3.oas.models.security.SecurityScheme;
 import kg.attractor.headhunter.dao.*;
 import kg.attractor.headhunter.dto.*;
 import kg.attractor.headhunter.exception.*;
@@ -450,6 +449,7 @@ public class ResumeServiceImpl implements ResumeService {
 
             UserResumePrintDto userDto = UserResumePrintDto.builder().name(userEntity.getName()).surname(userEntity.getSurname()).age(userEntity.getAge()).email(userEntity.getEmail()).phoneNumber(userEntity.getPhoneNumber()).avatar(userEntity.getAvatar()).build();
 
+            Integer id = resume.getId();
             String name = resume.getName();
             String categoryName = categoryDao.getCategoryById(resume.getCategoryId()).getName();
             BigDecimal salary = resume.getSalary();
@@ -487,23 +487,21 @@ public class ResumeServiceImpl implements ResumeService {
             }
 
 
-            ResumeDto resumeDto = ResumeDto.builder().user(userDto).name(name).categoryName(categoryName).salary(salary).workExpInfos(workExperienceInfoDtoFormat).educationInfos(educationInfoDtoFormat).contactInfos(contactInfoDtoFormat).isActive(isActive).updateTime(updateTime).build();
+            ResumeDto resumeDto = ResumeDto.builder().id(id).user(userDto).name(name).categoryName(categoryName).salary(salary).workExpInfos(workExperienceInfoDtoFormat).educationInfos(educationInfoDtoFormat).contactInfos(contactInfoDtoFormat).isActive(isActive).updateTime(updateTime).build();
 
             resumesDto.add(resumeDto);
         }
-
         return resumesDto;
-
     }
 
     @Override
     @SneakyThrows
-    public void createResumeForApplicant(ResumeCreateDto resumeDto) {
-//        User user = getUserFromAuth(authentication.getPrincipal().toString());
+    public void createResumeForApplicant(ResumeCreateDto resumeDto, Authentication authentication) {
+        User user = getUserFromAuth(authentication.getPrincipal().toString());
         Category category = categoryDao.getCategoryByName(resumeDto.getCategoryName()).orElseThrow(() -> new CategoryNotFoundException("Cannot find this category"));
 
         Resume resume = new Resume();
-        resume.setUserId(1);
+        resume.setUserId(user.getId());
         resume.setName(resumeDto.getName());
         resume.setCategoryId(category.getId());
         resume.setSalary(resumeDto.getSalary());
@@ -549,7 +547,6 @@ public class ResumeServiceImpl implements ResumeService {
                 educationInfoDao.createEducationInfo(educationInfo);
             }
         }
-        //----------------------------------------------------------------------------------------------------------------------------------------------
         for (int i = 0; i < resumeDto.getContactInfos().size(); i++) {
             ContactInfoDto contactInfoDto = resumeDto.getContactInfos().get(i);
             ContactInfo contactInfo = new ContactInfo();

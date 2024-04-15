@@ -20,11 +20,9 @@ public class EducationInfoDto {
     private String program;
 
     @NotNull(message = "Start date cannot be null")
-    @PastOrPresent(message = "Start date must be in the past or present")
     private LocalDate startDate;
 
     @NotNull(message = "End date cannot be null")
-    @PastOrPresent(message = "End date must be in the past or present")
     private LocalDate endDate;
 
     @NotBlank(message = "Degree cannot be blank")

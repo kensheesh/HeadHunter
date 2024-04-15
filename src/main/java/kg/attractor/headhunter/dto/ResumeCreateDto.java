@@ -29,13 +29,12 @@ public class ResumeCreateDto {
     @Max(1000000)
     private BigDecimal salary;
 
-    @Builder.Default // Initialize the list
+    @Valid
     private List<WorkExperienceInfoDto> workExpInfos = new ArrayList<>();
-    @Builder.Default // Initialize the list
+    @Valid
     private List<EducationInfoDto> educationInfos = new ArrayList<>();
-    @Builder.Default // Initialize the list
+    @Valid
     private List<ContactInfoDto> contactInfos = new ArrayList<>();
-
 
     private Boolean isActive;
 }

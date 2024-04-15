@@ -35,14 +35,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/vacancies">Vacancies</a>
                 </li>
-                <#if username?? && type == "EMPLOYER">
+                <#if username??>
                     <li class="nav-item">
                         <a class="nav-link" href="/resumes">Resumes</a>
-                    </li>
-                </#if>
-                <#if username?? && type == "APPLICANT">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/vacancies">Vacancies</a>
                     </li>
                 </#if>
             </ul>

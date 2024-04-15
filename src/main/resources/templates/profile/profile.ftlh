@@ -104,7 +104,7 @@
                 <#if user.accountType=="EMPLOYER">
                     <a class="btn btn-primary btn-lg py-3 px-2 rounded-4" href="/vacancies/create">+<br>Создать<br>вакансию</a>
                 <#else>
-                    <a class="btn btn-primary btn-lg py-3 px-2 rounded-4 me-3" href="resumes/add_resume${user.id}">+<br>Создать<br>резюме</a>
+                    <a class="btn btn-primary btn-lg py-3 px-2 rounded-4 me-3" href="resumes/create">+<br>Создать<br>резюме</a>
                     <a class="btn btn-dark btn-lg py-5 px-2 rounded-4 text-white" href="resumes/responded${user.id}">Отклики</a>
                 </#if>
             </div>
@@ -125,11 +125,21 @@
                         <p class="card-text">Дата обновления: ${item.updateTime}</p>
                         <div class="d-flex justify-content-center">
                             <a href="/profile" class="btn btn-primary me-2">Обновить</a>
-                            <a href="/vacancies/edit/${item.id}" class="btn btn-secondary">Редактировать</a>
-                            <form action="/vacancies/delete/${item.id}" method="post" style="height: 0.5rem" class="ms-2">
-                                <input type="hidden" name="_method" value="delete">
-                                <button class="btn btn-danger" type="submit">Удалить</button>
-                            </form>
+                            <#if user.accountType == "EMPLOYER">
+                                <a href="/vacancies/edit/${item.id}" class="btn btn-secondary">Редактировать</a>
+                                <form action="/vacancies/delete/${item.id}" method="post" style="height: 0.5rem"
+                                      class="ms-2">
+                                    <input type="hidden" name="_method" value="delete">
+                                    <button class="btn btn-danger" type="submit">Удалить</button>
+                                </form>
+                            <#else>
+                                <a href="/resumes/edit/${item.id}" class="btn btn-secondary">Редактировать</a>
+                                <form action="/resumes/delete/${item.id}" method="post" style="height: 0.5rem"
+                                      class="ms-2">
+                                    <input type="hidden" name="_method" value="delete">
+                                    <button class="btn btn-danger" type="submit">Удалить</button>
+                                </form>
+                            </#if>
                         </div>
                     </div>
                 </div>

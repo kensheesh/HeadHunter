@@ -21,8 +21,7 @@ public interface ResumeService {
 
     List<ResumeDto> getAllResumesOfApplicant(Authentication authentication);
 
-    void createResumeForApplicant(ResumeCreateDto resumeDto);
-
+    void createResumeForApplicant(ResumeCreateDto resumeDto, Authentication authentication);
     void editResumeForApplicant(ResumeEditDto resumeEditDto, Authentication authentication, Integer id);
 
     void deleteResumeById(Integer resumeId, Authentication authentication);
