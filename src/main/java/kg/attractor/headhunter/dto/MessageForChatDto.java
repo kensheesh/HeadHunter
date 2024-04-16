@@ -1,15 +1,18 @@
-package kg.attractor.headhunter.model;
+package kg.attractor.headhunter.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+
+import lombok.*;
 
 import java.time.LocalDateTime;
 
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-public class Message {
+public class MessageForChatDto {
     private Integer id;
-    private Integer authorId;
     private Integer respondedApplicantId;
     private String content;
     private LocalDateTime timestamp;

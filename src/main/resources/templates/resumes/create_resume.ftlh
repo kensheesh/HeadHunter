@@ -111,18 +111,18 @@
 
 
 
-        <button type="button" class="btn btn-primary mt-2" id="educationAddButton">Добавить информацию об образовании
+        <button type="button" class="btn btn-primary mt-3" id="educationAddButton">Добавить информацию об образовании
         </button>
         <div id="addEducation">
         </div>
 
-        <button type="button" class="btn btn-primary mt-2" id="experienceAddButton">Добавить информацию об опыте
+        <button type="button" class="btn btn-primary mt-3" id="experienceAddButton">Добавить информацию об опыте
             работы
         </button>
         <div id="addExperience">
         </div>
 
-        <button class="btn btn-primary" type="submit">Создать резюме</button>
+        <button class="btn btn-primary mt-3 mb-5" type="submit">Создать резюме</button>
     </form>
 </div>
 

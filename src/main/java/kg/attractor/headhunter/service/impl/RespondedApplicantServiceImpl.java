@@ -4,10 +4,12 @@ import kg.attractor.headhunter.dao.CategoryDao;
 import kg.attractor.headhunter.dao.RespondedApplicantDao;
 import kg.attractor.headhunter.dao.UserDao;
 import kg.attractor.headhunter.dao.VacancyDao;
+import kg.attractor.headhunter.dto.RespondToVacancyDto;
 import kg.attractor.headhunter.dto.UserDto;
 import kg.attractor.headhunter.dto.VacancyForRespondedDto;
 import kg.attractor.headhunter.exception.UserNotFoundException;
 import kg.attractor.headhunter.exception.VacancyNotFoundException;
+import kg.attractor.headhunter.model.RespondedApplicant;
 import kg.attractor.headhunter.model.User;
 import kg.attractor.headhunter.model.Vacancy;
 import kg.attractor.headhunter.service.RespondedApplicantService;
@@ -27,6 +29,18 @@ public class RespondedApplicantServiceImpl implements RespondedApplicantService 
     private final UserDao userDao;
     private final VacancyDao vacancyDao;
     private final CategoryDao categoryDao;
+
+    @Override
+    @SneakyThrows
+    public void createRespondedApplicant(RespondToVacancyDto respondToVacancyDto, Authentication authentication) {
+
+        RespondedApplicant respondedApplicant = new RespondedApplicant();
+        respondedApplicant.setResumeId(respondToVacancyDto.getResumeId());
+        respondedApplicant.setVacancyId(respondToVacancyDto.getVacancyId());
+        respondedApplicant.setConfirmation(false);
+        respondedApplicantDao.create(respondedApplicant);
+    }
+
 
 
     @Override

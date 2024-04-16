@@ -388,6 +388,7 @@ public class ResumeServiceImpl implements ResumeService {
 
             UserResumePrintDto userDto = UserResumePrintDto.builder().name(userEntity.getName()).surname(userEntity.getSurname()).age(userEntity.getAge()).email(userEntity.getEmail()).phoneNumber(userEntity.getPhoneNumber()).avatar(userEntity.getAvatar()).build();
 
+            Integer id = resume.getId();
             String name = resume.getName();
             String categoryName = categoryDao.getCategoryById(resume.getCategoryId()).getName();
             BigDecimal salary = resume.getSalary();
@@ -424,7 +425,7 @@ public class ResumeServiceImpl implements ResumeService {
             }
 
 
-            ResumeDto resumeDto = ResumeDto.builder().user(userDto).name(name).categoryName(categoryName).salary(salary).workExpInfos(workExperienceInfoDtoFormat).educationInfos(educationInfoDtoFormat).contactInfos(contactInfoDtoFormat).isActive(isActive).build();
+            ResumeDto resumeDto = ResumeDto.builder().id(id).user(userDto).name(name).categoryName(categoryName).salary(salary).workExpInfos(workExperienceInfoDtoFormat).educationInfos(educationInfoDtoFormat).contactInfos(contactInfoDtoFormat).isActive(isActive).build();
 
             resumesDto.add(resumeDto);
         }

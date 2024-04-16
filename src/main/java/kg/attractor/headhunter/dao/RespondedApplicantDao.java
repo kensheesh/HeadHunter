@@ -1,5 +1,6 @@
 package kg.attractor.headhunter.dao;
 
+import kg.attractor.headhunter.model.RespondedApplicant;
 import kg.attractor.headhunter.model.User;
 import kg.attractor.headhunter.model.Vacancy;
 import lombok.RequiredArgsConstructor;
@@ -57,4 +58,17 @@ public class RespondedApplicantDao {
         return template.query(sql, new BeanPropertyRowMapper<>(User.class), vacancyId);
     }
 
+    public void create(RespondedApplicant respondedApplicant) {
+        String sql = "INSERT INTO respondedApplicants (resumeId, vacancyId, confirmation) VALUES (?, ?, ?)";
+        template.update(sql, respondedApplicant.getResumeId(), respondedApplicant.getVacancyId(), respondedApplicant.isConfirmation());
+    }
+
+    public RespondedApplicant getRespondedApplicantByResumeIdAndVacancyId(Integer vacancyId, Integer resumeId) {
+        String sql = """
+                select * from respondedApplicants
+                where resumeId = ?
+                and vacancyId = ?;
+                """;
+        template.queryForObject(sql, new BeanPropertyRowMapper<>(RespondedApplicant.class), resumeId, vacancyId);
+    }
 }

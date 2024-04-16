@@ -85,7 +85,7 @@
         </div>
         <#if type == "APPLICANT">
             <div class="col-md-12 d-flex justify-content-center mt-5">
-                <button class="btn btn-success btn-block w-50">Откликнуться</button>
+                <a class="btn btn-success btn-block w-50" href="/apply/vacancy/${vacancy.id}">Откликнуться</a>
             </div>
         </#if>
 
