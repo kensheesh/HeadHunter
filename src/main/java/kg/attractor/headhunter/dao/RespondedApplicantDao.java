@@ -69,6 +69,6 @@ public class RespondedApplicantDao {
                 where resumeId = ?
                 and vacancyId = ?;
                 """;
-        template.queryForObject(sql, new BeanPropertyRowMapper<>(RespondedApplicant.class), resumeId, vacancyId);
+        return template.queryForObject(sql, new BeanPropertyRowMapper<>(RespondedApplicant.class), resumeId, vacancyId);
     }
 }

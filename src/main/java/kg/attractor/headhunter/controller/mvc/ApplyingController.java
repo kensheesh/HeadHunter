@@ -33,6 +33,6 @@ public class ApplyingController {
     @PostMapping("apply/vacancy/{vacancyId}")
     public String applyForVacancy(@Valid RespondToVacancyDto respondToVacancyDto, Authentication authentication) {
         respondedApplicantService.createRespondedApplicant(respondToVacancyDto, authentication);
-        return "redirect:/chat/"+respondToVacancyDto.getVacancyId()+"/"+respondToVacancyDto.getResumeId();
+        return "redirect:/profile";
     }
 }
