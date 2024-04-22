@@ -358,6 +358,16 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
+                  name: userFromId
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: userToId
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
                   name: content
                   type: text
                   constraints:
@@ -372,6 +382,18 @@ databaseChangeLog:
             baseColumnNames: respondedApplicantsId
             constraintName: fk_messages_respondedApplicantsId
             referencedTableName: respondedApplicants
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            baseTableName: messages
+            baseColumnNames: userFromId
+            constraintName: fk_messages_userFromId
+            referencedTableName: users
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            baseTableName: messages
+            baseColumnNames: userToId
+            constraintName: fk_messages_userToId
+            referencedTableName: users
             referencedColumnNames: id
 
   - changeSet:
