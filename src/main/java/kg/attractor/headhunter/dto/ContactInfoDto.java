@@ -13,9 +13,9 @@ import lombok.*;
 @Setter
 public class ContactInfoDto {
     @NotBlank
-    @Size(min = 1, max = 20)
+    @Size(min = 1, max = 30)
     private String contactType;
     @NotBlank
-    @Size(min = 1, max = 20)
+    @Size(min = 1, max = 40)
     private String value;
 }

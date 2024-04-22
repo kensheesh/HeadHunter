@@ -498,6 +498,8 @@ public class ResumeServiceImpl implements ResumeService {
     @Override
     @SneakyThrows
     public void createResumeForApplicant(ResumeCreateDto resumeDto, Authentication authentication) {
+        System.out.println(resumeDto.getWorkExpInfos());
+        System.out.println("test");
         User user = getUserFromAuth(authentication.getPrincipal().toString());
         Category category = categoryDao.getCategoryByName(resumeDto.getCategoryName()).orElseThrow(() -> new CategoryNotFoundException("Cannot find this category"));
 

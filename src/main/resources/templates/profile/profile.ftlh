@@ -105,7 +105,7 @@
                     <a class="btn btn-primary btn-lg py-3 px-2 rounded-4" href="/vacancies/create">+<br>Создать<br>вакансию</a>
                 <#else>
                     <a class="btn btn-primary btn-lg py-3 px-2 rounded-4 me-3" href="resumes/create">+<br>Создать<br>резюме</a>
-                    <a class="btn btn-dark btn-lg py-5 px-2 rounded-4 text-white" href="resumes/responded${user.id}">Отклики</a>
+                    <a class="btn btn-dark btn-lg py-5 px-2 rounded-4 text-white" href="/profile/repliedToVacancies">Отклики</a>
                 </#if>
             </div>
         </div>
