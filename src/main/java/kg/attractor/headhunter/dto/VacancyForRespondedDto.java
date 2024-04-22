@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class VacancyForRespondedDto {
+    private Integer respondedApplicantId;
     private String name;
 
     private String description;
@@ -25,7 +26,7 @@ public class VacancyForRespondedDto {
 
     private Integer experienceTo;
 
-    private boolean isActive;
+    private Boolean isActive;
 
     private LocalDateTime createdDate;
 

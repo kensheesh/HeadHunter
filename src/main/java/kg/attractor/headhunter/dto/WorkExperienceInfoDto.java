@@ -14,12 +14,12 @@ public class WorkExperienceInfoDto {
     @PositiveOrZero(message = "Years for Work Experience cannot be negative")
     private Integer years;
 
-    @NotBlank(message = "company name cannout be null")
+    @NotBlank(message = "company name cannot be null")
     private String companyName;
 
-    @NotBlank(message = "postition cannout be null")
+    @NotBlank(message = "position cannot be null")
     private String position;
 
-    @NotBlank(message = "responsibilities cannout be null")
+    @NotBlank(message = "responsibilities cannot be null")
     private String responsibilities;
 }

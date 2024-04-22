@@ -71,4 +71,10 @@ public class RespondedApplicantDao {
                 """;
         return template.queryForObject(sql, new BeanPropertyRowMapper<>(RespondedApplicant.class), resumeId, vacancyId);
     }
+
+
+    public List<RespondedApplicant> getRespondedApplicantsByUserId(int userId) {
+        String sql = "SELECT * FROM respondedApplicants WHERE resumeId IN (SELECT id FROM resumes WHERE userId = ?) OR vacancyId IN (SELECT id FROM vacancies WHERE authorId = ?)";
+        return template.query(sql, new BeanPropertyRowMapper<>(RespondedApplicant.class), userId, userId);
+    }
 }

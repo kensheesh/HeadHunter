@@ -166,7 +166,7 @@ public class UserDao {
                 .addValue("email", user.getEmail())
                 .addValue("password", user.getPassword())
                 .addValue("phoneNumber", user.getPhoneNumber())
-                .addValue("avatar", "base_avatar.jpg")
+                .addValue("avatar", "base_avatar.png")
                 .addValue("accountType", user.getAccountType().name())
                 .addValue("enabled", true)
                 .addValue("role_id", user.getRoleId())

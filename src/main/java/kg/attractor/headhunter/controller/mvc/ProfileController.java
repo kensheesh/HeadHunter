@@ -5,6 +5,7 @@ import kg.attractor.headhunter.dto.UserDto;
 import kg.attractor.headhunter.dto.UserEditDto;
 import kg.attractor.headhunter.dto.UserPasswordChangeDto;
 import kg.attractor.headhunter.service.ProfileService;
+import kg.attractor.headhunter.service.RespondedApplicantService;
 import kg.attractor.headhunter.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ProfileController {
     private final ProfileService profileService;
     private final UserService userService;
+    private final RespondedApplicantService respondedApplicantService;
 
     @GetMapping
     public String profile(Model user, Model content, Authentication authentication) {
@@ -59,5 +61,11 @@ public class ProfileController {
     public String uploadAvatar(@RequestBody MultipartFile file, Authentication authentication) {
         userService.uploadUserAvatar(authentication, file);
         return "redirect:/profile/edit";
+    }
+
+    @GetMapping("/repliedToVacancies")
+    public String getRepliedToVacancies(Authentication authentication, Model model) {
+        model.addAttribute("items",respondedApplicantService.getRespondedApplicantDtoForChatByUserId(authentication));
+        return "applying/applicantsResponds";
     }
 }

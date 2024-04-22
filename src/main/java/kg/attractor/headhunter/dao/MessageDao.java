@@ -1,7 +1,6 @@
 package kg.attractor.headhunter.dao;
 
 import kg.attractor.headhunter.model.Message;
-import kg.attractor.headhunter.model.Resume;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,9 +13,10 @@ import java.util.List;
 public class MessageDao {
     private final JdbcTemplate template;
 
-    public List<Message> getAllMessagesByAuthorId(Integer authorId) {
-        String sql = "SELECT * FROM messages WHERE author_id = ?";
-        return template.query(sql, new BeanPropertyRowMapper<>(Message.class), authorId);
+    public List<Message> getAllMessagesByRespondedApplicant(Integer respondedApplicantId) {
+        String sql = """
+                select * from messages where RESPONDEDAPPLICANTSID = ?;
+                """;
+        return template.query(sql, new BeanPropertyRowMapper<>(Message.class), respondedApplicantId);
     }
-
 }
