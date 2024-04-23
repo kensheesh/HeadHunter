@@ -100,13 +100,13 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex align-items-center col-md-2 ms-auto">
+            <div class="d-flex align-items-center col-md-2 ms-auto me-2">
                 <#if user.accountType=="EMPLOYER">
                     <a class="btn btn-primary btn-lg py-3 px-2 rounded-4" href="/vacancies/create">+<br>Создать<br>вакансию</a>
-                    <a class="btn btn-dark btn-lg py-5 px-2 rounded-4 text-white" href="/profile/getRespondsToVacancies">Отклики</a>
+                    <a class="btn btn-dark btn-lg py-5 px-2 rounded-4 text-white ms-2 pe-2" href="/profile/getRespondsToVacancies">Отклики</a>
                 <#else>
                     <a class="btn btn-primary btn-lg py-3 px-2 rounded-4 me-3" href="resumes/create">+<br>Создать<br>резюме</a>
-                    <a class="btn btn-dark btn-lg py-5 px-2 rounded-4 text-white" href="/profile/repliedToVacancies">Отклики</a>
+                    <a class="btn btn-dark btn-lg py-5 px-2 rounded-4 text-white ms-1 pe-2" href="/profile/repliedToVacancies">Отклики</a>
                 </#if>
             </div>
         </div>

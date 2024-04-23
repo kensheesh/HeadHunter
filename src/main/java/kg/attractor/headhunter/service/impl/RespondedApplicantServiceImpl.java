@@ -39,6 +39,16 @@ public class RespondedApplicantServiceImpl implements RespondedApplicantService 
 
         Vacancy vacancy = vacancyDao.getVacancyById(respondToVacancyDto.getVacancyId()).orElseThrow();
 
+        Resume resume = resumeDao.getResumeById(respondedApplicant.getResumeId()).orElseThrow();
+
+        Message messageBasic = new Message();
+        messageBasic.setUserFromId(currentUser.getId());
+        messageBasic.setUserToId(vacancy.getAuthorId());
+        messageBasic.setRespondedApplicantsId(respondedApplicantId);
+        messageBasic.setContent("/resumes/"+resume.getId());
+        messageBasic.setTimestamp(LocalDateTime.now());
+        messageDao.save(messageBasic);
+
         Message message = new Message();
         message.setUserFromId(currentUser.getId());
         message.setUserToId(vacancy.getAuthorId());

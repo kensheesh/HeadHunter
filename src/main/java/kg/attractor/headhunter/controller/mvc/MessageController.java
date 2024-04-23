@@ -55,6 +55,7 @@ public class MessageController {
         model.addAttribute("respondedApplicantId", respondedApplicant.getId());
         model.addAttribute("userFromId", user.getId());
         model.addAttribute("userToId", userToId);
+        model.addAttribute("guestUser", userDao.getUserById(userToId).orElseThrow());
         return "chat/chat";
     }
 

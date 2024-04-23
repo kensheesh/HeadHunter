@@ -13,6 +13,7 @@ import java.util.List;
 
 public interface UserService {
     ResponseEntity<?> getPhoto(Authentication authentication);
+    ResponseEntity<?> getPhotoById(Integer id);
 
     List<UserDto> getAllApplicants();
 

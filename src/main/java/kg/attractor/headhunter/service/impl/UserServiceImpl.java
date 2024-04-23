@@ -53,6 +53,23 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    @SneakyThrows
+    @Override
+    public ResponseEntity<?> getPhotoById(Integer id) {
+        User user = userDao.getUserById(id).orElseThrow();
+        if (!((user.getAvatar() == null) && !user.getAvatar().isEmpty())) {
+            String extension = getFilePath(user.getAvatar());
+            if (extension != null && extension.equalsIgnoreCase("png")) {
+                return fileUtil.getOutputFile(user.getAvatar(), "avatars", MediaType.IMAGE_PNG);
+            } else if (extension != null && extension.equalsIgnoreCase("jpeg")) {
+                return fileUtil.getOutputFile(user.getAvatar(), "avatars", MediaType.IMAGE_JPEG);
+            }
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return null;
+    }
+
     private String getFilePath(String avatar) {
         int x = avatar.lastIndexOf(".");
         if (x != -1 && x < avatar.length() - 1) {

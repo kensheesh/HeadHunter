@@ -12,10 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
@@ -53,8 +50,13 @@ public class ProfileController {
     }
 
     @GetMapping("/avatars")
-    public ResponseEntity<?> getAvatarById(Authentication authentication) {
+    public ResponseEntity<?> getAvatar(Authentication authentication) {
         return userService.getPhoto(authentication);
+    }
+
+    @GetMapping("/avatars/{id}")
+    public ResponseEntity<?> getAvatarById(@PathVariable Integer id) {
+        return userService.getPhotoById(id);
     }
 
     @PostMapping("/avatars")
