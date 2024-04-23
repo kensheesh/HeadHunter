@@ -8,12 +8,12 @@
 </head>
 <body>
 <div class="container">
-    <h2 class="mt-4 mb-3">Список откликов на вакансии</h2>
+    <h2 class="mt-4 mb-3">Список откликов на мои вакансии</h2>
     <table class="table">
         <thead>
         <tr>
-            <th>Название вакансии</th>
-            <th>Заработная плата</th>
+            <th>Название резюме</th>
+            <th>Заработный спрос</th>
             <th>Дата публикации</th>
             <th>Действия</th>
         </tr>
@@ -21,9 +21,9 @@
         <tbody>
         <#list items as item>
             <tr>
-                <td>${item.vacancy.name}</td>
-                <td>${item.vacancy.salary}</td>
-                <td>${item.vacancy.updateTime}</td>
+                <td>${item.resume.name}</td>
+                <td>${item.resume.salary}</td>
+                <td>${item.resume.updateTime}</td>
                 <td>
                     <a href="/chat/${item.id}" class="btn btn-primary">Перейти в чат</a>
                 </td>

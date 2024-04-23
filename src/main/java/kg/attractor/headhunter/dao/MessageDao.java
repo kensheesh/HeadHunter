@@ -19,4 +19,17 @@ public class MessageDao {
                 """;
         return template.query(sql, new BeanPropertyRowMapper<>(Message.class), respondedApplicantId);
     }
+
+    public void save(Message message) {
+        String sql = """
+                insert into messages (USERFROMID, USERTOID, RESPONDEDAPPLICANTSID, CONTENT, TIMESTAMP)
+                values (?, ?, ?, ?, ?)
+                """;
+        template.update(sql,
+                message.getUserFromId(),
+                message.getUserToId(),
+                message.getRespondedApplicantsId(),
+                message.getContent(),
+                message.getTimestamp());
+    }
 }

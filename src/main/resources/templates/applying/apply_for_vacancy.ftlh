@@ -113,7 +113,7 @@
                         <small>Текст сообщения:</small>
                         <label>
                             <input class="form-control mb-2" type="text" placeholder="Текст сообщения работодателю"
-                                   name="messageText" style="width: 17rem">
+                                   name="message" style="width: 17rem" id="message">
                         </label>
 
                         <p class="mb-1">Создайте резюме, или выберите существующую ниже:</p>

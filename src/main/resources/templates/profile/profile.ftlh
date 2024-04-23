@@ -103,6 +103,7 @@
             <div class="d-flex align-items-center col-md-2 ms-auto">
                 <#if user.accountType=="EMPLOYER">
                     <a class="btn btn-primary btn-lg py-3 px-2 rounded-4" href="/vacancies/create">+<br>Создать<br>вакансию</a>
+                    <a class="btn btn-dark btn-lg py-5 px-2 rounded-4 text-white" href="/profile/getRespondsToVacancies">Отклики</a>
                 <#else>
                     <a class="btn btn-primary btn-lg py-3 px-2 rounded-4 me-3" href="resumes/create">+<br>Создать<br>резюме</a>
                     <a class="btn btn-dark btn-lg py-5 px-2 rounded-4 text-white" href="/profile/repliedToVacancies">Отклики</a>

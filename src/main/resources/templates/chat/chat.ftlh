@@ -22,26 +22,31 @@
     <div class="row">
         <div class="col-md-8 mx-auto">
             <h3 class="mt-4 mb-3">Чат с работодателем</h3>
-
             <div class="chat-container" id="chatContainer">
             </div>
+            <form id="sendMessageForm">
+                <div class="mb-3">
+                    <label for="messageContent" class="form-label">Сообщение</label>
+                    <textarea class="form-control" id="messageContent" rows="3"></textarea>
+                </div>
+                <button type="button" id="sendMessageBtn" class="btn btn-primary">Отправить</button>
+            </form>
         </div>
+
     </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 <script>
     function loadMessages() {
         $.ajax({
-            url: '/api/chat/' + ${respondedApplicantId} + '/messages',
+            url: '/api/chat/${respondedApplicantId}/messages',
             method: 'GET',
             success: function(messages) {
                 $('#chatContainer').empty();
 
                 messages.forEach(function(message) {
-                    var messageContent = '<div class="message-container"><div>' + message.userFromId.name + ': ' + message.content + '</div></div>';
+                    const messageContent = '<div class="message-container"><div>' + message.userFromId.name + ': ' + message.content + '</div></div>';
                     $('#chatContainer').append(messageContent);
                 });
             },
@@ -56,7 +61,31 @@
 
         setInterval(function() {
             loadMessages();
-        }, 20000);
+        }, 10000);
+
+        $('#sendMessageBtn').click(function() {
+            const messageContent = $('#messageContent').val();
+
+            $.ajax({
+                url: '/api/chat/${respondedApplicantId}/send',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    userFromId: ${userFromId},
+                    userToId: ${userToId},
+                    respondedApplicantsId: ${respondedApplicantId},
+                    content: messageContent,
+                    timestamp: new Date().toISOString()
+                }),
+                success: function(response) {
+                    loadMessages();
+                    $('#messageContent').val('');
+                },
+                error: function(err) {
+                    console.error('Erorr');
+                }
+            });
+        });
     });
 </script>
 

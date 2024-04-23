@@ -4,16 +4,14 @@ import kg.attractor.headhunter.dao.*;
 import kg.attractor.headhunter.dto.*;
 import kg.attractor.headhunter.exception.UserNotFoundException;
 import kg.attractor.headhunter.exception.VacancyNotFoundException;
-import kg.attractor.headhunter.model.RespondedApplicant;
-import kg.attractor.headhunter.model.Resume;
-import kg.attractor.headhunter.model.User;
-import kg.attractor.headhunter.model.Vacancy;
+import kg.attractor.headhunter.model.*;
 import kg.attractor.headhunter.service.RespondedApplicantService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,16 +24,28 @@ public class RespondedApplicantServiceImpl implements RespondedApplicantService 
     private final VacancyDao vacancyDao;
     private final ResumeDao resumeDao;
     private final CategoryDao categoryDao;
+    private final MessageDao messageDao;
 
     @Override
     @SneakyThrows
     public void createRespondedApplicant(RespondToVacancyDto respondToVacancyDto, Authentication authentication) {
+        User currentUser = getUserFromAuth(authentication.getPrincipal().toString());
 
         RespondedApplicant respondedApplicant = new RespondedApplicant();
         respondedApplicant.setResumeId(respondToVacancyDto.getResumeId());
         respondedApplicant.setVacancyId(respondToVacancyDto.getVacancyId());
         respondedApplicant.setConfirmation(false);
-        respondedApplicantDao.create(respondedApplicant);
+        Integer respondedApplicantId = respondedApplicantDao.create(respondedApplicant);
+
+        Vacancy vacancy = vacancyDao.getVacancyById(respondToVacancyDto.getVacancyId()).orElseThrow();
+
+        Message message = new Message();
+        message.setUserFromId(currentUser.getId());
+        message.setUserToId(vacancy.getAuthorId());
+        message.setRespondedApplicantsId(respondedApplicantId);
+        message.setContent(respondToVacancyDto.getMessage());
+        message.setTimestamp(LocalDateTime.now());
+        messageDao.save(message);
     }
 
 

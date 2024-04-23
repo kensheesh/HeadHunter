@@ -6,9 +6,14 @@ import kg.attractor.headhunter.model.Vacancy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
@@ -58,9 +63,19 @@ public class RespondedApplicantDao {
         return template.query(sql, new BeanPropertyRowMapper<>(User.class), vacancyId);
     }
 
-    public void create(RespondedApplicant respondedApplicant) {
+    public Integer create(RespondedApplicant respondedApplicant) {
         String sql = "INSERT INTO respondedApplicants (resumeId, vacancyId, confirmation) VALUES (?, ?, ?)";
-        template.update(sql, respondedApplicant.getResumeId(), respondedApplicant.getVacancyId(), respondedApplicant.isConfirmation());
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        template.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, respondedApplicant.getResumeId());
+            ps.setInt(2, respondedApplicant.getVacancyId());
+            ps.setBoolean(3, respondedApplicant.isConfirmation());
+            return ps;
+        }, keyHolder);
+
+        return Objects.requireNonNull(keyHolder.getKey()).intValue();
     }
 
     public RespondedApplicant getRespondedApplicantByResumeIdAndVacancyId(Integer vacancyId, Integer resumeId) {
@@ -76,5 +91,10 @@ public class RespondedApplicantDao {
     public List<RespondedApplicant> getRespondedApplicantsByUserId(int userId) {
         String sql = "SELECT * FROM respondedApplicants WHERE resumeId IN (SELECT id FROM resumes WHERE userId = ?) OR vacancyId IN (SELECT id FROM vacancies WHERE authorId = ?)";
         return template.query(sql, new BeanPropertyRowMapper<>(RespondedApplicant.class), userId, userId);
+    }
+
+    public RespondedApplicant getRespondedApplicantById(int id) {
+        String sql = "SELECT * FROM respondedApplicants WHERE id = ?";
+        return template.queryForObject(sql, new BeanPropertyRowMapper<>(RespondedApplicant.class), id);
     }
 }

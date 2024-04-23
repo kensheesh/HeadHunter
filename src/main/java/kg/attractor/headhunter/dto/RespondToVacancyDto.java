@@ -8,6 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 public class RespondToVacancyDto {
     private Integer id;
     private Integer vacancyId;
