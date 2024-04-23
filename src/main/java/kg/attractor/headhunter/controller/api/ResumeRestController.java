@@ -4,8 +4,10 @@ import jakarta.validation.Valid;
 import kg.attractor.headhunter.dto.ResumeCreateDto;
 import kg.attractor.headhunter.dto.ResumeDto;
 import kg.attractor.headhunter.dto.ResumeEditDto;
+import kg.attractor.headhunter.dto.ResumeViewAllDto;
 import kg.attractor.headhunter.service.ResumeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -18,11 +20,11 @@ import java.util.List;
 public class ResumeRestController {
     private final ResumeService resumeService;
 
-//    @GetMapping
-//    public ResponseEntity<?> getAllActiveResumesByName(Authentication authentication) {
-//        List<ResumeDto> resumes = resumeService.getAllActiveResumes(authentication);
-//        return ResponseEntity.ok(resumes);
-//    }
+    @GetMapping
+    public ResponseEntity<?> getAllActiveResumesByName(Authentication authentication) {
+        Page<ResumeViewAllDto> resumes = resumeService.getAllActiveResumes(1, 1, "test");
+        return ResponseEntity.ok(resumes);
+    }
 
     @GetMapping("/name/{name}")
     public ResponseEntity<?> getAllActiveResumesByName(@PathVariable String name, Authentication authentication) {
@@ -42,11 +44,11 @@ public class ResumeRestController {
         return ResponseEntity.ok(resumes);
     }
 
-//    @PostMapping
-//    public ResponseEntity<?> createResumeForApplicant(@Valid @RequestBody ResumeCreateDto resumeDto, Authentication authentication) {
-//        resumeService.createResumeForApplicant(resumeDto, authentication);
-//        return ResponseEntity.ok("Resume is successfully created");
-//    }
+    @PostMapping
+    public ResponseEntity<?> createResumeForApplicant(@Valid @RequestBody ResumeCreateDto resumeDto, Authentication authentication) {
+        resumeService.createResumeForApplicant(resumeDto, authentication);
+        return ResponseEntity.ok("Resume is successfully created");
+    }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> editResumeForApplicant(@Valid @RequestBody ResumeEditDto resumeEditDto, Authentication authentication, @PathVariable Integer id) {

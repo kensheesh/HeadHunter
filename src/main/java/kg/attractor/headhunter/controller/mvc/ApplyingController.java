@@ -1,7 +1,9 @@
 package kg.attractor.headhunter.controller.mvc;
 
 import jakarta.validation.Valid;
+import kg.attractor.headhunter.dao.RespondedApplicantDao;
 import kg.attractor.headhunter.dto.RespondToVacancyDto;
+import kg.attractor.headhunter.model.RespondedApplicant;
 import kg.attractor.headhunter.service.ResumeService;
 import kg.attractor.headhunter.service.UserService;
 import kg.attractor.headhunter.service.VacancyService;
@@ -21,6 +23,7 @@ public class ApplyingController {
     private final ResumeService resumeService;
     private final UserService userService;
     private final RespondedApplicantServiceImpl respondedApplicantService;
+    private final RespondedApplicantDao respondedApplicantDao;
 
     @GetMapping("apply/vacancy/{vacancyId}")
     public String applyForVacancy(@PathVariable Integer vacancyId, Model model, Authentication auth) {
@@ -34,6 +37,7 @@ public class ApplyingController {
     public String applyForVacancy(@Valid RespondToVacancyDto respondToVacancyDto, Authentication authentication) {
         System.out.println(respondToVacancyDto);
         respondedApplicantService.createRespondedApplicant(respondToVacancyDto, authentication);
-        return "redirect:/";
+        RespondedApplicant respondedApplicant = respondedApplicantDao.getRespondedApplicantByResumeIdAndVacancyId(respondToVacancyDto.getVacancyId(), respondToVacancyDto.getResumeId());
+        return "redirect:/chat/"+respondedApplicant.getId();
     }
 }
