@@ -38,6 +38,14 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     @SneakyThrows
+    public void updateResumeTime(Integer resumeId, Authentication authentication) {
+        LocalDateTime now = LocalDateTime.now();
+        Resume resume = resumeDao.getResumeById(resumeId).orElseThrow(() -> new ResumeNotFoundException("Can't find resume with id: " + resumeId));
+        resumeDao.updateResumeTime(resume.getId(), now);
+    }
+
+    @Override
+    @SneakyThrows
     public ResumeDto getResumeById(Integer resumeId) {
         Resume resume = resumeDao.getResumeById(resumeId)
                 .orElseThrow(() -> new ResumeNotFoundException("Can't find resume with this id"));
@@ -438,12 +446,12 @@ public class ResumeServiceImpl implements ResumeService {
 
     @SneakyThrows
     @Override
-    public List<ResumeDto> getAllResumesOfApplicantById(Integer userId) {
-        User user = userDao.getUserById(userId).orElseThrow(() -> new UserNotFoundException("can't find"));
+    public List<ResumeViewAllDto> getAllResumesOfApplicantById(Integer userId) {
+        User user = userDao.getUserById(userId).orElseThrow(() -> new UserNotFoundException("Can't find user by id: " + userId));
 
         List<Resume> resumes = resumeDao.getAllResumesOfApplicant(user.getId());
 
-        List<ResumeDto> resumesDto = new ArrayList<>();
+        List<ResumeViewAllDto> resumesDto = new ArrayList<>();
 
         for (Resume resume : resumes) {
             User userEntity = userDao.getUserById(resume.getUserId()).orElseThrow(() -> new UserNotFoundException("Cannot find user with this id"));
@@ -455,7 +463,9 @@ public class ResumeServiceImpl implements ResumeService {
             String categoryName = categoryDao.getCategoryById(resume.getCategoryId()).getName();
             BigDecimal salary = resume.getSalary();
             Boolean isActive = resume.getIsActive();
-            LocalDateTime updateTime = LocalDateTime.now();
+            LocalDateTime updateTime = resume.getUpdateTime();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+            String formattedUpdateTime = updateTime.format(formatter);
 
             //-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -467,7 +477,7 @@ public class ResumeServiceImpl implements ResumeService {
                 workExperienceInfoDtoFormat.add(workExperienceInfoDto);
             }
 
-//-----------------------------------------------------------------------------------------------------------------------------------------------------------
+            //-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
             List<EducationInfo> educationInfos = educationInfoDao.getEducationInfoByResumeId(resume.getId());
             List<EducationInfoDto> educationInfoDtoFormat = new ArrayList<>();
@@ -488,7 +498,7 @@ public class ResumeServiceImpl implements ResumeService {
             }
 
 
-            ResumeDto resumeDto = ResumeDto.builder().id(id).user(userDto).name(name).categoryName(categoryName).salary(salary).workExpInfos(workExperienceInfoDtoFormat).educationInfos(educationInfoDtoFormat).contactInfos(contactInfoDtoFormat).isActive(isActive).updateTime(updateTime).build();
+            ResumeViewAllDto resumeDto = ResumeViewAllDto.builder().id(id).user(userDto).name(name).categoryName(categoryName).salary(salary).workExpInfos(workExperienceInfoDtoFormat).educationInfos(educationInfoDtoFormat).contactInfos(contactInfoDtoFormat).isActive(isActive).updateTime(formattedUpdateTime).build();
 
             resumesDto.add(resumeDto);
         }

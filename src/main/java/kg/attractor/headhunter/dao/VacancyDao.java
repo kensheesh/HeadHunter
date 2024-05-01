@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.DoubleSummaryStatistics;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -24,6 +25,10 @@ public class VacancyDao {
     private final JdbcTemplate template;
 
 
+    public void updateVacancyUpdateTime(Integer vacancyId, LocalDateTime updateTime) {
+        String sql = "UPDATE vacancies SET updateTime = ? WHERE id = ?";
+        template.update(sql, updateTime, vacancyId);
+    }
 
     public List<Vacancy> getAllActiveVacancies() {
         String sql = """

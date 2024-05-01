@@ -1,6 +1,5 @@
 package kg.attractor.headhunter.service;
 
-import io.swagger.v3.oas.models.security.SecurityScheme;
 import kg.attractor.headhunter.dto.ResumeCreateDto;
 import kg.attractor.headhunter.dto.ResumeDto;
 import kg.attractor.headhunter.dto.ResumeEditDto;
@@ -11,8 +10,12 @@ import org.springframework.security.core.Authentication;
 import java.util.List;
 
 public interface ResumeService {
+    void updateResumeTime(Integer resumeId, Authentication authentication);
+
     ResumeDto getResumeById(Integer resumeId);
-    List<ResumeDto> getAllResumesOfApplicantById(Integer userId);
+
+    List<ResumeViewAllDto> getAllResumesOfApplicantById(Integer userId);
+
     Page<ResumeViewAllDto> getAllActiveResumes(int pageNumber, int pageSize, String category);
 
     List<ResumeDto> getAllResumesByName(String title, Authentication authentication);
@@ -22,6 +25,7 @@ public interface ResumeService {
     List<ResumeDto> getAllResumesOfApplicant(Authentication authentication);
 
     void createResumeForApplicant(ResumeCreateDto resumeDto, Authentication authentication);
+
     void editResumeForApplicant(ResumeEditDto resumeEditDto, Authentication authentication, Integer id);
 
     void deleteResumeById(Integer resumeId, Authentication authentication);

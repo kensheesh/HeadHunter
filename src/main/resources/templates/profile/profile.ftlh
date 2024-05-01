@@ -103,10 +103,12 @@
             <div class="d-flex align-items-center col-md-2 ms-auto me-2">
                 <#if user.accountType=="EMPLOYER">
                     <a class="btn btn-primary btn-lg py-3 px-2 rounded-4" href="/vacancies/create">+<br>Создать<br>вакансию</a>
-                    <a class="btn btn-dark btn-lg py-5 px-2 rounded-4 text-white ms-2 pe-2" href="/profile/getRespondsToVacancies">Отклики</a>
+                    <a class="btn btn-dark btn-lg py-5 px-2 rounded-4 text-white ms-2 pe-2"
+                       href="/profile/getRespondsToVacancies">Отклики</a>
                 <#else>
                     <a class="btn btn-primary btn-lg py-3 px-2 rounded-4 me-3" href="resumes/create">+<br>Создать<br>резюме</a>
-                    <a class="btn btn-dark btn-lg py-5 px-2 rounded-4 text-white ms-1 pe-2" href="/profile/repliedToVacancies">Отклики</a>
+                    <a class="btn btn-dark btn-lg py-5 px-2 rounded-4 text-white ms-1 pe-2"
+                       href="/profile/repliedToVacancies">Отклики</a>
                 </#if>
             </div>
         </div>
@@ -125,18 +127,19 @@
                         <h5 class="card-title">${item.name}</h5>
                         <p class="card-text">Дата обновления: ${item.updateTime}</p>
                         <div class="d-flex justify-content-center">
-                            <a href="/profile" class="btn btn-primary me-2">Обновить</a>
                             <#if user.accountType == "EMPLOYER">
+                                <a href="/vacancies/updateTime/${item.id}" class="btn btn-primary me-2">Обновить</a>
                                 <a href="/vacancies/edit/${item.id}" class="btn btn-secondary">Редактировать</a>
                                 <form action="/vacancies/delete/${item.id}" method="post" style="height: 0.5rem"
-                                      class="ms-2">
+                                      class="ms-2 delete-form">
                                     <input type="hidden" name="_method" value="delete">
                                     <button class="btn btn-danger" type="submit">Удалить</button>
                                 </form>
                             <#else>
+                                <a href="/resumes/updateTime/${item.id}" class="btn btn-primary me-2">Обновить</a>
                                 <a href="/resumes/edit/${item.id}" class="btn btn-secondary">Редактировать</a>
                                 <form action="/resumes/delete/${item.id}" method="post" style="height: 0.5rem"
-                                      class="ms-2">
+                                      class="ms-2 delete-form">
                                     <input type="hidden" name="_method" value="delete">
                                     <button class="btn btn-danger" type="submit">Удалить</button>
                                 </form>
@@ -151,5 +154,20 @@
 </div>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const deleteForms = document.querySelectorAll('.delete-form');
+
+        deleteForms.forEach(form => {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                const confirmation = confirm('Вы уверены, что хотите удалить?');
+
+                if (confirmation) {
+                    form.submit();
+                }
+            });
+        });
+    });
 </script>
 </body>

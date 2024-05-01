@@ -27,5 +27,4 @@ public class UserEditDto {
     @Size(min = 4, message = "Length must be >= 4")
     @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).+$", message = "Should contain at least one uppercase letter, one number")
     private String password;
-
 }

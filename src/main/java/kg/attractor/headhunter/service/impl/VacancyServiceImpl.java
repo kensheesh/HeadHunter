@@ -9,6 +9,7 @@ import kg.attractor.headhunter.exception.ResumeNotFoundException;
 import kg.attractor.headhunter.exception.UserNotFoundException;
 import kg.attractor.headhunter.exception.VacancyNotFoundException;
 import kg.attractor.headhunter.model.Category;
+import kg.attractor.headhunter.model.Resume;
 import kg.attractor.headhunter.model.User;
 import kg.attractor.headhunter.model.Vacancy;
 import kg.attractor.headhunter.service.VacancyService;
@@ -36,6 +37,16 @@ public class VacancyServiceImpl implements VacancyService {
     private final UserDao userDao;
     private final VacancyDao vacancyDao;
     private final CategoryDao categoryDao;
+
+
+    @Override
+    @SneakyThrows
+    public void updateVacancyUpdateTime(Integer id) {
+        LocalDateTime now = LocalDateTime.now();
+        Vacancy vacancy = vacancyDao.getVacancyById(id).orElseThrow(() -> new VacancyNotFoundException("Can't find vacancy with id: " + id));
+        vacancyDao.updateVacancyUpdateTime(vacancy.getId(), now);
+    }
+
 
     @Override
     @SneakyThrows
@@ -310,12 +321,12 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     @SneakyThrows
-    public List<VacancyDto> getAllVacanciesOfEmployerById(Integer userId) {
+    public List<VacancyViewAllDto> getAllVacanciesOfEmployerById(Integer userId) {
         User user = userDao.getUserById(userId).orElseThrow(() -> new UserNotFoundException("Cant find user"));
 
         List<Vacancy> vacancies = vacancyDao.getAllVacanciesOfEmployer(user.getId());
 
-        List<VacancyDto> vacancyDtoList = new ArrayList<>();
+        List<VacancyViewAllDto> vacancyDtoList = new ArrayList<>();
 
         for (Vacancy vacancy : vacancies) {
             User userEntity = userDao.getUserById(vacancy.getAuthorId()).orElseThrow(() -> new UserNotFoundException("Cannot find user with this id"));
@@ -331,9 +342,12 @@ public class VacancyServiceImpl implements VacancyService {
             Integer experienceTo = vacancy.getExperienceTo();
             LocalDateTime createdDate = vacancy.getCreatedDate();
             LocalDateTime updateTime = vacancy.getUpdateTime();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+            String formattedUpdateTime = updateTime.format(formatter);
+            String formattedCreatedDate = createdDate.format(formatter);
             Boolean isActive = vacancy.getIsActive();
 
-            VacancyDto vacancyDto = VacancyDto.builder().user(userDto).id(id).name(name).description(description).categoryName(categoryName).salary(salary).experienceFrom(experienceFrom).experienceTo(experienceTo).createdDate(createdDate).updateTime(updateTime).isActive(isActive).build();
+            VacancyViewAllDto vacancyDto = VacancyViewAllDto.builder().user(userDto).id(id).name(name).description(description).categoryName(categoryName).salary(salary).experienceFrom(experienceFrom).experienceTo(experienceTo).createdDate(formattedCreatedDate).updateTime(formattedUpdateTime).isActive(isActive).build();
             vacancyDtoList.add(vacancyDto);
         }
         return vacancyDtoList;

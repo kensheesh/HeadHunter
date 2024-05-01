@@ -22,6 +22,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ResumeDao {
     private final JdbcTemplate template;
+
+    public void updateResumeTime(Integer id, LocalDateTime updateTime) {
+        String sql = "UPDATE resumes SET updateTime = ? WHERE id = ?";
+        template.update(sql, updateTime, id);
+    }
     public List<Resume> getAllActiveResumes() {
         String sql = """
                 select * from resumes

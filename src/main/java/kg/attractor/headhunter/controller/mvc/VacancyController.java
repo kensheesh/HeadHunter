@@ -25,6 +25,13 @@ public class VacancyController {
     private final UserService userService;
     private final UserDao userDao;
 
+
+    @GetMapping("/updateTime/{id}")
+    public String updateResumesUpdateTime(@PathVariable Integer id) {
+        vacancyService.updateVacancyUpdateTime(id);
+        return "redirect:/profile";
+    }
+
     @GetMapping
     public String viewAllVacancies(Model model, @RequestParam(name = "page", defaultValue = "0") Integer page,
                                    @RequestParam(name = "category", defaultValue = "default") String category) {

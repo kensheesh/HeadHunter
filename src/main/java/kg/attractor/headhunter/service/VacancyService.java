@@ -7,7 +7,10 @@ import org.springframework.security.core.Authentication;
 import java.util.List;
 
 public interface VacancyService {
+    void updateVacancyUpdateTime(Integer id);
+
     VacancyDto getVacancyById(Integer id);
+
     VacancyViewEditDto getVacancyByIdForEdit(Integer id);
 
     Page<VacancyViewAllDto> getAllActiveVacancies(int pageNumber, int pageSize, String category);
@@ -17,7 +20,8 @@ public interface VacancyService {
     List<VacancyDto> getAllActiveVacanciesByCategoryName(String categoriesName);
 
     List<VacancyDto> getAllVacanciesOfEmployer(Authentication authentication);
-    List<VacancyDto> getAllVacanciesOfEmployerById(Integer userId);
+
+    List<VacancyViewAllDto> getAllVacanciesOfEmployerById(Integer userId);
 
     void createVacancyForEmployer(VacancyCreateDto vacancyDto, Integer userId);
 

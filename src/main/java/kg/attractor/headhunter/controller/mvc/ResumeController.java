@@ -25,6 +25,12 @@ public class ResumeController {
     private final UserDao userDao;
 
 
+    @GetMapping("/updateTime/{id}")
+    public String updateResumesUpdateTime(@PathVariable Integer id, Authentication authentication) {
+        resumeService.updateResumeTime(id, authentication);
+        return "redirect:/profile";
+    }
+
     @GetMapping
     public String getAllActiveResumes(Model model, @RequestParam(name = "page", defaultValue = "0") Integer page,
                                       @RequestParam(name = "category", defaultValue = "default") String category) {
