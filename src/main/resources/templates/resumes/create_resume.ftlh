@@ -39,6 +39,37 @@
 </head>
 <body>
 
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/profile">Profile</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/vacancies">Vacancies</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/resumes">Resumes</a>
+                </li>
+            </ul>
+            <div class="right-buttons">
+                <a class="btn btn-primary btn-sign-in" href="/logout" id="logout">Log Out</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+
 <div class="container mt-5">
     <h2 class="mb-4">Resume Submission Form</h2>
     <form action="/resumes/create" method="post">
@@ -159,7 +190,7 @@
             '<input name="workExpInfos[' + expCounter + '].responsibilities" class="form-control" type=text placeholder="Обязанности"> ' +
             '</label>' +
 
-            '<button type="button" class="btn btn-danger mt-2 remove-button">Удалить</i></button>'
+            '<button type="button" class="btn btn-danger ms-1 mb-1 remove-button">Удалить</i></button>'
         experienceFormContainer.appendChild(newExperienceForm);
 
         newExperienceForm.querySelector('.remove-button').addEventListener('click', () => {
@@ -182,16 +213,16 @@
             '<input name="educationInfos[' + eduCounter + '].program" class="form-control" type=text placeholder="program"> ' +
             '</label>' +
             '<label>' +
-            '<input name="educationInfos[' + eduCounter + '].startDate" class="form-control" type=date placeholder="startDate"> ' +
+            '<input name="educationInfos[' + eduCounter + '].startDate" class="form-control" type=date placeholder="startDate" style="padding-top: 0" > ' +
             '</label>' +
             '<label>' +
-            '<input name="educationInfos[' + eduCounter + '].endDate" class="form-control" type=date placeholder="endDate"> ' +
+            '<input name="educationInfos[' + eduCounter + '].endDate" class="form-control" type=date placeholder="endDate" style="padding-top: 0"> ' +
             '</label>' +
             '<label>' +
             '<input name="educationInfos[' + eduCounter + '].degree" class="form-control" type=text placeholder="degree"> ' +
             '</label>' +
 
-            '<button type="button" class="btn btn-danger mt-2 remove-button">Удалить</i></button>'
+            '<button type="button" class="btn btn-danger ms-1 mb-1 remove-button">Удалить</i></button>'
         eduFormContainer.appendChild(newEduForm);
 
         newEduForm.querySelector('.remove-button').addEventListener('click', () => {

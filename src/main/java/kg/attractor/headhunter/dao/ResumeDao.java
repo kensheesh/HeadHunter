@@ -56,7 +56,7 @@ public class ResumeDao {
     public List<Resume> getAllResumesOfApplicant(Integer id) {
         String sql = """
                 select * from resumes
-                where userId = ?;
+                where userId = ? order by updateTime desc;
                 """;
         return template.query(sql, new BeanPropertyRowMapper<>(Resume.class), id);
     }

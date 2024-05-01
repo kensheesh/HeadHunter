@@ -59,7 +59,7 @@ public class VacancyDao {
     public List<Vacancy> getAllVacanciesOfEmployer(Integer authorId) {
         String sql = """
                 select * from vacancies
-                where authorId = ?;
+                where authorId = ? order by updateTime desc;
                 """;
         return template.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), authorId);
     }

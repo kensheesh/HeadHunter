@@ -77,8 +77,8 @@
                       enctype="multipart/form-data">
                     <input type="file" class="form-control file_form mb-5" id="inputGroupFile04"
                            aria-describedby="inputGroupFileAddon04" aria-label="Upload" name="file"
-                           style="width: 7rem;">
-                    <button class="btn btn-warning btn-lg px-5 rounded-0" type="submit">Upload</button>
+                           style="width: 16rem; margin-left: 2.1rem;">
+                    <button class="btn btn-warning btn-lg px-5 rounded-0 mt-3" type="submit">Upload</button>
                 </form>
             </div>
         </div>
