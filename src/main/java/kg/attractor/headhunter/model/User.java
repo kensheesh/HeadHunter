@@ -1,5 +1,6 @@
 package kg.attractor.headhunter.model;
 
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
@@ -8,7 +9,13 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+
+@Entity
+@Table(name = "users", schema = "public")
 public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
     private String surname;

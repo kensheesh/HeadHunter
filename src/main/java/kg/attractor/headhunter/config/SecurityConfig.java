@@ -90,7 +90,6 @@ public class SecurityConfig {
 
                 .exceptionHandling(exception -> exception
                         .accessDeniedHandler(customAccessDeniedHandler()));
-        ;
         return http.build();
     }
 

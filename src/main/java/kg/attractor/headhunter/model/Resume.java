@@ -1,5 +1,6 @@
 package kg.attractor.headhunter.model;
 
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -10,11 +11,24 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+
+@Entity
+@Table(name = "resumes", schema = "public")
 public class Resume {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private Integer userId;
+
+    @JoinColumn(name = "userId")
+    @ManyToOne
+    private User author;
     private String name;
-    private Integer categoryId;
+
+    @ManyToOne
+    @JoinColumn(name = "categoryId")
+    private Category category;
+
     private BigDecimal salary;
     private Boolean isActive;
     private LocalDateTime createdTime;

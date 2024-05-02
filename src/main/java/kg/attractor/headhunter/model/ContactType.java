@@ -1,13 +1,20 @@
 package kg.attractor.headhunter.model;
 
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
 @Setter
-@NoArgsConstructor  // Для создания конструктора без параметров
-@AllArgsConstructor // Для создания конструктора со всеми параметрами
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
+
+@Entity
+@Table(name = "contactTypes", schema = "public")
 public class ContactType {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String type;
 }
