@@ -24,5 +24,6 @@ public class RespondedApplicant {
     @ManyToOne
     @JoinColumn(name = "VACANCYID")
     private Vacancy vacancy;
+
     private boolean confirmation;
 }

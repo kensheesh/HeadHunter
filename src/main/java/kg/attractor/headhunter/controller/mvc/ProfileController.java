@@ -75,7 +75,6 @@ public class ProfileController {
     @GetMapping("/getRespondsToVacancies")
     public String getRespondsToVacanciesForEmployer(Authentication authentication, Model model) {
         model.addAttribute("items", respondedApplicantService.getRespondedApplicantDtoForChatByUserId(authentication));
-        System.out.println(respondedApplicantService.getVacanciesForRespondedApplicantsByUserId(authentication));
         return "applying/respondsToVacancies";
     }
 }

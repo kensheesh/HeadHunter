@@ -120,6 +120,8 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userCreateDto.getEmail());
         user.setPassword(passwordEncoder.encode(userCreateDto.getPassword()));
         user.setPhoneNumber(userCreateDto.getPhoneNumber());
+        user.setAvatar("base_avatar.png");
+        user.setEnabled(true);
         user.setAccountType(userCreateDto.getAccountType().toString());
         int roleId;
         if (userCreateDto.getAccountType().equals(AccountType.EMPLOYER)) {
@@ -144,7 +146,7 @@ public class UserServiceImpl implements UserService {
         } else if (userEditDto.getName() != null) {
             throw new UserNotFoundException("Name cannot contain blanks");
         }
-        user.setSurname(mayBeUser.getAccountType().equals(AccountType.APPLICANT) ? userEditDto.getSurname() : null);
+        user.setSurname(mayBeUser.getAccountType().equals("APPLICANT") ? userEditDto.getSurname() : null);
         user.setAge(userEditDto.getAge());
         if (userEditDto.getPassword() != null) {
             user.setPassword(passwordEncoder.encode(userEditDto.getPassword()));

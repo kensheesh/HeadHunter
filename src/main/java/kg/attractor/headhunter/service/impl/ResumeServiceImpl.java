@@ -1,6 +1,5 @@
 package kg.attractor.headhunter.service.impl;
 
-import kg.attractor.headhunter.dao.CategoryDao;
 import kg.attractor.headhunter.dto.*;
 import kg.attractor.headhunter.exception.CategoryNotFoundException;
 import kg.attractor.headhunter.exception.ResumeNotFoundException;
@@ -105,7 +104,9 @@ public class ResumeServiceImpl implements ResumeService {
                     .orElseThrow(() -> new UserNotFoundException("Cannot find contact type"));
             ContactInfoDto contactInfoDto = modelMapper.map(contactInfo, ContactInfoDto.class);
             contactInfoDto.setContactType(contactType.getType());
+            contactInfoDto.setValue(contactInfo.getContent());
             contactInfoDtoFormat.add(contactInfoDto);
+            System.out.println(contactInfoDtoFormat);
         }
 
         return ResumeDto.builder()
@@ -475,6 +476,8 @@ public class ResumeServiceImpl implements ResumeService {
         resume.setName(resumeDto.getName());
         resume.setCategory(category);
         resume.setSalary(resumeDto.getSalary());
+        resume.setCreatedTime(LocalDateTime.now());
+        resume.setUpdateTime(LocalDateTime.now());
 
         if (Boolean.TRUE.equals(resumeDto.getIsActive())) {
             resume.setIsActive(true);
@@ -522,7 +525,8 @@ public class ResumeServiceImpl implements ResumeService {
             ContactInfo contactInfo = new ContactInfo();
 
             contactInfo.setResume(resume);
-            contactInfo.setContactType(contactInfo.getContactType());
+            ContactType contactType = contactTypeRepository.findByType(contactInfoDto.getContactType());
+            contactInfo.setContactType(contactType);
             contactInfo.setContent(contactInfoDto.getValue());
 
             contactInfoRepository.save(contactInfo);

@@ -5,12 +5,14 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 
 @Entity
 @Table(name = "RESUMES")
@@ -40,4 +42,7 @@ public class Resume {
 
     @Column(name = "UPDATETIME")
     private LocalDateTime updateTime;
+
+    @OneToMany(mappedBy = "resume")
+    private List<RespondedApplicant> respondedApplicants;
 }

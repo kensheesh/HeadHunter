@@ -187,6 +187,8 @@ public class VacancyServiceImpl implements VacancyService {
         vacancy.setDescription(vacancyDto.getDescription());
         vacancy.setCategory(category);
         vacancy.setSalary(vacancyDto.getSalary());
+        vacancy.setCreatedDate(LocalDateTime.now());
+        vacancy.setUpdateTime(LocalDateTime.now());
         vacancy.setExperienceFrom(vacancyDto.getExperienceFrom());
         vacancy.setExperienceTo(vacancyDto.getExperienceTo());
         if (vacancyDto.getIsActive() == null) {

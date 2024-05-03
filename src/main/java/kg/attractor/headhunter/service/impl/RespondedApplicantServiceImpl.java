@@ -90,18 +90,17 @@ public class RespondedApplicantServiceImpl implements RespondedApplicantService 
     @SneakyThrows
     public List<RespondedApplicantDtoForChat> getRespondedApplicantDtoForChatByUserId(Authentication authentication) {
         User currentUser = getUserFromAuth(authentication.getPrincipal().toString());
-        List<RespondedApplicant> respondedApplicants = respondedApplicantDao.getRespondedApplicantsByUserId(currentUser.getId());
-        for (int i = 0; i < respondedApplicants.size(); i++) {
-            System.out.println(respondedApplicants.get(i));
+        List<RespondedApplicant> respondedApplicantsTest = respondedApplicantDao.getRespondedApplicantsByUserId(currentUser.getId());
+        List<RespondedApplicant> respondedApplicants = new ArrayList<>();
+        for (RespondedApplicant applicant : respondedApplicantsTest) {
+            respondedApplicants.add(respondedApplicantRepository.findById(applicant.getId()).orElseThrow());
         }
 
         List<RespondedApplicantDtoForChat> dtos = new ArrayList<>();
 
         for (RespondedApplicant respondedApplicant : respondedApplicants) {
             Vacancy vacancy = vacancyRepository.findById(respondedApplicant.getVacancy().getId()).orElseThrow();
-            System.out.println("vacancy" + vacancy);
             Resume resume = resumeRepository.findById(respondedApplicant.getResume().getId()).orElseThrow();
-            System.out.println("resume" + resume);
             RespondedApplicantDtoForChat dto = RespondedApplicantDtoForChat.builder()
                     .id(respondedApplicant.getId())
                     .vacancy(vacancy)
