@@ -18,15 +18,15 @@ public interface ResumeService {
 
     Page<ResumeViewAllDto> getAllActiveResumes(int pageNumber, int pageSize, String category);
 
-    List<ResumeDto> getAllResumesByName(String title, Authentication authentication);
-
-    List<ResumeDto> getAllResumesByCategoryName(String categoriesName, Authentication authentication);
+//    List<ResumeDto> getAllResumesByName(String title, Authentication authentication);
+//
+//    List<ResumeDto> getAllResumesByCategoryName(String categoriesName, Authentication authentication);
 
     List<ResumeDto> getAllResumesOfApplicant(Authentication authentication);
 
     void createResumeForApplicant(ResumeCreateDto resumeDto, Authentication authentication);
 
-    void editResumeForApplicant(ResumeEditDto resumeEditDto, Authentication authentication, Integer id);
+//    void editResumeForApplicant(ResumeEditDto resumeEditDto, Authentication authentication, Integer id);
 
     void deleteResumeById(Integer resumeId, Authentication authentication);
 }

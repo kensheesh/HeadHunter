@@ -67,13 +67,13 @@ public class ProfileController {
 
     @GetMapping("/repliedToVacancies")
     public String getRepliedToVacanciesForApplicant(Authentication authentication, Model model) {
-        model.addAttribute("items",respondedApplicantService.getRespondedApplicantDtoForChatByUserId(authentication));
+        model.addAttribute("items", respondedApplicantService.getRespondedApplicantDtoForChatByUserId(authentication));
         return "applying/applicantsResponds";
     }
 
     @GetMapping("/getRespondsToVacancies")
     public String getRespondsToVacanciesForEmployer(Authentication authentication, Model model) {
-        model.addAttribute("items",respondedApplicantService.getRespondedApplicantDtoForChatByUserId(authentication));
+        model.addAttribute("items", respondedApplicantService.getRespondedApplicantDtoForChatByUserId(authentication));
         return "applying/respondsToVacancies";
     }
 }
