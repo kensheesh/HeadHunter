@@ -120,7 +120,7 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userCreateDto.getEmail());
         user.setPassword(passwordEncoder.encode(userCreateDto.getPassword()));
         user.setPhoneNumber(userCreateDto.getPhoneNumber());
-        user.setAccountType(userCreateDto.getAccountType());
+        user.setAccountType(userCreateDto.getAccountType().toString());
         int roleId;
         if (userCreateDto.getAccountType().equals(AccountType.EMPLOYER)) {
             roleId = 1;

@@ -11,20 +11,40 @@ import lombok.*;
 @ToString
 
 @Entity
-@Table(name = "users", schema = "public")
+@Table(name = "USERS")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(name = "NAME")
     private String name;
+
+    @Column(name = "SURNAME")
     private String surname;
+
+    @Column(name = "AGE")
     private Integer age;
+
+    @Column(name = "EMAIL")
     private String email;
+
+    @Column(name = "PASSWORD")
     private String password;
+
+    @Column(name = "PHONENUMBER")
     private String phoneNumber;
+
+    @Column(name = "AVATAR")
     private String avatar;
-    private AccountType accountType;
+
+    @Column(name = "ACCOUNTTYPE")
+    private String accountType;
+
+    @Column(name = "ROLE_ID")
     private Integer roleId;
+
+    @Column(name = "ENABLED")
     private Boolean enabled;
 }

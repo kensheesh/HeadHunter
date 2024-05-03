@@ -45,7 +45,7 @@ public class VacancyController {
             model.addAttribute("username", null);
         } else {
             model.addAttribute("username", auth.getName());
-            AccountType accountType = getUserFromAuth(auth.getPrincipal().toString()).getAccountType();
+            AccountType accountType = AccountType.valueOf(getUserFromAuth(auth.getPrincipal().toString()).getAccountType());
             model.addAttribute("type", accountType);
         }
 
@@ -62,7 +62,7 @@ public class VacancyController {
             model.addAttribute("username", null);
         } else {
             model.addAttribute("username", auth.getName());
-            AccountType accountType = getUserFromAuth(auth.getPrincipal().toString()).getAccountType();
+            AccountType accountType = AccountType.valueOf(getUserFromAuth(auth.getPrincipal().toString()).getAccountType());
             model.addAttribute("type", accountType);
         }
         model.addAttribute("vacancy", vacancyService.getVacancyById(vacancyId));

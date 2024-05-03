@@ -5,23 +5,23 @@ import lombok.*;
 
 @Getter
 @Setter
-@NoArgsConstructor  // Для создания конструктора без параметров
-@AllArgsConstructor // Для создания конструктора со всеми параметрами
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 
 @Entity
-@Table(name = "contactsInfo", schema = "public")
+@Table(name = "CONTACTSINFO")
 public class ContactInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @JoinColumn(name = "resumeId")
+    @JoinColumn(name = "RESUMEID")
     @ManyToOne
     private Resume resume;
 
-    @JoinColumn(name = "contactTypeId")
+    @JoinColumn(name = "CONTACTTYPEID")
     @ManyToOne
     private ContactType contactType;
     private String content;

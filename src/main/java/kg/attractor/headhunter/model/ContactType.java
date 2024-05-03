@@ -10,7 +10,7 @@ import lombok.*;
 @Builder
 
 @Entity
-@Table(name = "contactTypes", schema = "public")
+@Table(name = "CONTACTTYPES")
 public class ContactType {
 
     @Id

@@ -10,15 +10,11 @@ import lombok.*;
 @Builder
 
 @Entity
-@Table(name = "categories", schema = "public")
+@Table(name = "CATEGORIES")
 public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
-
-    @ManyToOne
-    @JoinColumn(name = "parentId")
-    private Category category;
 }

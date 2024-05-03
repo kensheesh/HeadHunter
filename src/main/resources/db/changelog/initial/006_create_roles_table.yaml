@@ -8,7 +8,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: long
+                  type: int
                   autoIncrement: true
                   constraints:
                     primaryKey: true
@@ -18,7 +18,7 @@ databaseChangeLog:
                   type: varchar(50)
               - column:
                   name: authority_id
-                  type: long
+                  type: int
                   constraints:
                     foreignKeyName: fk_authority_id
                     nullable: false

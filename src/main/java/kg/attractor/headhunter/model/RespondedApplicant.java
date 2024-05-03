@@ -3,12 +3,14 @@ package kg.attractor.headhunter.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 
 @Entity
-@Table(name = "respondedApplicants")
+@Table(name = "RESPONDEDAPPLICANTS")
 public class RespondedApplicant {
 
     @Id
@@ -16,11 +18,11 @@ public class RespondedApplicant {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "resumeId")
+    @JoinColumn(name = "RESUMEID")
     private Resume resume;
 
     @ManyToOne
-    @JoinColumn(name = "vacancyId")
+    @JoinColumn(name = "VACANCYID")
     private Vacancy vacancy;
     private boolean confirmation;
 }

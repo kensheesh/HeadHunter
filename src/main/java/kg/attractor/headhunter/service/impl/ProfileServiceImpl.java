@@ -38,10 +38,10 @@ public class ProfileServiceImpl implements ProfileService {
     public List<?> getProfileContent(Authentication authentication) {
         User user = getUserFromAuth(authentication.getPrincipal().toString());
 
-        if (user.getAccountType().equals(AccountType.APPLICANT)) {
+        if (user.getAccountType().equals("APPLICANT")) {
             return resumeService.getAllResumesOfApplicantById(user.getId());
 
-        } else if (user.getAccountType().equals(AccountType.EMPLOYER)) {
+        } else if (user.getAccountType().equals("EMPLOYER")) {
             return vacancyService.getAllVacanciesOfEmployerById(user.getId());
 
         } else throw new NoSuchElementException("User type is not found");

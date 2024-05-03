@@ -13,7 +13,7 @@ databaseChangeLog:
                     nullable: true
               - column:
                   name: role_id
-                  type: long
+                  type: int
                   constraints:
                     foreignKeyName: fk_role_id
                     nullable: true

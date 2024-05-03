@@ -6,12 +6,12 @@ import lombok.*;
 
 @Getter
 @Setter
-@NoArgsConstructor  // Для создания конструктора без параметров
-@AllArgsConstructor // Для создания конструктора со всеми параметрами
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 
 @Entity
-@Table(name = "workExperienceInfo", schema = "public")
+@Table(name = "WORKEXPERIENCEINFO")
 public class WorkExperienceInfo {
 
     @Id
@@ -19,10 +19,18 @@ public class WorkExperienceInfo {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "resumeId")
+    @JoinColumn(name = "RESUMEID")
     private Resume resume;
+
+    @Column(name = "YEARS")
     private Integer years;
+
+    @Column(name = "COMPANYNAME")
     private String companyName;
+
+    @Column(name = "POSITION")
     private String position;
+
+    @Column(name = "RESPONSIBILITIES")
     private String responsibilities;
 }

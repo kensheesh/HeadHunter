@@ -27,6 +27,7 @@ public class ProfileController {
     public String profile(Model user, Model content, Authentication authentication) {
         user.addAttribute("user", profileService.getUserDto(authentication));
         content.addAttribute("items", profileService.getProfileContent(authentication));
+        System.out.println(authentication.getName());
         return "profile/profile";
     }
 
@@ -74,6 +75,7 @@ public class ProfileController {
     @GetMapping("/getRespondsToVacancies")
     public String getRespondsToVacanciesForEmployer(Authentication authentication, Model model) {
         model.addAttribute("items", respondedApplicantService.getRespondedApplicantDtoForChatByUserId(authentication));
+        System.out.println(respondedApplicantService.getVacanciesForRespondedApplicantsByUserId(authentication));
         return "applying/respondsToVacancies";
     }
 }

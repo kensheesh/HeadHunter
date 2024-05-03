@@ -92,15 +92,16 @@ public class RespondedApplicantServiceImpl implements RespondedApplicantService 
         User currentUser = getUserFromAuth(authentication.getPrincipal().toString());
         List<RespondedApplicant> respondedApplicants = respondedApplicantDao.getRespondedApplicantsByUserId(currentUser.getId());
         for (int i = 0; i < respondedApplicants.size(); i++) {
-            System.out.println(respondedApplicants.get(i).getId());
+            System.out.println(respondedApplicants.get(i));
         }
 
         List<RespondedApplicantDtoForChat> dtos = new ArrayList<>();
 
         for (RespondedApplicant respondedApplicant : respondedApplicants) {
             Vacancy vacancy = vacancyRepository.findById(respondedApplicant.getVacancy().getId()).orElseThrow();
-            Resume resume = resumeRepository.findById(respondedApplicant.getVacancy().getId()).orElseThrow();
-
+            System.out.println("vacancy" + vacancy);
+            Resume resume = resumeRepository.findById(respondedApplicant.getResume().getId()).orElseThrow();
+            System.out.println("resume" + resume);
             RespondedApplicantDtoForChat dto = RespondedApplicantDtoForChat.builder()
                     .id(respondedApplicant.getId())
                     .vacancy(vacancy)
@@ -140,7 +141,7 @@ public class RespondedApplicantServiceImpl implements RespondedApplicantService 
     }
 
     private UserDto convertToUserDto(User user) {
-        return UserDto.builder().name(user.getName()).surname(user.getSurname()).email(user.getEmail()).age(user.getAge()).phoneNumber(user.getPhoneNumber()).avatar(user.getAvatar()).accountType(user.getAccountType()).build();
+        return UserDto.builder().name(user.getName()).surname(user.getSurname()).email(user.getEmail()).age(user.getAge()).phoneNumber(user.getPhoneNumber()).avatar(user.getAvatar()).accountType(AccountType.valueOf(user.getAccountType())).build();
     }
 
 }

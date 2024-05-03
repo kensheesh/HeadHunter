@@ -13,24 +13,31 @@ import java.time.LocalDateTime;
 @Builder
 
 @Entity
-@Table(name = "resumes", schema = "public")
+@Table(name = "RESUMES")
 public class Resume {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "USERID")
     @ManyToOne
     private User author;
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "categoryId")
+    @JoinColumn(name = "CATEGORYID")
     private Category category;
 
+    @Column(name = "SALARY", columnDefinition = "NUMERIC(38,2)")
     private BigDecimal salary;
+
+    @Column(name = "ISACTIVE")
     private Boolean isActive;
+
+    @Column(name = "CREATEDTIME")
     private LocalDateTime createdTime;
+
+    @Column(name = "UPDATETIME")
     private LocalDateTime updateTime;
 }

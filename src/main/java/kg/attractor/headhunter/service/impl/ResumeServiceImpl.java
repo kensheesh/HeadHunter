@@ -334,7 +334,7 @@ public class ResumeServiceImpl implements ResumeService {
     public List<ResumeDto> getAllResumesOfApplicant(Authentication authentication) {
         User user = getUserFromAuth(authentication.getPrincipal().toString());
 
-        List<Resume> resumes = resumeRepository.findAllByUserId(user.getId());
+        List<Resume> resumes = resumeRepository.findByAuthorId(user.getId());
         List<ResumeDto> resumesDto = new ArrayList<>();
 
         for (Resume resume : resumes) {
@@ -406,7 +406,7 @@ public class ResumeServiceImpl implements ResumeService {
     public List<ResumeViewAllDto> getAllResumesOfApplicantById(Integer userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("Can't find user by id: " + userId));
 
-        List<Resume> resumes = resumeRepository.findAllByUserId(user.getId());
+        List<Resume> resumes = resumeRepository.findByAuthorId(user.getId());
 
         List<ResumeViewAllDto> resumesDto = new ArrayList<>();
 

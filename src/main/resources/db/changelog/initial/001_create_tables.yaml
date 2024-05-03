@@ -73,17 +73,6 @@ databaseChangeLog:
                   type: varchar(255)
                   constraints:
                     nullable: false
-              - column:
-                  name: parentId
-                  type: int
-                  constraints:
-                    nullable: true
-        - addForeignKeyConstraint:
-            baseTableName: categories
-            baseColumnNames: parentId
-            constraintName: fk_categories_parentId
-            referencedTableName: categories
-            referencedColumnNames: id
 
 
 
@@ -108,7 +97,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: description
-                  type: text
+                  type: varchar(255)
                   constraints:
                     nullable: false
               - column:
@@ -118,7 +107,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: salary
-                  type: double
+                  type: NUMERIC(38,2)
                   constraints:
                     nullable: false
               - column:
@@ -200,7 +189,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: salary
-                  type: int
+                  type: NUMERIC(38,2)
                   constraints:
                     nullable: false
               - column:
@@ -369,7 +358,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: content
-                  type: text
+                  type: varchar(255)
                   constraints:
                     nullable: false
               - column:
@@ -432,7 +421,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: responsibilities
-                  type: text
+                  type: varchar
                   constraints:
                     nullable: false
         - addForeignKeyConstraint:

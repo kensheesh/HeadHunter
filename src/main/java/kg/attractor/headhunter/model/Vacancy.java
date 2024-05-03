@@ -13,27 +13,42 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "vacancies")
+@Table(name = "VACANCIES")
 public class Vacancy {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(name = "NAME")
     private String name;
+
+    @Column(name = "DESCRIPTION")
     private String description;
 
-    @ManyToOne()
-    @JoinColumn(name = "categoryId")
+    @ManyToOne
+    @JoinColumn(name = "CATEGORYID")
     private Category category;
+
+    @Column(name = "SALARY", columnDefinition = "NUMERIC(38,2)")
     private BigDecimal salary;
+
+    @Column(name = "EXPERIENCEFROM")
     private Integer experienceFrom;
+
+    @Column(name = "EXPERIENCETO")
     private Integer experienceTo;
+
+    @Column(name = "ISACTIVE")
     private Boolean isActive;
 
-    @JoinColumn(name = "authorId")
+    @JoinColumn(name = "AUTHORID")
     @ManyToOne
     private User author;
 
+    @Column(name = "CREATEDDATE")
     private LocalDateTime createdDate;
+
+    @Column(name = "UPDATETIME")
     private LocalDateTime updateTime;
 }

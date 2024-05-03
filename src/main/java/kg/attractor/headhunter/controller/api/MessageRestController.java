@@ -16,8 +16,7 @@ public class MessageRestController {
 
     @GetMapping("/{respondedApplicantId}/messages")
     public List<ChatMessageDto> getChatMessages(@PathVariable("respondedApplicantId") Integer respondedApplicantId) {
-        List<ChatMessageDto> chatMessageDto = chatService.getAllMessagesByRespondedApplicant(respondedApplicantId);
-        return chatMessageDto;
+        return chatService.getAllMessagesByRespondedApplicant(respondedApplicantId);
     }
 
     @PostMapping("/{respondedApplicantId}/send")

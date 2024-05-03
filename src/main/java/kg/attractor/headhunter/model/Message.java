@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @ToString
 
 @Entity
-@Table(name = "messages", schema = "public")
+@Table(name = "MESSAGES")
 public class Message {
 
     @Id
@@ -20,16 +20,18 @@ public class Message {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "userFromId")
+    @JoinColumn(name = "USERFROMID")
     private User userFrom;
 
     @ManyToOne
-    @JoinColumn(name = "userToId")
+    @JoinColumn(name = "USERTOID")
     private User userTo;
 
     @ManyToOne
-    @JoinColumn(name = "respondedApplicantsId")
+    @JoinColumn(name = "RESPONDEDAPPLICANTSID")
     private RespondedApplicant respondedApplicant;
+
+    @Column(name = "CONTENT")
     private String content;
     private LocalDateTime timestamp;
 }
