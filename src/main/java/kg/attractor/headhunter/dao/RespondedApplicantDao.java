@@ -20,6 +20,7 @@ import java.util.Objects;
 public class RespondedApplicantDao {
     private final JdbcTemplate template;
 
+    // Оставил сложные запросы
     public List<Vacancy> getVacanciesForRespondedApplicantsByUserId(int userId) {
         String sql = """
                  SELECT
@@ -63,21 +64,6 @@ public class RespondedApplicantDao {
         return template.query(sql, new BeanPropertyRowMapper<>(User.class), vacancyId);
     }
 
-    public Integer create(RespondedApplicant respondedApplicant) {
-        String sql = "INSERT INTO respondedApplicants (resumeId, vacancyId, confirmation) VALUES (?, ?, ?)";
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-
-        template.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, respondedApplicant.getResumeId());
-            ps.setInt(2, respondedApplicant.getVacancyId());
-            ps.setBoolean(3, respondedApplicant.isConfirmation());
-            return ps;
-        }, keyHolder);
-
-        return Objects.requireNonNull(keyHolder.getKey()).intValue();
-    }
-
     public RespondedApplicant getRespondedApplicantByResumeIdAndVacancyId(Integer vacancyId, Integer resumeId) {
         String sql = """
                 select * from respondedApplicants
@@ -93,8 +79,8 @@ public class RespondedApplicantDao {
         return template.query(sql, new BeanPropertyRowMapper<>(RespondedApplicant.class), userId, userId);
     }
 
-    public RespondedApplicant getRespondedApplicantById(int id) {
-        String sql = "SELECT * FROM respondedApplicants WHERE id = ?";
-        return template.queryForObject(sql, new BeanPropertyRowMapper<>(RespondedApplicant.class), id);
-    }
+//    public RespondedApplicant getRespondedApplicantById(int id) {
+//        String sql = "SELECT * FROM respondedApplicants WHERE id = ?";
+//        return template.queryForObject(sql, new BeanPropertyRowMapper<>(RespondedApplicant.class), id);
+//    }
 }

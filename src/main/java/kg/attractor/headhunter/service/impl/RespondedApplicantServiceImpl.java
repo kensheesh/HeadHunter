@@ -1,10 +1,14 @@
 package kg.attractor.headhunter.service.impl;
 
-import kg.attractor.headhunter.dao.*;
-import kg.attractor.headhunter.dto.*;
+import kg.attractor.headhunter.dao.RespondedApplicantDao;
+import kg.attractor.headhunter.dto.RespondToVacancyDto;
+import kg.attractor.headhunter.dto.RespondedApplicantDtoForChat;
+import kg.attractor.headhunter.dto.UserDto;
+import kg.attractor.headhunter.dto.VacancyForRespondedDto;
 import kg.attractor.headhunter.exception.UserNotFoundException;
 import kg.attractor.headhunter.exception.VacancyNotFoundException;
 import kg.attractor.headhunter.model.*;
+import kg.attractor.headhunter.repository.*;
 import kg.attractor.headhunter.service.RespondedApplicantService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -20,44 +24,50 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class RespondedApplicantServiceImpl implements RespondedApplicantService {
     private final RespondedApplicantDao respondedApplicantDao;
-    private final UserDao userDao;
-    private final VacancyDao vacancyDao;
-    private final ResumeDao resumeDao;
-    private final CategoryDao categoryDao;
-    private final MessageDao messageDao;
+    //    private final UserDao userDao;
+//    private final VacancyDao vacancyDao;
+//    private final ResumeDao resumeDao;
+//    private final CategoryDao categoryDao;
+//    private final MessageDao messageDao;
+    private final ResumeRepository resumeRepository;
+    private final VacancyRepository vacancyRepository;
+    private final RespondedApplicantRepository respondedApplicantRepository;
+    private final MessageRepository messageRepository;
+    private final UserRepository userRepository;
 
     @Override
     @SneakyThrows
     public void createRespondedApplicant(RespondToVacancyDto respondToVacancyDto, Authentication authentication) {
         User currentUser = getUserFromAuth(authentication.getPrincipal().toString());
 
+        Resume resumeFor = resumeRepository.findById(respondToVacancyDto.getResumeId()).orElseThrow();
+        Vacancy vacancyFor = vacancyRepository.findById(respondToVacancyDto.getVacancyId()).orElseThrow();
         RespondedApplicant respondedApplicant = new RespondedApplicant();
-        respondedApplicant.setResumeId(respondToVacancyDto.getResumeId());
-        respondedApplicant.setVacancyId(respondToVacancyDto.getVacancyId());
+        respondedApplicant.setResume(resumeFor);
+        respondedApplicant.setVacancy(vacancyFor);
         respondedApplicant.setConfirmation(false);
-        Integer respondedApplicantId = respondedApplicantDao.create(respondedApplicant);
+        RespondedApplicant respondedApplicantCreated = respondedApplicantRepository.save(respondedApplicant);
 
-        Vacancy vacancy = vacancyDao.getVacancyById(respondToVacancyDto.getVacancyId()).orElseThrow();
+        Vacancy vacancy = vacancyRepository.findById(respondToVacancyDto.getVacancyId()).orElseThrow();
 
-        Resume resume = resumeDao.getResumeById(respondedApplicant.getResumeId()).orElseThrow();
+        Resume resume = resumeRepository.findById(respondToVacancyDto.getResumeId()).orElseThrow();
 
         Message messageBasic = new Message();
-        messageBasic.setUserFromId(currentUser.getId());
-        messageBasic.setUserToId(vacancy.getAuthorId());
-        messageBasic.setRespondedApplicantsId(respondedApplicantId);
-        messageBasic.setContent("/resumes/"+resume.getId());
+        messageBasic.setUserFrom(currentUser);
+        messageBasic.setUserTo(vacancy.getAuthor());
+        messageBasic.setRespondedApplicant(respondedApplicantCreated);
+        messageBasic.setContent("/resumes/" + resume.getId());
         messageBasic.setTimestamp(LocalDateTime.now());
-        messageDao.save(messageBasic);
+        messageRepository.save(messageBasic);
 
         Message message = new Message();
-        message.setUserFromId(currentUser.getId());
-        message.setUserToId(vacancy.getAuthorId());
-        message.setRespondedApplicantsId(respondedApplicantId);
+        message.setUserFrom(currentUser);
+        message.setUserTo(vacancy.getAuthor());
+        message.setRespondedApplicant(respondedApplicantCreated);
         message.setContent(respondToVacancyDto.getMessage());
         message.setTimestamp(LocalDateTime.now());
-        messageDao.save(message);
+        messageRepository.save(message);
     }
-
 
 
     @Override
@@ -72,7 +82,7 @@ public class RespondedApplicantServiceImpl implements RespondedApplicantService 
         }
 
         List<VacancyForRespondedDto> dtos = new ArrayList<>();
-        vacancies.forEach(e -> dtos.add(VacancyForRespondedDto.builder().name(e.getName()).description(e.getDescription()).categoryName(categoryDao.getCategoryById(e.getCategoryId()).getName()).salary(e.getSalary()).experienceFrom(e.getExperienceFrom()).experienceTo(e.getExperienceTo()).isActive(e.getIsActive()).createdDate(e.getCreatedDate()).updateTime(e.getUpdateTime()).build()));
+        vacancies.forEach(e -> dtos.add(VacancyForRespondedDto.builder().name(e.getName()).description(e.getDescription()).categoryName(e.getCategory().getName()).salary(e.getSalary()).experienceFrom(e.getExperienceFrom()).experienceTo(e.getExperienceTo()).isActive(e.getIsActive()).createdDate(e.getCreatedDate()).updateTime(e.getUpdateTime()).build()));
         return dtos;
     }
 
@@ -88,8 +98,8 @@ public class RespondedApplicantServiceImpl implements RespondedApplicantService 
         List<RespondedApplicantDtoForChat> dtos = new ArrayList<>();
 
         for (RespondedApplicant respondedApplicant : respondedApplicants) {
-            Vacancy vacancy = vacancyDao.getVacancyById(respondedApplicant.getVacancyId()).orElseThrow();
-            Resume resume = resumeDao.getResumeById(respondedApplicant.getResumeId()).orElseThrow();
+            Vacancy vacancy = vacancyRepository.findById(respondedApplicant.getVacancy().getId()).orElseThrow();
+            Resume resume = resumeRepository.findById(respondedApplicant.getVacancy().getId()).orElseThrow();
 
             RespondedApplicantDtoForChat dto = RespondedApplicantDtoForChat.builder()
                     .id(respondedApplicant.getId())
@@ -104,14 +114,12 @@ public class RespondedApplicantServiceImpl implements RespondedApplicantService 
     }
 
 
-
-
     @SneakyThrows
     public User getUserFromAuth(String auth) {
         int x = auth.indexOf("=");
         int y = auth.indexOf(",");
         String email = auth.substring(x + 1, y);
-        return userDao.getUserByEmail(email).orElseThrow(() -> new UserNotFoundException("can't find user"));
+        return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("can't find user"));
     }
 
     @Override
@@ -119,7 +127,8 @@ public class RespondedApplicantServiceImpl implements RespondedApplicantService 
     public List<UserDto> getRespondedUsersForVacancies(Integer vacancyId, Authentication authentication) {
         User currentUser = getUserFromAuth(authentication.getPrincipal().toString());
 
-        if (!vacancyDao.isEmployerHasVacancyById(currentUser, vacancyId)) {
+        Vacancy vacancy = vacancyRepository.findById(vacancyId).orElseThrow();
+        if (!vacancy.getAuthor().getId().equals(currentUser.getId())) {
             throw new VacancyNotFoundException("Vacancy not found or access denied.");
         }
 

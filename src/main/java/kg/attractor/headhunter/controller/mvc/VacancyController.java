@@ -1,7 +1,6 @@
 package kg.attractor.headhunter.controller.mvc;
 
 import jakarta.validation.Valid;
-import kg.attractor.headhunter.dao.UserDao;
 import kg.attractor.headhunter.dto.*;
 import kg.attractor.headhunter.exception.UserNotFoundException;
 import kg.attractor.headhunter.model.AccountType;
