@@ -1,6 +1,6 @@
 package kg.attractor.headhunter.service.impl;
 
-import kg.attractor.headhunter.dao.*;
+import kg.attractor.headhunter.dao.CategoryDao;
 import kg.attractor.headhunter.dto.*;
 import kg.attractor.headhunter.exception.CategoryNotFoundException;
 import kg.attractor.headhunter.exception.ResumeNotFoundException;
@@ -30,13 +30,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ResumeServiceImpl implements ResumeService {
     private final ModelMapper modelMapper;
-    private final ResumeDao resumeDao;
-    //    private final UserDao userDao;
-    private final CategoryDao categoryDao;
-    private final WorkExperienceInfoDao workExperienceInfoDao;
-    private final EducationInfoDao educationInfoDao;
-    private final ContactInfoDao contactInfoDao;
-    private final ContactTypeDao contactTypeDao;
     private final ResumeRepository resumeRepository;
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
@@ -135,7 +128,7 @@ public class ResumeServiceImpl implements ResumeService {
         if (!category.equalsIgnoreCase("default")) {
             Category categoryFromDB = categoryRepository.findByName(category)
                     .orElseThrow(() -> new CategoryNotFoundException("Cannot find any resume with category: " + category));
-            List<Resume> resumes = resumeDao.getAllResumesByCategoryId(categoryFromDB.getId());
+            List<Resume> resumes = resumeRepository.findByCategory(categoryFromDB);
 
             List<ResumeViewAllDto> resumesDto = new ArrayList<>();
 
@@ -191,7 +184,12 @@ public class ResumeServiceImpl implements ResumeService {
             return toPage(resumesDto, PageRequest.of(pageNumber, pageSize));
         }
 
-        List<Resume> resumes = resumeDao.getAllActiveResumes();
+        List<Resume> resumes = resumeRepository.findAll();
+        for (int i = 0; i < resumes.size(); i++) {
+            if (resumes.get(i).getIsActive().equals(false)) {
+                resumes.remove(resumes.get(i));
+            }
+        }
 
         List<ResumeViewAllDto> resumesDto = new ArrayList<>();
 
@@ -408,7 +406,7 @@ public class ResumeServiceImpl implements ResumeService {
     public List<ResumeViewAllDto> getAllResumesOfApplicantById(Integer userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("Can't find user by id: " + userId));
 
-        List<Resume> resumes = resumeDao.getAllResumesOfApplicant(user.getId());
+        List<Resume> resumes = resumeRepository.findAllByUserId(user.getId());
 
         List<ResumeViewAllDto> resumesDto = new ArrayList<>();
 
@@ -470,7 +468,7 @@ public class ResumeServiceImpl implements ResumeService {
         System.out.println(resumeDto.getWorkExpInfos());
         System.out.println("test");
         User user = getUserFromAuth(authentication.getPrincipal().toString());
-        Category category = categoryDao.getCategoryByName(resumeDto.getCategoryName()).orElseThrow(() -> new CategoryNotFoundException("Cannot find this category"));
+        Category category = categoryRepository.findByName(resumeDto.getCategoryName()).orElseThrow(() -> new CategoryNotFoundException("Cannot find this category"));
 
         Resume resume = new Resume();
         resume.setAuthor(user);

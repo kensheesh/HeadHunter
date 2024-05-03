@@ -15,11 +15,11 @@ public interface VacancyService {
 
     Page<VacancyViewAllDto> getAllActiveVacancies(int pageNumber, int pageSize, String category);
 
-    List<VacancyDto> getAllActiveVacanciesByName(String title);
-
-    List<VacancyDto> getAllActiveVacanciesByCategoryName(String categoriesName);
-
-    List<VacancyDto> getAllVacanciesOfEmployer(Authentication authentication);
+//    List<VacancyDto> getAllActiveVacanciesByName(String title);
+//
+//    List<VacancyDto> getAllActiveVacanciesByCategoryName(String categoriesName);
+//
+//    List<VacancyDto> getAllVacanciesOfEmployer(Authentication authentication);
 
     List<VacancyViewAllDto> getAllVacanciesOfEmployerById(Integer userId);
 
@@ -29,8 +29,8 @@ public interface VacancyService {
 
     void deleteVacancyById(Integer vacancyId, Authentication authentication);
 
-    List<VacancyDto> getVacanciesBySalary(boolean ascending);
-
-    List<VacancyDto> getVacanciesByUpdateTime(boolean ascending);
-
+//    List<VacancyDto> getVacanciesBySalary(boolean ascending);
+//
+//    List<VacancyDto> getVacanciesByUpdateTime(boolean ascending);
+//
 }

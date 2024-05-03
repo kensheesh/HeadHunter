@@ -6,6 +6,7 @@ import kg.attractor.headhunter.dto.*;
 import kg.attractor.headhunter.exception.UserNotFoundException;
 import kg.attractor.headhunter.model.AccountType;
 import kg.attractor.headhunter.model.User;
+import kg.attractor.headhunter.repository.UserRepository;
 import kg.attractor.headhunter.service.UserService;
 import kg.attractor.headhunter.service.VacancyService;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 public class VacancyController {
     private final VacancyService vacancyService;
     private final UserService userService;
-    private final UserDao userDao;
+    private final UserRepository userRepository;
 
 
     @GetMapping("/updateTime/{id}")
@@ -108,6 +109,6 @@ public class VacancyController {
         int x = auth.indexOf("=");
         int y = auth.indexOf(",");
         String email = auth.substring(x + 1, y);
-        return userDao.getUserByEmail(email).orElseThrow(() -> new UserNotFoundException("can't find user with this email"));
+        return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("can't find user with this email"));
     }
 }

@@ -1,17 +1,16 @@
 package kg.attractor.headhunter.service.impl;
 
-import kg.attractor.headhunter.dao.CategoryDao;
-import kg.attractor.headhunter.dao.UserDao;
-import kg.attractor.headhunter.dao.VacancyDao;
 import kg.attractor.headhunter.dto.*;
 import kg.attractor.headhunter.exception.CategoryNotFoundException;
 import kg.attractor.headhunter.exception.ResumeNotFoundException;
 import kg.attractor.headhunter.exception.UserNotFoundException;
 import kg.attractor.headhunter.exception.VacancyNotFoundException;
 import kg.attractor.headhunter.model.Category;
-import kg.attractor.headhunter.model.Resume;
 import kg.attractor.headhunter.model.User;
 import kg.attractor.headhunter.model.Vacancy;
+import kg.attractor.headhunter.repository.CategoryRepository;
+import kg.attractor.headhunter.repository.UserRepository;
+import kg.attractor.headhunter.repository.VacancyRepository;
 import kg.attractor.headhunter.service.VacancyService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -28,31 +27,30 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class VacancyServiceImpl implements VacancyService {
-    private final UserDao userDao;
-    private final VacancyDao vacancyDao;
-    private final CategoryDao categoryDao;
-
+    private final UserRepository userRepository;
+    private final VacancyRepository vacancyRepository;
+    private final CategoryRepository categoryRepository;
 
     @Override
     @SneakyThrows
     public void updateVacancyUpdateTime(Integer id) {
         LocalDateTime now = LocalDateTime.now();
-        Vacancy vacancy = vacancyDao.getVacancyById(id).orElseThrow(() -> new VacancyNotFoundException("Can't find vacancy with id: " + id));
-        vacancyDao.updateVacancyUpdateTime(vacancy.getId(), now);
+        Vacancy vacancy = vacancyRepository.findById(id).orElseThrow(() -> new VacancyNotFoundException("Can't find vacancy with id: " + id));
+        vacancy.setUpdateTime(now);
+        vacancyRepository.save(vacancy);
     }
 
 
     @Override
     @SneakyThrows
     public VacancyDto getVacancyById(Integer id) {
-        Vacancy vacancy = vacancyDao.getVacancyById(id).orElseThrow(() -> new VacancyNotFoundException("Can't find vacancy with id: " + id));
-        User user = userDao.getUserById(vacancy.getAuthorId()).orElseThrow(() -> new UserNotFoundException("can't find user with this id"));
+        Vacancy vacancy = vacancyRepository.findById(id).orElseThrow(() -> new VacancyNotFoundException("Can't find vacancy with id: " + id));
+        User user = userRepository.findById(vacancy.getAuthor().getId()).orElseThrow(() -> new UserNotFoundException("can't find user with this id"));
         UserForVacancyPrintDto userDto = new UserForVacancyPrintDto();
         userDto.setId(user.getId());
         userDto.setName(user.getName());
@@ -60,14 +58,14 @@ public class VacancyServiceImpl implements VacancyService {
         userDto.setEmail(user.getEmail());
         userDto.setPhoneNumber(user.getPhoneNumber());
         userDto.setAvatar(user.getAvatar());
-        return VacancyDto.builder().id(vacancy.getId()).name(vacancy.getName()).description(vacancy.getDescription()).categoryName(categoryDao.getCategoryById(vacancy.getCategoryId()).getName()).salary(vacancy.getSalary()).experienceFrom(vacancy.getExperienceFrom()).experienceTo(vacancy.getExperienceTo()).isActive(vacancy.getIsActive()).createdDate(vacancy.getCreatedDate()).updateTime(vacancy.getUpdateTime()).user(userDto).build();
+        return VacancyDto.builder().id(vacancy.getId()).name(vacancy.getName()).description(vacancy.getDescription()).categoryName(vacancy.getCategory().getName()).salary(vacancy.getSalary()).experienceFrom(vacancy.getExperienceFrom()).experienceTo(vacancy.getExperienceTo()).isActive(vacancy.getIsActive()).createdDate(vacancy.getCreatedDate()).updateTime(vacancy.getUpdateTime()).user(userDto).build();
     }
 
     @Override
     @SneakyThrows
     public VacancyViewEditDto getVacancyByIdForEdit(Integer id) {
-        Vacancy vacancy = vacancyDao.getVacancyById(id).orElseThrow(() -> new VacancyNotFoundException("Can't find vacancy with id: " + id));
-        User user = userDao.getUserById(vacancy.getAuthorId()).orElseThrow(() -> new UserNotFoundException("can't find user with this id"));
+        Vacancy vacancy = vacancyRepository.findById(id).orElseThrow(() -> new VacancyNotFoundException("Can't find vacancy with id: " + id));
+        User user = userRepository.findById(vacancy.getAuthor().getId()).orElseThrow(() -> new UserNotFoundException("can't find user with this id"));
         UserForVacancyPrintDto userDto = new UserForVacancyPrintDto();
         userDto.setId(user.getId());
         userDto.setName(user.getName());
@@ -77,60 +75,33 @@ public class VacancyServiceImpl implements VacancyService {
         userDto.setAvatar(user.getAvatar());
 
         Integer salary = vacancy.getSalary().intValue();
-        System.out.println(salary);
-        return VacancyViewEditDto.builder().id(vacancy.getId()).name(vacancy.getName()).description(vacancy.getDescription()).categoryName(categoryDao.getCategoryById(vacancy.getCategoryId()).getName()).salary(salary).experienceFrom(vacancy.getExperienceFrom()).experienceTo(vacancy.getExperienceTo()).isActive(vacancy.getIsActive()).createdDate(vacancy.getCreatedDate()).updateTime(vacancy.getUpdateTime()).user(userDto).build();
+        return VacancyViewEditDto.builder().id(vacancy.getId()).name(vacancy.getName()).description(vacancy.getDescription()).categoryName(vacancy.getCategory().getName()).salary(salary).experienceFrom(vacancy.getExperienceFrom()).experienceTo(vacancy.getExperienceTo()).isActive(vacancy.getIsActive()).createdDate(vacancy.getCreatedDate()).updateTime(vacancy.getUpdateTime()).user(userDto).build();
     }
 
-
-//    @Override
-//    @SneakyThrows
-//    public List<VacancyDto> getAllActiveVacancies() {
-//
-//        List<Vacancy> vacancies = vacancyDao.getAllActiveVacancies();
-//
-//        List<VacancyDto> vacancyDtoList = new ArrayList<>();
-//
-//        for (Vacancy vacancy : vacancies) {
-//            User userEntity = userDao.getUserById(vacancy.getAuthorId()).orElseThrow(() -> new UserNotFoundException("Cannot find user with this id"));
-//
-//            UserForVacancyPrintDto userDto = UserForVacancyPrintDto.builder().id(userEntity.getId()).name(userEntity.getName()).age(userEntity.getAge()).email(userEntity.getEmail()).phoneNumber(userEntity.getPhoneNumber()).avatar(userEntity.getAvatar()).build();
-//
-//            Integer id = vacancy.getId();
-//            String name = vacancy.getName();
-//            String description = vacancy.getDescription();
-//            String categoryName = categoryDao.getCategoryById(vacancy.getCategoryId()).getName();
-//            BigDecimal salary = vacancy.getSalary();
-//            Integer experienceFrom = vacancy.getExperienceFrom();
-//            Integer experienceTo = vacancy.getExperienceTo();
-//            LocalDateTime createdDate = vacancy.getCreatedDate();
-//            LocalDateTime updateTime = vacancy.getUpdateTime();
-//            Boolean isActive = vacancy.getIsActive();
-//
-//            VacancyDto vacancyDto = VacancyDto.builder().id(id).user(userDto).name(name).description(description).categoryName(categoryName).salary(salary).experienceFrom(experienceFrom).experienceTo(experienceTo).createdDate(createdDate).updateTime(updateTime).isActive(isActive).build();
-//            vacancyDtoList.add(vacancyDto);
-//        }
-//        return vacancyDtoList;
-//    }
 
     @SneakyThrows
     public Page<VacancyViewAllDto> getAllActiveVacancies(int pageNumber, int pageSize, String category) {
 
         if (!category.equalsIgnoreCase("default")) {
-            System.out.println(category);
-            Category categoryFromDB = categoryDao.getCategoryByName(category).orElseThrow(() -> new CategoryNotFoundException("Cannot find any resume with category: " + category));
+            Category categoryFromDB = categoryRepository.findByName(category).orElseThrow(() -> new CategoryNotFoundException("Cannot find any resume with category: " + category));
 
-            List<Vacancy> vacancies = vacancyDao.getAllActiveVacanciesByCategoryId(categoryFromDB.getId());
+            List<Vacancy> vacancies = vacancyRepository.findByCategoryId(categoryFromDB.getId());
+            for (int i = 0; i < vacancies.size(); i++) {
+                if (vacancies.get(i).getIsActive().equals(false)) {
+                    vacancies.remove(vacancies.get(i));
+                }
+            }
             List<VacancyViewAllDto> vacancyDtoList = new ArrayList<>();
 
             for (Vacancy vacancy : vacancies) {
-                User userEntity = userDao.getUserById(vacancy.getAuthorId()).orElseThrow(() -> new UserNotFoundException("Cannot find user with this id"));
+                User userEntity = userRepository.findById(vacancy.getAuthor().getId()).orElseThrow(() -> new UserNotFoundException("Cannot find user with this id"));
 
                 UserForVacancyPrintDto userDto = UserForVacancyPrintDto.builder().name(userEntity.getName()).age(userEntity.getAge()).email(userEntity.getEmail()).phoneNumber(userEntity.getPhoneNumber()).avatar(userEntity.getAvatar()).build();
 
                 Integer id = vacancy.getId();
                 String name = vacancy.getName();
                 String description = vacancy.getDescription();
-                String categoryName = categoryDao.getCategoryById(vacancy.getCategoryId()).getName();
+                String categoryName = vacancy.getCategory().getName();
                 BigDecimal salary = vacancy.getSalary();
                 Integer experienceFrom = vacancy.getExperienceFrom();
                 Integer experienceTo = vacancy.getExperienceTo();
@@ -148,17 +119,22 @@ public class VacancyServiceImpl implements VacancyService {
             return toPage(vacancyDtoList, PageRequest.of(pageNumber, pageSize));
         }
 
-        List<Vacancy> vacancies = vacancyDao.getAllActiveVacancies();
+        List<Vacancy> vacancies = vacancyRepository.findAll();
+        for (int i = 0; i < vacancies.size(); i++) {
+            if (vacancies.get(i).getIsActive().equals(false)) {
+                vacancies.remove(vacancies.get(i));
+            }
+        }
         List<VacancyViewAllDto> vacancyDtoList = new ArrayList<>();
         for (Vacancy vacancy : vacancies) {
-            User userEntity = userDao.getUserById(vacancy.getAuthorId()).orElseThrow(() -> new UserNotFoundException("Cannot find user with this id"));
+            User userEntity = userRepository.findById(vacancy.getAuthor().getId()).orElseThrow(() -> new UserNotFoundException("Cannot find user with this id"));
 
             UserForVacancyPrintDto userDto = UserForVacancyPrintDto.builder().id(userEntity.getId()).name(userEntity.getName()).age(userEntity.getAge()).email(userEntity.getEmail()).phoneNumber(userEntity.getPhoneNumber()).avatar(userEntity.getAvatar()).build();
 
             Integer id = vacancy.getId();
             String name = vacancy.getName();
             String description = vacancy.getDescription();
-            String categoryName = categoryDao.getCategoryById(vacancy.getCategoryId()).getName();
+            String categoryName = vacancy.getCategory().getName();
             BigDecimal salary = vacancy.getSalary();
             Integer experienceFrom = vacancy.getExperienceFrom();
             Integer experienceTo = vacancy.getExperienceTo();
@@ -188,117 +164,20 @@ public class VacancyServiceImpl implements VacancyService {
         return new PageImpl<>(subList, pageable, resumes.size());
     }
 
-    @Override
-    @SneakyThrows
-    public List<VacancyDto> getAllActiveVacanciesByName(String title) {
-        List<Vacancy> vacancies = vacancyDao.getAllActiveVacanciesByName(title);
-
-        List<VacancyDto> vacancyDtoList = new ArrayList<>();
-
-        for (Vacancy vacancy : vacancies) {
-            User userEntity = userDao.getUserById(vacancy.getAuthorId()).orElseThrow(() -> new UserNotFoundException("Cannot find user with this id"));
-
-            UserForVacancyPrintDto userDto = UserForVacancyPrintDto.builder().name(userEntity.getName()).age(userEntity.getAge()).email(userEntity.getEmail()).phoneNumber(userEntity.getPhoneNumber()).avatar(userEntity.getAvatar()).build();
-
-            Integer id = vacancy.getId();
-            String name = vacancy.getName();
-            String description = vacancy.getDescription();
-            String categoryName = categoryDao.getCategoryById(vacancy.getCategoryId()).getName();
-            BigDecimal salary = vacancy.getSalary();
-            Integer experienceFrom = vacancy.getExperienceFrom();
-            Integer experienceTo = vacancy.getExperienceTo();
-            LocalDateTime createdDate = vacancy.getCreatedDate();
-            LocalDateTime updateTime = vacancy.getUpdateTime();
-            Boolean isActive = vacancy.getIsActive();
-
-            VacancyDto vacancyDto = VacancyDto.builder().id(id).user(userDto).name(name).description(description).categoryName(categoryName).salary(salary).experienceFrom(experienceFrom).experienceTo(experienceTo).createdDate(createdDate).updateTime(updateTime).isActive(isActive).build();
-            vacancyDtoList.add(vacancyDto);
-        }
-        if (vacancyDtoList.isEmpty()) {
-            throw new ResumeNotFoundException("Cannot find any vacancies with name " + title);
-        }
-        return vacancyDtoList;
-    }
-
-    @Override
-    @SneakyThrows
-    public List<VacancyDto> getAllActiveVacanciesByCategoryName(String categoriesName) {
-        Category category = categoryDao.getCategoryByName(categoriesName).orElseThrow(() -> new CategoryNotFoundException("Cannot find any resume with category: " + categoriesName));
-
-        List<Vacancy> vacancies = vacancyDao.getAllActiveVacanciesByCategoryId(category.getId());
-
-        List<VacancyDto> vacancyDtoList = new ArrayList<>();
-
-        for (Vacancy vacancy : vacancies) {
-            User userEntity = userDao.getUserById(vacancy.getAuthorId()).orElseThrow(() -> new UserNotFoundException("Cannot find user with this id"));
-
-            UserForVacancyPrintDto userDto = UserForVacancyPrintDto.builder().name(userEntity.getName()).age(userEntity.getAge()).email(userEntity.getEmail()).phoneNumber(userEntity.getPhoneNumber()).avatar(userEntity.getAvatar()).build();
-
-            String name = vacancy.getName();
-            String description = vacancy.getDescription();
-            String categoryName = categoryDao.getCategoryById(vacancy.getCategoryId()).getName();
-            BigDecimal salary = vacancy.getSalary();
-            Integer experienceFrom = vacancy.getExperienceFrom();
-            Integer experienceTo = vacancy.getExperienceTo();
-            LocalDateTime createdDate = vacancy.getCreatedDate();
-            LocalDateTime updateTime = vacancy.getUpdateTime();
-            Boolean isActive = vacancy.getIsActive();
-
-            VacancyDto vacancyDto = VacancyDto.builder().user(userDto).name(name).description(description).categoryName(categoryName).salary(salary).experienceFrom(experienceFrom).experienceTo(experienceTo).createdDate(createdDate).updateTime(updateTime).isActive(isActive).build();
-            vacancyDtoList.add(vacancyDto);
-        }
-        if (vacancyDtoList.isEmpty()) {
-            throw new ResumeNotFoundException("Cannot find any vacancies with categoryName " + categoriesName);
-        }
-        return (vacancyDtoList);
-    }
-
     @SneakyThrows
     public User getUserFromAuth(String auth) {
         int x = auth.indexOf("=");
         int y = auth.indexOf(",");
         String email = auth.substring(x + 1, y);
-        return userDao.getUserByEmail(email).orElseThrow(() -> new UserNotFoundException("can't find user"));
+        return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("can't find user"));
     }
 
-    @Override
-    @SneakyThrows
-    public List<VacancyDto> getAllVacanciesOfEmployer(Authentication authentication) {
-        User user = getUserFromAuth(authentication.getPrincipal().toString());
-
-        List<Vacancy> vacancies = vacancyDao.getAllVacanciesOfEmployer(user.getId());
-
-        List<VacancyDto> vacancyDtoList = new ArrayList<>();
-
-        for (Vacancy vacancy : vacancies) {
-            User userEntity = userDao.getUserById(vacancy.getAuthorId()).orElseThrow(() -> new UserNotFoundException("Cannot find user with this id"));
-
-            UserForVacancyPrintDto userDto = UserForVacancyPrintDto.builder().name(userEntity.getName()).age(userEntity.getAge()).email(userEntity.getEmail()).phoneNumber(userEntity.getPhoneNumber()).avatar(userEntity.getAvatar()).build();
-
-            String name = vacancy.getName();
-            String description = vacancy.getDescription();
-            String categoryName = categoryDao.getCategoryById(vacancy.getCategoryId()).getName();
-            BigDecimal salary = vacancy.getSalary();
-            Integer experienceFrom = vacancy.getExperienceFrom();
-            Integer experienceTo = vacancy.getExperienceTo();
-            LocalDateTime createdDate = vacancy.getCreatedDate();
-            LocalDateTime updateTime = vacancy.getUpdateTime();
-            Boolean isActive = vacancy.getIsActive();
-
-            VacancyDto vacancyDto = VacancyDto.builder().user(userDto).name(name).description(description).categoryName(categoryName).salary(salary).experienceFrom(experienceFrom).experienceTo(experienceTo).createdDate(createdDate).updateTime(updateTime).isActive(isActive).build();
-            vacancyDtoList.add(vacancyDto);
-        }
-        if (vacancyDtoList.isEmpty()) {
-            throw new ResumeNotFoundException("You don't have any vacancies");
-        }
-        return vacancyDtoList;
-    }
 
     @Override
     @SneakyThrows
     public void createVacancyForEmployer(VacancyCreateDto vacancyDto, Integer userId) {
-        User user = userDao.getUserById(userId).orElseThrow(() -> new UserNotFoundException("Can't find user"));
-        Category category = categoryDao.getCategoryByName(vacancyDto.getCategoryName()).orElseThrow(() -> new CategoryNotFoundException("Cannot find this category"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("Can't find user"));
+        Category category = categoryRepository.findByName(vacancyDto.getCategoryName()).orElseThrow(() -> new CategoryNotFoundException("Cannot find this category"));
         if (vacancyDto.getExperienceFrom() > vacancyDto.getExperienceTo()) {
             throw new VacancyNotFoundException("ExperienceTo cannot be less then experienceFrom");
         }
@@ -306,7 +185,7 @@ public class VacancyServiceImpl implements VacancyService {
         Vacancy vacancy = new Vacancy();
         vacancy.setName(vacancyDto.getName());
         vacancy.setDescription(vacancyDto.getDescription());
-        vacancy.setCategoryId(category.getId());
+        vacancy.setCategory(category);
         vacancy.setSalary(vacancyDto.getSalary());
         vacancy.setExperienceFrom(vacancyDto.getExperienceFrom());
         vacancy.setExperienceTo(vacancyDto.getExperienceTo());
@@ -315,28 +194,28 @@ public class VacancyServiceImpl implements VacancyService {
         } else {
             vacancy.setIsActive(vacancyDto.getIsActive());
         }
-        vacancy.setAuthorId(user.getId());
-        vacancyDao.createVacancy(vacancy);
+        vacancy.setAuthor(user);
+        vacancyRepository.save(vacancy);
     }
 
     @Override
     @SneakyThrows
     public List<VacancyViewAllDto> getAllVacanciesOfEmployerById(Integer userId) {
-        User user = userDao.getUserById(userId).orElseThrow(() -> new UserNotFoundException("Cant find user"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("Cant find user"));
 
-        List<Vacancy> vacancies = vacancyDao.getAllVacanciesOfEmployer(user.getId());
+        List<Vacancy> vacancies = vacancyRepository.findByAuthorId(user.getId());
 
         List<VacancyViewAllDto> vacancyDtoList = new ArrayList<>();
 
         for (Vacancy vacancy : vacancies) {
-            User userEntity = userDao.getUserById(vacancy.getAuthorId()).orElseThrow(() -> new UserNotFoundException("Cannot find user with this id"));
+            User userEntity = userRepository.findById(vacancy.getAuthor().getId()).orElseThrow(() -> new UserNotFoundException("Cannot find user with this id"));
 
             UserForVacancyPrintDto userDto = UserForVacancyPrintDto.builder().name(userEntity.getName()).age(userEntity.getAge()).email(userEntity.getEmail()).phoneNumber(userEntity.getPhoneNumber()).avatar(userEntity.getAvatar()).build();
 
             Integer id = vacancy.getId();
             String name = vacancy.getName();
             String description = vacancy.getDescription();
-            String categoryName = categoryDao.getCategoryById(vacancy.getCategoryId()).getName();
+            String categoryName = vacancy.getCategory().getName();
             BigDecimal salary = vacancy.getSalary();
             Integer experienceFrom = vacancy.getExperienceFrom();
             Integer experienceTo = vacancy.getExperienceTo();
@@ -357,11 +236,7 @@ public class VacancyServiceImpl implements VacancyService {
     @Override
     @SneakyThrows
     public void editVacancy(VacancyEditDto vacancyDto, Integer id) {
-        Vacancy vacancy = vacancyDao.getVacancyById(id).orElseThrow(() -> new ResumeNotFoundException("Can't find vacancy with id " + id));
-
-//        if (!vacancyDao.isEmployerHasVacancyById(user, id)) {
-//            throw new ResumeNotFoundException("Can't find your vacancy with this id");
-//        }
+        Vacancy vacancy = vacancyRepository.findById(id).orElseThrow(() -> new ResumeNotFoundException("Can't find vacancy with id " + id));
 
         vacancy.setId(id);
         if (vacancyDto.getName() != null) {
@@ -374,8 +249,8 @@ public class VacancyServiceImpl implements VacancyService {
 
         Category category;
         if (vacancyDto.getCategoryName() != null) {
-            category = categoryDao.getCategoryByName(vacancyDto.getCategoryName()).orElseThrow(() -> new CategoryNotFoundException("Cannot find this category"));
-            vacancy.setCategoryId(category.getId());
+            category = categoryRepository.findByName(vacancyDto.getCategoryName()).orElseThrow(() -> new CategoryNotFoundException("Cannot find this category"));
+            vacancy.setCategory(category);
         }
 
         if (vacancyDto.getSalary() != null) {
@@ -399,44 +274,18 @@ public class VacancyServiceImpl implements VacancyService {
             vacancy.setIsActive(false);
         }
 
-        vacancyDao.editVacancy(vacancy);
+        vacancyRepository.save(vacancy);
     }
 
     @Override
     @SneakyThrows
     public void deleteVacancyById(Integer vacancyId, Authentication authentication) {
         User user = getUserFromAuth(authentication.getPrincipal().toString());
-        vacancyDao.getVacancyById(vacancyId).orElseThrow(() -> new ResumeNotFoundException("Can't find vacancy with this id"));
-        if (!vacancyDao.isEmployerHasVacancyById(user, vacancyId)) {
+        Vacancy vacancy = vacancyRepository.findById(vacancyId).orElseThrow(() -> new ResumeNotFoundException("Can't find vacancy with this id"));
+        if (!vacancy.getAuthor().getId().equals(user.getId())) {
             throw new ResumeNotFoundException("Can't find your vacancy with this id");
         }
 
-        vacancyDao.deleteVacancyById(vacancyId);
-    }
-
-    @Override
-    public List<VacancyDto> getVacanciesBySalary(boolean ascending) {
-        List<Vacancy> vacancies = ascending ? vacancyDao.getAllActiveVacanciesBySalaryAscending() : vacancyDao.getAllActiveVacanciesBySalaryDescending();
-        return vacancies.stream().map(this::convertToDto).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<VacancyDto> getVacanciesByUpdateTime(boolean ascending) {
-        List<Vacancy> vacancies = ascending ? vacancyDao.getAllActiveVacanciesByUpdateTimeAscending() : vacancyDao.getAllActiveVacanciesByUpdateTimeDescending();
-        return vacancies.stream().map(this::convertToDto).collect(Collectors.toList());
-    }
-
-    @SneakyThrows
-    private VacancyDto convertToDto(Vacancy vacancy) {
-        User user = userDao.getUserById(vacancy.getAuthorId()).orElseThrow(() -> new UserNotFoundException("asdf"));
-        return VacancyDto.builder().name(vacancy.getName()).description(vacancy.getDescription()).categoryName(categoryDao.getCategoryById(vacancy.getCategoryId()).getName()).salary(vacancy.getSalary()).experienceFrom(vacancy.getExperienceFrom()).experienceTo(vacancy.getExperienceTo()).isActive(vacancy.getIsActive()).createdDate(vacancy.getCreatedDate()).updateTime(vacancy.getUpdateTime()).user(convertUserToUserForVacancyPrintDto(user)).build();
-    }
-
-    private UserForVacancyPrintDto convertUserToUserForVacancyPrintDto(User user) {
-        if (user == null) {
-            return null;
-        }
-
-        return UserForVacancyPrintDto.builder().name(user.getName()).age(user.getAge()).email(user.getEmail()).phoneNumber(user.getPhoneNumber()).avatar(user.getAvatar()).build();
+        vacancyRepository.deleteById(vacancyId);
     }
 }
