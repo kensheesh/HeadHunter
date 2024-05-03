@@ -31,7 +31,7 @@ public class MessageController {
     private final UserService userService;
     private final RespondedApplicantServiceImpl respondedApplicantService;
     private final ChatService chatService;
-    private final UserDao userDao;
+//    private final UserDao userDao;
     private final VacancyDao vacancyDao;
     private final ResumeDao resumeDao;
     private final RespondedApplicantDao respondedApplicantDao;

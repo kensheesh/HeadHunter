@@ -1,10 +1,9 @@
 package kg.attractor.headhunter.controller.mvc;
 
-import kg.attractor.headhunter.dao.UserDao;
 import kg.attractor.headhunter.exception.UserNotFoundException;
 import kg.attractor.headhunter.model.AccountType;
 import kg.attractor.headhunter.model.User;
-import kg.attractor.headhunter.service.UserService;
+import kg.attractor.headhunter.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.security.core.Authentication;
@@ -17,7 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 @RequiredArgsConstructor
 public class MainController {
-    private final UserDao userDao;
+    private final UserRepository userRepository;
 
     @GetMapping
     public String getMainPage(Model model) {
@@ -38,6 +37,6 @@ public class MainController {
         int x = auth.indexOf("=");
         int y = auth.indexOf(",");
         String email = auth.substring(x + 1, y);
-        return userDao.getUserByEmail(email).orElseThrow(() -> new UserNotFoundException("can't find user with this email"));
+        return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("can't find user with this email"));
     }
 }
