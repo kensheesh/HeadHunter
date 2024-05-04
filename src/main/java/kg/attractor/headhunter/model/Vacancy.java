@@ -56,4 +56,5 @@ public class Vacancy {
 
     @OneToMany(mappedBy = "vacancy")
     private List<RespondedApplicant> respondedApplicants;
+
 }

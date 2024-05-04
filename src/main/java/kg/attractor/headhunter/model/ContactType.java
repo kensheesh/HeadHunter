@@ -12,7 +12,6 @@ import lombok.*;
 @Entity
 @Table(name = "CONTACTTYPES")
 public class ContactType {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

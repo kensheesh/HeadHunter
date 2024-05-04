@@ -3,6 +3,8 @@ package kg.attractor.headhunter.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
@@ -47,4 +49,10 @@ public class User {
 
     @Column(name = "ENABLED")
     private Boolean enabled;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
+    private List<Vacancy> vacancies;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
+    private List<Resume> resumes;
 }

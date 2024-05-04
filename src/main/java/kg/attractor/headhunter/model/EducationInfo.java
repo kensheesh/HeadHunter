@@ -8,8 +8,8 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-@NoArgsConstructor  // Для создания конструктора без параметров
-@AllArgsConstructor // Для создания конструктора со всеми параметрами
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 
 @Entity

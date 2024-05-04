@@ -25,6 +25,7 @@ public class Resume {
     @JoinColumn(name = "USERID")
     @ManyToOne
     private User author;
+
     private String name;
 
     @ManyToOne
@@ -45,4 +46,13 @@ public class Resume {
 
     @OneToMany(mappedBy = "resume")
     private List<RespondedApplicant> respondedApplicants;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "resume")
+    private List<WorkExperienceInfo> workExperienceInfos;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "resume")
+    private List<EducationInfo> educationInfos;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "resume")
+    private List<ContactInfo> contactInfos;
 }
