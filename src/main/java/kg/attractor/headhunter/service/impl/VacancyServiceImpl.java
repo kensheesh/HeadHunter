@@ -27,6 +27,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -78,91 +79,56 @@ public class VacancyServiceImpl implements VacancyService {
         return VacancyViewEditDto.builder().id(vacancy.getId()).name(vacancy.getName()).description(vacancy.getDescription()).categoryName(vacancy.getCategory().getName()).salary(salary).experienceFrom(vacancy.getExperienceFrom()).experienceTo(vacancy.getExperienceTo()).isActive(vacancy.getIsActive()).createdDate(vacancy.getCreatedDate()).updateTime(vacancy.getUpdateTime()).user(userDto).build();
     }
 
+    @SneakyThrows
+    @Override
+    public Page<VacancyViewAllDto> getAllActiveVacancies(int pageNumber, int pageSize, String category) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+
+        Page<Vacancy> vacanciesPage;
+        if (!category.equalsIgnoreCase("default")) {
+            Category categoryFromDB = categoryRepository.findByName(category)
+                    .orElseThrow(() -> new CategoryNotFoundException("Cannot find any resume with category: " + category));
+            vacanciesPage = vacancyRepository.findByCategoryIdAndIsActive(categoryFromDB.getId(), true, pageable);
+        } else {
+            vacanciesPage = vacancyRepository.findByIsActive(true, pageable);
+        }
+
+        return vacanciesPage.map(this::createVacancyDto);
+    }
 
     @SneakyThrows
-    public Page<VacancyViewAllDto> getAllActiveVacancies(int pageNumber, int pageSize, String category) {
+    private VacancyViewAllDto createVacancyDto(Vacancy vacancy) {
+        User userEntity = userRepository.findById(vacancy.getAuthor().getId())
+                .orElseThrow(() -> new UserNotFoundException("Cannot find user with this id"));
 
-        if (!category.equalsIgnoreCase("default")) {
-            Category categoryFromDB = categoryRepository.findByName(category).orElseThrow(() -> new CategoryNotFoundException("Cannot find any resume with category: " + category));
+        UserForVacancyPrintDto userDto = UserForVacancyPrintDto.builder()
+                .id(userEntity.getId())
+                .name(userEntity.getName())
+                .age(userEntity.getAge())
+                .email(userEntity.getEmail())
+                .phoneNumber(userEntity.getPhoneNumber())
+                .avatar(userEntity.getAvatar())
+                .build();
 
-            List<Vacancy> vacancies = vacancyRepository.findByCategoryId(categoryFromDB.getId());
-            for (int i = 0; i < vacancies.size(); i++) {
-                if (vacancies.get(i).getIsActive().equals(false)) {
-                    vacancies.remove(vacancies.get(i));
-                }
-            }
-            List<VacancyViewAllDto> vacancyDtoList = new ArrayList<>();
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String formattedCreatedDate = dateFormatter.format(vacancy.getCreatedDate());
+        String formattedUpdateTime = dateFormatter.format(vacancy.getUpdateTime());
 
-            for (Vacancy vacancy : vacancies) {
-                User userEntity = userRepository.findById(vacancy.getAuthor().getId()).orElseThrow(() -> new UserNotFoundException("Cannot find user with this id"));
-
-                UserForVacancyPrintDto userDto = UserForVacancyPrintDto.builder().name(userEntity.getName()).age(userEntity.getAge()).email(userEntity.getEmail()).phoneNumber(userEntity.getPhoneNumber()).avatar(userEntity.getAvatar()).build();
-
-                Integer id = vacancy.getId();
-                String name = vacancy.getName();
-                String description = vacancy.getDescription();
-                String categoryName = vacancy.getCategory().getName();
-                BigDecimal salary = vacancy.getSalary();
-                Integer experienceFrom = vacancy.getExperienceFrom();
-                Integer experienceTo = vacancy.getExperienceTo();
-                LocalDateTime createdDate = vacancy.getCreatedDate();
-                String formattedCreatedDate = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(createdDate);
-
-                LocalDateTime updateTime = vacancy.getUpdateTime();
-                String formattedUpdateTime = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(updateTime);
-
-                Boolean isActive = vacancy.getIsActive();
-
-                VacancyViewAllDto vacancyDto = VacancyViewAllDto.builder().id(id).user(userDto).name(name).description(description).categoryName(categoryName).salary(salary).experienceFrom(experienceFrom).experienceTo(experienceTo).createdDate(formattedCreatedDate).updateTime(formattedUpdateTime).isActive(isActive).build();
-                vacancyDtoList.add(vacancyDto);
-            }
-            return toPage(vacancyDtoList, PageRequest.of(pageNumber, pageSize));
-        }
-
-        List<Vacancy> vacancies = vacancyRepository.findAll();
-        for (int i = 0; i < vacancies.size(); i++) {
-            if (vacancies.get(i).getIsActive().equals(false)) {
-                vacancies.remove(vacancies.get(i));
-            }
-        }
-        List<VacancyViewAllDto> vacancyDtoList = new ArrayList<>();
-        for (Vacancy vacancy : vacancies) {
-            User userEntity = userRepository.findById(vacancy.getAuthor().getId()).orElseThrow(() -> new UserNotFoundException("Cannot find user with this id"));
-
-            UserForVacancyPrintDto userDto = UserForVacancyPrintDto.builder().id(userEntity.getId()).name(userEntity.getName()).age(userEntity.getAge()).email(userEntity.getEmail()).phoneNumber(userEntity.getPhoneNumber()).avatar(userEntity.getAvatar()).build();
-
-            Integer id = vacancy.getId();
-            String name = vacancy.getName();
-            String description = vacancy.getDescription();
-            String categoryName = vacancy.getCategory().getName();
-            BigDecimal salary = vacancy.getSalary();
-            Integer experienceFrom = vacancy.getExperienceFrom();
-            Integer experienceTo = vacancy.getExperienceTo();
-            LocalDateTime createdDate = vacancy.getCreatedDate();
-            String formattedCreatedDate = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(createdDate);
-
-            LocalDateTime updateTime = vacancy.getUpdateTime();
-            String formattedUpdateTime = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(updateTime);
-
-            Boolean isActive = vacancy.getIsActive();
-
-            VacancyViewAllDto vacancyDto = VacancyViewAllDto.builder().id(id).user(userDto).name(name).description(description).categoryName(categoryName).salary(salary).experienceFrom(experienceFrom).experienceTo(experienceTo).createdDate(formattedCreatedDate).updateTime(formattedUpdateTime).isActive(isActive).build();
-            vacancyDtoList.add(vacancyDto);
-        }
-        return toPage(vacancyDtoList, PageRequest.of(pageNumber, pageSize));
+        return VacancyViewAllDto.builder()
+                .id(vacancy.getId())
+                .user(userDto)
+                .name(vacancy.getName())
+                .description(vacancy.getDescription())
+                .categoryName(vacancy.getCategory().getName())
+                .salary(vacancy.getSalary())
+                .experienceFrom(vacancy.getExperienceFrom())
+                .experienceTo(vacancy.getExperienceTo())
+                .createdDate(formattedCreatedDate)
+                .updateTime(formattedUpdateTime)
+                .isActive(vacancy.getIsActive())
+                .build();
     }
 
-
-    private Page<VacancyViewAllDto> toPage(List<VacancyViewAllDto> resumes, Pageable pageable) {
-        if (pageable.getOffset() >= resumes.size()) {
-            return Page.empty();
-        }
-        int startIndex = (int) pageable.getOffset();
-        int endIndex = (int) ((pageable.getOffset() + pageable.getPageSize() > resumes.size() ?
-                resumes.size() : pageable.getOffset() + pageable.getPageSize()));
-        List<VacancyViewAllDto> subList = resumes.subList(startIndex, endIndex);
-        return new PageImpl<>(subList, pageable, resumes.size());
-    }
 
     @SneakyThrows
     public User getUserFromAuth(String auth) {

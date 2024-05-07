@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -123,204 +124,79 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
 
-    @Override
     @SneakyThrows
+    @Override
     public Page<ResumeViewAllDto> getAllActiveResumes(int pageNumber, int pageSize, String category) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+
+        Page<Resume> resumesPage;
         if (!category.equalsIgnoreCase("default")) {
             Category categoryFromDB = categoryRepository.findByName(category)
                     .orElseThrow(() -> new CategoryNotFoundException("Cannot find any resume with category: " + category));
-            List<Resume> resumes = resumeRepository.findByCategory(categoryFromDB);
-
-            List<ResumeViewAllDto> resumesDto = new ArrayList<>();
-
-            for (Resume resume : resumes) {
-                User userEntity = userRepository.findById(resume.getAuthor().getId()).orElseThrow(() -> new UserNotFoundException("Cannot find user with this id"));
-
-                UserResumePrintDto userDto = UserResumePrintDto.builder().name(userEntity.getName()).surname(userEntity.getSurname()).age(userEntity.getAge()).email(userEntity.getEmail()).phoneNumber(userEntity.getPhoneNumber()).avatar(userEntity.getAvatar()).build();
-
-                Integer id = resume.getId();
-                String name = resume.getName();
-                String categoryName = resume.getCategory().getName();
-                BigDecimal salary = resume.getSalary();
-                Boolean isActive = resume.getIsActive();
-                LocalDateTime updateTime = resume.getUpdateTime();
-                String formattedUpdateTime = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(updateTime);
-
-                //-----------------------------------------------------------------------------------------------------------------------------------------------------------
-
-                List<WorkExperienceInfo> workExpInfos = workExperienceInfoRepository.findByResumeId(resume.getId());
-                List<WorkExperienceInfoDto> workExperienceInfoDtoFormat = new ArrayList<>();
-
-                for (WorkExperienceInfo workExpInfo : workExpInfos) {
-                    WorkExperienceInfoDto workExperienceInfoDto = WorkExperienceInfoDto.builder().years(workExpInfo.getYears()).companyName(workExpInfo.getCompanyName()).position(workExpInfo.getPosition()).responsibilities(workExpInfo.getResponsibilities()).build();
-                    workExperienceInfoDtoFormat.add(workExperienceInfoDto);
-                }
-
-//-----------------------------------------------------------------------------------------------------------------------------------------------------------
-
-                List<EducationInfo> educationInfos = educationInfoRepository.findByResumeId(resume.getId());
-                List<EducationInfoDto> educationInfoDtoFormat = new ArrayList<>();
-
-                for (EducationInfo educationInfo : educationInfos) {
-                    EducationInfoDto educationInfoDto = EducationInfoDto.builder().institution(educationInfo.getInstitution()).program(educationInfo.getProgram()).startDate(educationInfo.getStartDate()).endDate(educationInfo.getEndDate()).degree(educationInfo.getDegree()).build();
-                    educationInfoDtoFormat.add(educationInfoDto);
-                }
-
-                //----------------------------------------------------------------------------------------------------------------------------------------------
-
-                List<ContactInfo> contactInfos = contactInfoRepository.findByResumeId(resume.getId());
-                List<ContactInfoDto> contactInfoDtoFormat = new ArrayList<>();
-                for (ContactInfo contactInfo : contactInfos) {
-                    ContactType contactType = contactInfo.getContactType();
-                    ContactInfoDto contactInfoDto = ContactInfoDto.builder().contactType(contactType.getType()).value(contactInfo.getContent()).build();
-                    contactInfoDtoFormat.add(contactInfoDto);
-                }
-
-
-                ResumeViewAllDto resumeDto = ResumeViewAllDto.builder().id(id).user(userDto).name(name).categoryName(categoryName).salary(salary).workExpInfos(workExperienceInfoDtoFormat).educationInfos(educationInfoDtoFormat).contactInfos(contactInfoDtoFormat).isActive(isActive).updateTime(formattedUpdateTime).build();
-
-                resumesDto.add(resumeDto);
-            }
-
-            return toPage(resumesDto, PageRequest.of(pageNumber, pageSize));
+            resumesPage = resumeRepository.findByCategoryAndIsActive(categoryFromDB, true, pageable);
+        } else {
+            resumesPage = resumeRepository.findByIsActive(true, pageable);
         }
 
-        List<Resume> resumes = resumeRepository.findAll();
-        for (int i = 0; i < resumes.size(); i++) {
-            if (resumes.get(i).getIsActive().equals(false)) {
-                resumes.remove(resumes.get(i));
-            }
-        }
-
-        List<ResumeViewAllDto> resumesDto = new ArrayList<>();
-
-        for (Resume resume : resumes) {
-            User userEntity = userRepository.findById(resume.getAuthor().getId()).orElseThrow(() -> new UserNotFoundException("Cannot find user with this id"));
-
-            UserResumePrintDto userDto = UserResumePrintDto.builder().name(userEntity.getName()).surname(userEntity.getSurname()).age(userEntity.getAge()).email(userEntity.getEmail()).phoneNumber(userEntity.getPhoneNumber()).avatar(userEntity.getAvatar()).build();
-
-            Integer id = resume.getId();
-            String name = resume.getName();
-            String categoryName = resume.getCategory().getName();
-            BigDecimal salary = resume.getSalary();
-            Boolean isActive = resume.getIsActive();
-            LocalDateTime updateTime = resume.getUpdateTime();
-            String formattedUpdateTime = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(updateTime);
-
-            //-----------------------------------------------------------------------------------------------------------------------------------------------------------
-
-            List<WorkExperienceInfo> workExpInfos = workExperienceInfoRepository.findByResumeId(resume.getId());
-            List<WorkExperienceInfoDto> workExperienceInfoDtoFormat = new ArrayList<>();
-
-            for (WorkExperienceInfo workExpInfo : workExpInfos) {
-                WorkExperienceInfoDto workExperienceInfoDto = WorkExperienceInfoDto.builder().years(workExpInfo.getYears()).companyName(workExpInfo.getCompanyName()).position(workExpInfo.getPosition()).responsibilities(workExpInfo.getResponsibilities()).build();
-                workExperienceInfoDtoFormat.add(workExperienceInfoDto);
-            }
-
-//-----------------------------------------------------------------------------------------------------------------------------------------------------------
-
-            List<EducationInfo> educationInfos = educationInfoRepository.findByResumeId(resume.getId());
-            List<EducationInfoDto> educationInfoDtoFormat = new ArrayList<>();
-
-            for (EducationInfo educationInfo : educationInfos) {
-                EducationInfoDto educationInfoDto = EducationInfoDto.builder().institution(educationInfo.getInstitution()).program(educationInfo.getProgram()).startDate(educationInfo.getStartDate()).endDate(educationInfo.getEndDate()).degree(educationInfo.getDegree()).build();
-                educationInfoDtoFormat.add(educationInfoDto);
-            }
-
-            //----------------------------------------------------------------------------------------------------------------------------------------------
-
-            List<ContactInfo> contactInfos = contactInfoRepository.findByResumeId(resume.getId());
-            List<ContactInfoDto> contactInfoDtoFormat = new ArrayList<>();
-            for (ContactInfo contactInfo : contactInfos) {
-                ContactType contactType = contactInfo.getContactType();
-                ContactInfoDto contactInfoDto = ContactInfoDto.builder().contactType(contactType.getType()).value(contactInfo.getContent()).build();
-                contactInfoDtoFormat.add(contactInfoDto);
-            }
-
-
-            ResumeViewAllDto resumeDto = ResumeViewAllDto.builder().id(id)
-                    .user(userDto).name(name).categoryName(categoryName).salary(salary).workExpInfos(workExperienceInfoDtoFormat).educationInfos(educationInfoDtoFormat).contactInfos(contactInfoDtoFormat).isActive(isActive).updateTime(formattedUpdateTime).build();
-            resumesDto.add(resumeDto);
-        }
-        if (resumesDto.isEmpty()) {
-            throw new ResumeNotFoundException("Cannot find any resume!");
-        }
-
-        return toPage(resumesDto, PageRequest.of(pageNumber, pageSize));
+        return resumesPage.map(this::createResumeDto);
     }
 
+    @SneakyThrows
+    private ResumeViewAllDto createResumeDto(Resume resume) {
+        User userEntity = userRepository.findById(resume.getAuthor().getId())
+                .orElseThrow(() -> new UserNotFoundException("Cannot find user with this id"));
 
-    private Page<ResumeViewAllDto> toPage(List<ResumeViewAllDto> resumes, Pageable pageable) {
-        if (pageable.getOffset() >= resumes.size()) {
-            return Page.empty();
-        }
-        int startIndex = (int) pageable.getOffset();
-        int endIndex = (int) ((pageable.getOffset() + pageable.getPageSize() > resumes.size() ?
-                resumes.size() : pageable.getOffset() + pageable.getPageSize()));
-        List<ResumeViewAllDto> subList = resumes.subList(startIndex, endIndex);
-        return new PageImpl<>(subList, pageable, resumes.size());
+        UserResumePrintDto userDto = UserResumePrintDto.builder()
+                .name(userEntity.getName())
+                .surname(userEntity.getSurname())
+                .age(userEntity.getAge())
+                .email(userEntity.getEmail())
+                .phoneNumber(userEntity.getPhoneNumber())
+                .avatar(userEntity.getAvatar())
+                .build();
+
+        String formattedUpdateTime = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(resume.getUpdateTime());
+
+        List<WorkExperienceInfoDto> workExperienceInfoDtoFormat = resume.getWorkExperienceInfos().stream()
+                .map(workExpInfo -> WorkExperienceInfoDto.builder()
+                        .years(workExpInfo.getYears())
+                        .companyName(workExpInfo.getCompanyName())
+                        .position(workExpInfo.getPosition())
+                        .responsibilities(workExpInfo.getResponsibilities())
+                        .build())
+                .collect(Collectors.toList());
+
+        List<EducationInfoDto> educationInfoDtoFormat = resume.getEducationInfos().stream()
+                .map(educationInfo -> EducationInfoDto.builder()
+                        .institution(educationInfo.getInstitution())
+                        .program(educationInfo.getProgram())
+                        .startDate(educationInfo.getStartDate())
+                        .endDate(educationInfo.getEndDate())
+                        .degree(educationInfo.getDegree())
+                        .build())
+                .collect(Collectors.toList());
+
+        List<ContactInfoDto> contactInfoDtoFormat = resume.getContactInfos().stream()
+                .map(contactInfo -> ContactInfoDto.builder()
+                        .contactType(contactInfo.getContactType().getType())
+                        .value(contactInfo.getContent())
+                        .build())
+                .collect(Collectors.toList());
+
+        return ResumeViewAllDto.builder()
+                .id(resume.getId())
+                .user(userDto)
+                .name(resume.getName())
+                .categoryName(resume.getCategory().getName())
+                .salary(resume.getSalary())
+                .workExpInfos(workExperienceInfoDtoFormat)
+                .educationInfos(educationInfoDtoFormat)
+                .contactInfos(contactInfoDtoFormat)
+                .isActive(resume.getIsActive())
+                .updateTime(formattedUpdateTime)
+                .build();
     }
 
-//    @Override
-//    @SneakyThrows
-//    public List<ResumeDto> getAllResumesByCategoryName(String categoriesName, Authentication authentication) {
-//        Category category = categoryDao.getCategoryByName(categoriesName).orElseThrow(() -> new CategoryNotFoundException("Cannot find any resume with category: " + categoriesName));
-//
-//        List<Resume> resumes = resumeDao.getAllResumesByCategoryId(category.getId());
-//
-//        List<ResumeDto> resumesDto = new ArrayList<>();
-//
-//        for (Resume resume : resumes) {
-//            User userEntity = userDao.getUserById(resume.getUserId()).orElseThrow(() -> new UserNotFoundException("Cannot find user with this id"));
-//
-//            UserResumePrintDto userDto = UserResumePrintDto.builder().name(userEntity.getName()).surname(userEntity.getSurname()).age(userEntity.getAge()).email(userEntity.getEmail()).phoneNumber(userEntity.getPhoneNumber()).avatar(userEntity.getAvatar()).build();
-//
-//            String name = resume.getName();
-//            String categoryName = categoryDao.getCategoryById(resume.getCategoryId()).getName();
-//            BigDecimal salary = resume.getSalary();
-//            Boolean isActive = resume.getIsActive();
-//
-//            //-----------------------------------------------------------------------------------------------------------------------------------------------------------
-//
-//            List<WorkExperienceInfo> workExpInfos = workExperienceInfoDao.getWorkExperienceInfoByResumeId(resume.getId());
-//            List<WorkExperienceInfoDto> workExperienceInfoDtoFormat = new ArrayList<>();
-//
-//            for (WorkExperienceInfo workExpInfo : workExpInfos) {
-//                WorkExperienceInfoDto workExperienceInfoDto = WorkExperienceInfoDto.builder().years(workExpInfo.getYears()).companyName(workExpInfo.getCompanyName()).position(workExpInfo.getPosition()).responsibilities(workExpInfo.getResponsibilities()).build();
-//                workExperienceInfoDtoFormat.add(workExperienceInfoDto);
-//            }
-//
-////-----------------------------------------------------------------------------------------------------------------------------------------------------------
-//
-//            List<EducationInfo> educationInfos = educationInfoDao.getEducationInfoByResumeId(resume.getId());
-//            List<EducationInfoDto> educationInfoDtoFormat = new ArrayList<>();
-//
-//            for (EducationInfo educationInfo : educationInfos) {
-//                EducationInfoDto educationInfoDto = EducationInfoDto.builder().institution(educationInfo.getInstitution()).program(educationInfo.getProgram()).startDate(educationInfo.getStartDate()).endDate(educationInfo.getEndDate()).degree(educationInfo.getDegree()).build();
-//                educationInfoDtoFormat.add(educationInfoDto);
-//            }
-//
-//            //----------------------------------------------------------------------------------------------------------------------------------------------
-//
-//            List<ContactInfo> contactInfos = contactInfoDao.getContactInfoByResumeId(resume.getId());
-//            List<ContactInfoDto> contactInfoDtoFormat = new ArrayList<>();
-//            for (ContactInfo contactInfo : contactInfos) {
-//                ContactType contactType = contactTypeDao.getContactTypeById(contactInfo.getContactTypeId());
-//                ContactInfoDto contactInfoDto = ContactInfoDto.builder().contactType(contactType.getType()).value(contactInfo.getContent()).build();
-//                contactInfoDtoFormat.add(contactInfoDto);
-//            }
-//
-//
-//            ResumeDto resumeDto = ResumeDto.builder().user(userDto).name(name).categoryName(categoryName).salary(salary).workExpInfos(workExperienceInfoDtoFormat).educationInfos(educationInfoDtoFormat).contactInfos(contactInfoDtoFormat).isActive(isActive).build();
-//
-//            resumesDto.add(resumeDto);
-//        }
-//        if (resumesDto.isEmpty()) {
-//            throw new ResumeNotFoundException("Cannot find any resume with category:  " + category);
-//        }
-//
-//        return resumesDto;
-//    }
 
     @SneakyThrows
     public User getUserFromAuth(String auth) {

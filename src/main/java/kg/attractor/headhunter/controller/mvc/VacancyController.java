@@ -36,17 +36,17 @@ public class VacancyController {
     public String viewAllVacancies(Model model, @RequestParam(name = "page", defaultValue = "0") Integer page,
                                    @RequestParam(name = "category", defaultValue = "default") String category) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        if (category.equalsIgnoreCase("выбрать категорию (все)")) {
-            category = "default";
-        }
-
         if (auth.getName().equals("anonymousUser")) {
             model.addAttribute("username", null);
         } else {
             model.addAttribute("username", auth.getName());
             AccountType accountType = AccountType.valueOf(getUserFromAuth(auth.getPrincipal().toString()).getAccountType());
             model.addAttribute("type", accountType);
+        }
+        //--------------------------------------------------------------------------------------------------------------
+
+        if (category.equalsIgnoreCase("выбрать категорию (все)")) {
+            category = "default";
         }
 
         Page<VacancyViewAllDto> vacanciesPage = vacancyService.getAllActiveVacancies(page, 5, category);
