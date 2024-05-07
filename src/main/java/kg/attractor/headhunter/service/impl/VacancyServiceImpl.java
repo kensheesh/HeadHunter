@@ -15,10 +15,7 @@ import kg.attractor.headhunter.service.VacancyService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +23,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -86,7 +84,6 @@ public class VacancyServiceImpl implements VacancyService {
         return vacancies.map((this::createVacancyDto));
     }
 
-
     @SneakyThrows
     @Override
     public Page<VacancyViewAllDto> getAllActiveVacancies(int pageNumber, int pageSize, String category,
@@ -96,8 +93,6 @@ public class VacancyServiceImpl implements VacancyService {
             Sort sort = sortDirection.equalsIgnoreCase("desc") ? Sort.by("updateTime").descending() :
                     Sort.by("updateTime").ascending();
             pageable = PageRequest.of(pageNumber, pageSize, sort);
-//        } else if (sortType.equalsIgnoreCase("responses")) {
-            // не реализовал еще
         } else {
             pageable = PageRequest.of(pageNumber, pageSize);
         }
@@ -111,7 +106,16 @@ public class VacancyServiceImpl implements VacancyService {
             vacanciesPage = vacancyRepository.findByIsActive(true, pageable);
         }
 
-        return vacanciesPage.map(this::createVacancyDto);
+        List<VacancyViewAllDto> vacancyViewAllDtos = new ArrayList<>();
+        if (sortType.equalsIgnoreCase("responses")) {
+
+        } else {
+            for (Vacancy vacancy : vacanciesPage) {
+                vacancyViewAllDtos.add(createVacancyDto(vacancy));
+            }
+        }
+
+        return new PageImpl<>(vacancyViewAllDtos, pageable, vacanciesPage.getTotalElements());
     }
 
     @SneakyThrows

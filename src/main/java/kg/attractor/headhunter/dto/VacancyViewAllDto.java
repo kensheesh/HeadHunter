@@ -33,5 +33,4 @@ public class VacancyViewAllDto {
     private String createdDate;
 
     private String updateTime;
-    private Integer responses;
 }
