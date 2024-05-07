@@ -122,6 +122,15 @@ public class ResumeServiceImpl implements ResumeService {
                 .isActive(isActive)
                 .build();
     }
+    @Override
+    @SneakyThrows
+    public Page<ResumeViewAllDto> getAllActiveResumeByUserId(Integer pageNumber, int pageSize, Integer id) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Resume> resumes = resumeRepository.findByAuthorIdAndIsActive(id, true,  pageable);
+
+        return resumes.map(this::createResumeDto);
+    }
+
 
 
     @SneakyThrows

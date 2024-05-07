@@ -16,4 +16,6 @@ public interface ResumeRepository extends JpaRepository<Resume, Integer> {
     Page<Resume> findByCategoryAndIsActive(Category categoryFromDB, boolean b, Pageable pageable);
 
     Page<Resume> findByIsActive(boolean b, Pageable pageable);
+
+    Page<Resume> findByAuthorIdAndIsActive(Integer id, boolean b, Pageable pageable);
 }

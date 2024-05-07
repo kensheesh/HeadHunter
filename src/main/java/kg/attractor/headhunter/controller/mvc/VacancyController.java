@@ -96,6 +96,16 @@ public class VacancyController {
 
     @GetMapping("/edit/{vacancyId}")
     public String editVacancy(Model model, @PathVariable Integer vacancyId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth.getName().equals("anonymousUser")) {
+            model.addAttribute("username", null);
+        } else {
+            model.addAttribute("username", auth.getName());
+            AccountType accountType = AccountType.valueOf(getUserFromAuth(auth.getPrincipal().toString()).getAccountType());
+            System.out.println(accountType);
+            model.addAttribute("type", accountType);
+        }
+
         VacancyViewEditDto vacancyDto = vacancyService.getVacancyByIdForEdit(vacancyId);
         model.addAttribute("vacancy", vacancyDto);
         return "vacancies/edit_vacancy";

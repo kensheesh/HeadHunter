@@ -1,6 +1,5 @@
 package kg.attractor.headhunter.repository;
 
-import kg.attractor.headhunter.model.Category;
 import kg.attractor.headhunter.model.Vacancy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,4 +15,6 @@ public interface VacancyRepository extends JpaRepository<Vacancy, Integer> {
     Page<Vacancy> findByCategoryIdAndIsActive(Integer id, boolean b, Pageable pageable);
 
     Page<Vacancy> findByIsActive(boolean b, Pageable pageable);
+
+    Page<Vacancy> findByAuthorIdAndIsActive(Integer id, boolean b, Pageable pageable);
 }

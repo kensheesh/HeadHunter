@@ -29,6 +29,8 @@ public interface VacancyService {
 
     void deleteVacancyById(Integer vacancyId, Authentication authentication);
 
+    Page<VacancyViewAllDto> getAllActiveVacanciesByUserId(Integer pageNumber, int pageSize, Integer id);
+
 //    List<VacancyDto> getVacanciesBySalary(boolean ascending);
 //
 //    List<VacancyDto> getVacanciesByUpdateTime(boolean ascending);

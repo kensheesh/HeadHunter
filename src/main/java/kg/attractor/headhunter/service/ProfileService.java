@@ -9,4 +9,5 @@ public interface ProfileService {
     UserDto getUserDto(Authentication authentication);
 
     List<?> getProfileContent(Authentication authentication);
+
 }

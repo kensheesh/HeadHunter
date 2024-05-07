@@ -16,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
@@ -27,7 +26,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -78,6 +76,15 @@ public class VacancyServiceImpl implements VacancyService {
         Integer salary = vacancy.getSalary().intValue();
         return VacancyViewEditDto.builder().id(vacancy.getId()).name(vacancy.getName()).description(vacancy.getDescription()).categoryName(vacancy.getCategory().getName()).salary(salary).experienceFrom(vacancy.getExperienceFrom()).experienceTo(vacancy.getExperienceTo()).isActive(vacancy.getIsActive()).createdDate(vacancy.getCreatedDate()).updateTime(vacancy.getUpdateTime()).user(userDto).build();
     }
+
+    @Override
+    @SneakyThrows
+    public Page<VacancyViewAllDto> getAllActiveVacanciesByUserId(Integer pageNumber, int pageSize, Integer id) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Vacancy> vacancies = vacancyRepository.findByAuthorIdAndIsActive(id, true, pageable);
+        return vacancies.map((this::createVacancyDto));
+    }
+
 
     @SneakyThrows
     @Override

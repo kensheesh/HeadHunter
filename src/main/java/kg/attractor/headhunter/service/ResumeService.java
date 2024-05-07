@@ -2,7 +2,6 @@ package kg.attractor.headhunter.service;
 
 import kg.attractor.headhunter.dto.ResumeCreateDto;
 import kg.attractor.headhunter.dto.ResumeDto;
-import kg.attractor.headhunter.dto.ResumeEditDto;
 import kg.attractor.headhunter.dto.ResumeViewAllDto;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
@@ -29,4 +28,6 @@ public interface ResumeService {
 //    void editResumeForApplicant(ResumeEditDto resumeEditDto, Authentication authentication, Integer id);
 
     void deleteResumeById(Integer resumeId, Authentication authentication);
+
+    Page<ResumeViewAllDto> getAllActiveResumeByUserId(Integer pageNumber, int pageSize, Integer id);
 }
