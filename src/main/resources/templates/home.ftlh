@@ -25,7 +25,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    <a class="nav-link active" aria-current="page" href="/">Home</a>
                 </li>
                 <#if username??>
                     <li class="nav-item">
@@ -36,9 +36,24 @@
                     <a class="nav-link" href="/vacancies">Vacancies</a>
                 </li>
                 <#if username??>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/resumes">Resumes</a>
-                    </li>
+
+                    <#if type == "EMPLOYER">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/resumes">Resumes</a>
+                        </li>
+                    </#if>
+
+                    <#if type = "APPLICANT">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/users/employers">Employers</a>
+                        </li>
+                    </#if>
+
+                    <#if type = "EMPLOYER">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/users/applicants">Applicants</a>
+                        </li>
+                    </#if>
                 </#if>
             </ul>
             <div class="right-buttons">

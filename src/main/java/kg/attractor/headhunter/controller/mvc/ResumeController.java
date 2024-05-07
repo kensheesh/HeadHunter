@@ -67,7 +67,15 @@ public class ResumeController {
     }
 
     @GetMapping("/create")
-    public String createResume() {
+    public String createResume(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth.getName().equals("anonymousUser")) {
+            model.addAttribute("username", null);
+        } else {
+            model.addAttribute("username", auth.getName());
+            AccountType accountType = AccountType.valueOf(getUserFromAuth(auth.getPrincipal().toString()).getAccountType());
+            model.addAttribute("type", accountType);
+        }
         return "resumes/create_resume";
     }
 

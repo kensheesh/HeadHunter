@@ -41,6 +41,7 @@ public class VacancyController {
         } else {
             model.addAttribute("username", auth.getName());
             AccountType accountType = AccountType.valueOf(getUserFromAuth(auth.getPrincipal().toString()).getAccountType());
+            System.out.println(accountType);
             model.addAttribute("type", accountType);
         }
         //--------------------------------------------------------------------------------------------------------------
@@ -71,6 +72,15 @@ public class VacancyController {
 
     @GetMapping("/create")
     public String createVacancy(Model model, Authentication authentication) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth.getName().equals("anonymousUser")) {
+            model.addAttribute("username", null);
+        } else {
+            model.addAttribute("username", auth.getName());
+            AccountType accountType = AccountType.valueOf(getUserFromAuth(auth.getPrincipal().toString()).getAccountType());
+            model.addAttribute("type", accountType);
+        }
+
         model.addAttribute("user", userService.getUserByAuth(authentication));
         return "vacancies/create_vacancy";
     }

@@ -45,7 +45,6 @@
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
@@ -54,21 +53,31 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/profile">Profile</a>
                 </li>
-
                 <li class="nav-item">
                     <a class="nav-link" href="/vacancies">Vacancies</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/resumes">Resumes</a>
-                </li>
+
+                <#if type = "EMPLOYER">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/resumes">Resumes</a>
+                    </li>
+                </#if>
+
+                <#if type = "APPLICANT">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/users/employers">Employers</a>
+                    </li>
+                </#if>
+
+                <#if type = "EMPLOYER">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/users/applicants">Applicants</a>
+                    </li>
+                </#if>
             </ul>
-            <div class="right-buttons">
-                <a class="btn btn-primary btn-sign-in" href="/logout" id="logout">Log Out</a>
-            </div>
         </div>
     </div>
 </nav>
-
 
 <div class="container mt-5">
     <h2 class="mb-4">Resume Submission Form</h2>

@@ -2,6 +2,7 @@ package kg.attractor.headhunter.controller.mvc;
 
 import kg.attractor.headhunter.dto.ChatMessageDto;
 import kg.attractor.headhunter.exception.UserNotFoundException;
+import kg.attractor.headhunter.model.AccountType;
 import kg.attractor.headhunter.model.RespondedApplicant;
 import kg.attractor.headhunter.model.User;
 import kg.attractor.headhunter.repository.RespondedApplicantRepository;
@@ -12,6 +13,7 @@ import kg.attractor.headhunter.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +32,15 @@ public class MessageController {
 
     @GetMapping("/chat/{respondedApplicantId}")
     public String getChatMessages(@PathVariable("respondedApplicantId") Integer respondedApplicantId, Model model, Authentication authentication) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth.getName().equals("anonymousUser")) {
+            model.addAttribute("username", null);
+        } else {
+            model.addAttribute("username", auth.getName());
+            AccountType accountType = AccountType.valueOf(getUserFromAuth(auth.getPrincipal().toString()).getAccountType());
+            model.addAttribute("type", accountType);
+        }
+
         User user = getUserFromAuth(authentication.getPrincipal().toString());
         List<ChatMessageDto> chatMessages = chatService.getAllMessagesByRespondedApplicant(respondedApplicantId);
         RespondedApplicant respondedApplicant = respondedApplicantRepository.findById(respondedApplicantId).orElseThrow();

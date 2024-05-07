@@ -15,6 +15,9 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +35,19 @@ public class UserServiceImpl implements UserService {
     private final ModelMapper modelMapper;
     private final FileUtil fileUtil;
     private final UserRepository userRepository;
+
+
+    @Override
+    public Page<UserDto> getAllApplicants(Pageable pageable) {
+        return userRepository.findByAccountType(AccountType.APPLICANT.toString(), pageable)
+                .map(user -> modelMapper.map(user, UserDto.class));
+    }
+
+    @Override
+    public Page<UserDto> getAllEmployers(Pageable pageable) {
+        return userRepository.findByAccountType(AccountType.EMPLOYER.toString(), pageable)
+                .map(user -> modelMapper.map(user, UserDto.class));
+    }
 
     @SneakyThrows
     @Override
@@ -179,6 +195,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(password);
         userRepository.save(user);
     }
+
 
 
     @SneakyThrows

@@ -36,10 +36,26 @@
                     <a class="nav-link" href="/vacancies">Vacancies</a>
                 </li>
                 <#if username??>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/resumes">Resumes</a>
-                    </li>
+
+                    <#if type == "EMPLOYER">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/resumes">Resumes</a>
+                        </li>
+                    </#if>
+
+                    <#if type = "APPLICANT">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/users/employers">Employers</a>
+                        </li>
+                    </#if>
+
+                    <#if type = "EMPLOYER">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/users/applicants">Applicants</a>
+                        </li>
+                    </#if>
                 </#if>
+
             </ul>
             <div class="right-buttons">
                 <#if username??>
@@ -122,9 +138,6 @@
 </div>
 
 <script>
-    document.getElementById('logout').addEventListener('click', () => {
-        localStorage.removeItem('user')
-    })
 </script>
 </body>
 </html>

@@ -25,10 +25,25 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/vacancies">Vacancies</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/resumes">Resumes</a>
-                </li>
-            </ul>l
+
+                <#if type = "EMPLOYER">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/resumes">Resumes</a>
+                    </li>
+                </#if>
+
+                <#if type = "APPLICANT">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/users/employers">Employers</a>
+                    </li>
+                </#if>
+
+                <#if type = "EMPLOYER">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/users/applicants">Applicants</a>
+                    </li>
+                </#if>
+            </ul>
         </div>
     </div>
 </nav>

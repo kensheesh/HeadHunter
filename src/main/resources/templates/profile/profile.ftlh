@@ -38,13 +38,27 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/profile">Profile</a>
                 </li>
-
                 <li class="nav-item">
                     <a class="nav-link" href="/vacancies">Vacancies</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/resumes">Resumes</a>
-                </li>
+
+                <#if type = "EMPLOYER">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/resumes">Resumes</a>
+                    </li>
+                </#if>
+
+                <#if type = "APPLICANT">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/users/employers">Employers</a>
+                    </li>
+                </#if>
+
+                <#if type = "EMPLOYER">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/users/applicants">Applicants</a>
+                    </li>
+                </#if>
             </ul>
             <div class="right-buttons">
                 <a class="btn btn-primary btn-sign-in" href="/logout" id="logout">Log Out</a>
@@ -52,6 +66,8 @@
         </div>
     </div>
 </nav>
+
+
 
 <div>
     <div class="container">
