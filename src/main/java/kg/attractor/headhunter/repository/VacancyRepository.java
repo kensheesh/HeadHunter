@@ -17,4 +17,8 @@ public interface VacancyRepository extends JpaRepository<Vacancy, Integer> {
     Page<Vacancy> findByIsActive(boolean b, Pageable pageable);
 
     Page<Vacancy> findByAuthorIdAndIsActive(Integer id, boolean b, Pageable pageable);
+
+    Page<Vacancy> findByIsActiveOrderByUpdateTimeDesc(boolean b, Pageable pageable);
+
+    Page<Vacancy> findByIsActiveOrderByUpdateTimeAsc(boolean b, Pageable pageable);
 }

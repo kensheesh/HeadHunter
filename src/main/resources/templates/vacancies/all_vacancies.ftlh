@@ -72,30 +72,51 @@
 <div class="container mt-5">
     <h1 class="text-center mb-4">Вакансии</h1>
     <h3>Сортировать по категориям</h3>
-    <form class="row mb-4" id="categoryForm">
-        <div class="col-4">
-            <select class="form-select border-dark" aria-label="выбрать категорию"
-                    name="category" id="category">
-                <option selected>выбрать категорию (все)</option>
-                <option value="Медицина" class="form-brd-radius col-6">Медицина</option>
-                <option value="Информационные технологии">Информационные технологии</option>
-                <option value="Маркетинг">Маркетинг</option>
-                <option value="HrРекрутинг">HrРекрутинг</option>
-                <option value="Бухгалтерия">Бухгалтерия</option>
-                <option value="Образование">Образование</option>
-                <option value="Производство">Производство</option>
-                <option value="Строительство">Строительство</option>
-                <option value="Искусство и дизайн">Искусство и дизайн</option>
-                <option value="Путешествия и туризм">Путешествия и туризм</option>
-                <option value="Искусственный интеллект">Искусственный интеллект</option>
-                <option value="Экология и устойчивое развитие">Экология и устойчивое развитие</option>
-                <option value="Кибербезопасность">Кибербезопасность</option>
-                <option value="Финансовые технологии (FinTech)">Финансовые технологии (FinTech)</option>
-                <option value="Электромобили и зеленая энергия">Электромобили и зеленая энергия</option>
-            </select>
+    <form action="/vacancies" method="GET" class="mb-4">
+        <div class="row">
+            <div class="col-md-4">
+                <select class="form-select border-dark" aria-label="выбрать категорию"
+                        name="category" id="category">
+                    <option selected>выбрать категорию (все)</option>
+                    <option value="Медицина" class="form-brd-radius col-6">Медицина</option>
+                    <option value="Информационные технологии">Информационные технологии</option>
+                    <option value="Маркетинг">Маркетинг</option>
+                    <option value="HrРекрутинг">HrРекрутинг</option>
+                    <option value="Бухгалтерия">Бухгалтерия</option>
+                    <option value="Образование">Образование</option>
+                    <option value="Производство">Производство</option>
+                    <option value="Строительство">Строительство</option>
+                    <option value="Искусство и дизайн">Искусство и дизайн</option>
+                    <option value="Путешествия и туризм">Путешествия и туризм</option>
+                    <option value="Искусственный интеллект">Искусственный интеллект</option>
+                    <option value="Экология и устойчивое развитие">Экология и устойчивое развитие</option>
+                    <option value="Кибербезопасность">Кибербезопасность</option>
+                    <option value="Финансовые технологии (FinTech)">Финансовые технологии (FinTech)</option>
+                    <option value="Электромобили и зеленая энергия">Электромобили и зеленая энергия</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label>
+                    <select class="form-select" name="sort" id="sort">
+                        <option value="date" selected>Sort by Date</option>
+                        <option value="responses">Sort by Responses</option>
+                    </select>
+                </label>
+            </div>
+            <div class="col-md-2">
+                <label>
+                    <select class="form-select" name="order" id="order">
+                        <option value="asc" selected>Ascending</option>
+                        <option value="desc">Descending</option>
+                    </select>
+                </label>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary">Apply Filters</button>
+            </div>
         </div>
-        <button type="submit" class="btn btn-primary col-2 ms-3"> OK</button>
     </form>
+
 
     <div class="row">
         <#if vacanciesPage.content?size == 0>
@@ -122,16 +143,16 @@
     <div class="row mt-4">
         <div class="col text-center">
             <#if vacanciesPage.hasPrevious()>
-                <a href="/vacancies?page=${vacanciesPage.previousPageable().pageNumber}&category=${category}"
-                   class="btn btn-primary">Предыдущая</a>
+                <a href="/vacancies?page=${vacanciesPage.previousPageable().pageNumber}&category=${category}&sort=${sort}&order=${sort}"
+                   class="btn btn-primary">Previous</a>
             </#if>
             <#list 0..vacanciesPage.totalPages - 1 as page>
-                <a href="/vacancies?page=${page}&category=${category}" class="btn btn-primary">${page + 1}</a>
+                <a href="/vacancies?page=${page}&category=${category}&sort=${sort}&order=${order}"
+                   class="btn btn-primary">${page + 1}</a>
             </#list>
-
             <#if vacanciesPage.hasNext()>
-                <a href="/vacancies?page=${vacanciesPage.nextPageable().pageNumber}&category=${category}"
-                   class="btn btn-primary">Следующая</a>
+                <a href="/vacancies?page=${vacanciesPage.nextPageable().pageNumber}&category=${category}&sort=${sort}&order=${order}"
+                   class="btn btn-primary">Next</a>
             </#if>
         </div>
     </div>

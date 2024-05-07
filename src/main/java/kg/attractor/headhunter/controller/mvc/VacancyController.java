@@ -10,6 +10,7 @@ import kg.attractor.headhunter.service.UserService;
 import kg.attractor.headhunter.service.VacancyService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,6 +25,7 @@ public class VacancyController {
     private final VacancyService vacancyService;
     private final UserService userService;
     private final UserRepository userRepository;
+    private final DataSourceTransactionManagerAutoConfiguration dataSourceTransactionManagerAutoConfiguration;
 
 
     @GetMapping("/updateTime/{id}")
@@ -32,27 +34,30 @@ public class VacancyController {
         return "redirect:/profile";
     }
 
-    @GetMapping
-    public String viewAllVacancies(Model model, @RequestParam(name = "page", defaultValue = "0") Integer page,
-                                   @RequestParam(name = "category", defaultValue = "default") String category) {
+    @GetMapping()
+    public String viewAllVacancies(Model model,
+                                   @RequestParam(name = "page", defaultValue = "0") Integer page,
+                                   @RequestParam(name = "category", defaultValue = "default") String category,
+                                   @RequestParam(name = "sort", defaultValue = "default") String sort,
+                                   @RequestParam(name = "order", defaultValue = "asc") String order) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth.getName().equals("anonymousUser")) {
             model.addAttribute("username", null);
         } else {
             model.addAttribute("username", auth.getName());
             AccountType accountType = AccountType.valueOf(getUserFromAuth(auth.getPrincipal().toString()).getAccountType());
-            System.out.println(accountType);
             model.addAttribute("type", accountType);
         }
-        //--------------------------------------------------------------------------------------------------------------
 
         if (category.equalsIgnoreCase("выбрать категорию (все)")) {
             category = "default";
         }
 
-        Page<VacancyViewAllDto> vacanciesPage = vacancyService.getAllActiveVacancies(page, 5, category);
+        Page<VacancyViewAllDto> vacanciesPage = vacancyService.getAllActiveVacancies(page, 5, category, sort, order);
         model.addAttribute("vacanciesPage", vacanciesPage);
         model.addAttribute("category", category);
+        model.addAttribute("sort", sort);
+        model.addAttribute("order", order);
         return "vacancies/all_vacancies";
     }
 

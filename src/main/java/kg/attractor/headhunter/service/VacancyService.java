@@ -13,8 +13,8 @@ public interface VacancyService {
 
     VacancyViewEditDto getVacancyByIdForEdit(Integer id);
 
-    Page<VacancyViewAllDto> getAllActiveVacancies(int pageNumber, int pageSize, String category);
-
+    Page<VacancyViewAllDto> getAllActiveVacancies(int pageNumber, int pageSize, String category,
+                                                  String sortType, String sortDirection);
 //    List<VacancyDto> getAllActiveVacanciesByName(String title);
 //
 //    List<VacancyDto> getAllActiveVacanciesByCategoryName(String categoriesName);

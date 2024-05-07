@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -88,8 +89,18 @@ public class VacancyServiceImpl implements VacancyService {
 
     @SneakyThrows
     @Override
-    public Page<VacancyViewAllDto> getAllActiveVacancies(int pageNumber, int pageSize, String category) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+    public Page<VacancyViewAllDto> getAllActiveVacancies(int pageNumber, int pageSize, String category,
+                                                         String sortType, String sortDirection) {
+        Pageable pageable;
+        if (sortType.equalsIgnoreCase("date")) {
+            Sort sort = sortDirection.equalsIgnoreCase("desc") ? Sort.by("updateTime").descending() :
+                    Sort.by("updateTime").ascending();
+            pageable = PageRequest.of(pageNumber, pageSize, sort);
+//        } else if (sortType.equalsIgnoreCase("responses")) {
+            // не реализовал еще
+        } else {
+            pageable = PageRequest.of(pageNumber, pageSize);
+        }
 
         Page<Vacancy> vacanciesPage;
         if (!category.equalsIgnoreCase("default")) {
@@ -135,7 +146,6 @@ public class VacancyServiceImpl implements VacancyService {
                 .isActive(vacancy.getIsActive())
                 .build();
     }
-
 
     @SneakyThrows
     public User getUserFromAuth(String auth) {
