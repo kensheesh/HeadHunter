@@ -30,13 +30,13 @@ public class ProfileServiceImpl implements ProfileService {
     @SneakyThrows
     @Override
     public UserDto getUserDto(Authentication authentication) {
-        User user = getUserFromAuth(authentication.getPrincipal().toString());
+        User user = getUserFromAuth(authentication);
         return modelMapper.map(user, UserDto.class);
     }
     @Override
     @SneakyThrows
     public List<?> getProfileContent(Authentication authentication) {
-        User user = getUserFromAuth(authentication.getPrincipal().toString());
+        User user = getUserFromAuth(authentication);
 
         if (user.getAccountType().equals("APPLICANT")) {
             return resumeService.getAllResumesOfApplicantById(user.getId());
@@ -48,10 +48,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @SneakyThrows
-    public User getUserFromAuth(String auth) {
-        int x = auth.indexOf("=");
-        int y = auth.indexOf(",");
-        String email = auth.substring(x + 1, y);
-        return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("can't find user with this email"));
+    public User getUserFromAuth(Authentication auth) {
+        return userRepository.findByEmail(auth.getName()).orElseThrow(() -> new UserNotFoundException("can't find user with this email"));
     }
 }

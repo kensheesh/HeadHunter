@@ -39,11 +39,11 @@ public class MessageController {
             model.addAttribute("username", null);
         } else {
             model.addAttribute("username", auth.getName());
-            AccountType accountType = AccountType.valueOf(getUserFromAuth(auth.getPrincipal().toString()).getAccountType());
+            AccountType accountType = AccountType.valueOf(getUserFromAuth(auth).getAccountType());
             model.addAttribute("type", accountType);
         }
 
-        User user = getUserFromAuth(authentication.getPrincipal().toString());
+        User user = getUserFromAuth(authentication);
 
         List<ChatMessageDto> chatMessages = chatService.getAllMessagesByRespondedApplicant(respondedApplicantId);
         RespondedApplicant respondedApplicant = respondedApplicantRepository.findById(respondedApplicantId).orElseThrow();
@@ -51,10 +51,8 @@ public class MessageController {
         Integer userToId;
         if (Objects.equals(userFromId, vacancyRepository.findById(respondedApplicant.getVacancy().getId()).orElseThrow().getAuthor().getId())) {
             userToId = resumeRepository.findById(respondedApplicant.getResume().getId()).orElseThrow().getAuthor().getId();
-        } else if (Objects.equals(userFromId, resumeRepository.findById(respondedApplicant.getVacancy().getId()).orElseThrow().getAuthor().getId())) {
-            userToId = vacancyRepository.findById(respondedApplicant.getVacancy().getId()).orElseThrow().getAuthor().getId();
         } else {
-            throw new UserNotFoundException("Chat not found");
+            userToId = vacancyRepository.findById(respondedApplicant.getVacancy().getId()).orElseThrow().getAuthor().getId();
         }
 
         model.addAttribute("chatMessages", chatMessages);
@@ -66,10 +64,7 @@ public class MessageController {
     }
 
     @SneakyThrows
-    public User getUserFromAuth(String auth) {
-        int x = auth.indexOf("=");
-        int y = auth.indexOf(",");
-        String email = auth.substring(x + 1, y);
-        return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("can't find user with this email"));
+    public User getUserFromAuth(Authentication auth) {
+        return userRepository.findByEmail(auth.getName()).orElseThrow(() -> new UserNotFoundException("can't find user with this email"));
     }
 }

@@ -206,17 +206,14 @@ public class ResumeServiceImpl implements ResumeService {
 
 
     @SneakyThrows
-    public User getUserFromAuth(String auth) {
-        int x = auth.indexOf("=");
-        int y = auth.indexOf(",");
-        String email = auth.substring(x + 1, y);
-        return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("can't find user"));
+    public User getUserFromAuth(Authentication auth) {
+        return userRepository.findByEmail(auth.getName()).orElseThrow(() -> new UserNotFoundException("can't find user with this email"));
     }
 
     @Override
     @SneakyThrows
     public List<ResumeDto> getAllResumesOfApplicant(Authentication authentication) {
-        User user = getUserFromAuth(authentication.getPrincipal().toString());
+        User user = getUserFromAuth(authentication);
 
         List<Resume> resumes = resumeRepository.findByAuthorId(user.getId());
         List<ResumeDto> resumesDto = new ArrayList<>();
@@ -359,7 +356,7 @@ public class ResumeServiceImpl implements ResumeService {
             throw new ResumeNotFoundException("You don't have any contact infos");
         }
 
-        User user = getUserFromAuth(authentication.getPrincipal().toString());
+        User user = getUserFromAuth(authentication);
         Category category = categoryRepository.findByName(resumeDto.getCategoryName()).orElseThrow(() -> new CategoryNotFoundException("Cannot find this category"));
 
         Resume resume = new Resume();
@@ -549,7 +546,7 @@ public class ResumeServiceImpl implements ResumeService {
     @Override
     @SneakyThrows
     public void deleteResumeById(Integer resumeId, Authentication authentication) {
-        User user = getUserFromAuth(authentication.getPrincipal().toString());
+        User user = getUserFromAuth(authentication);
         Resume resume = resumeRepository.findById(resumeId).orElseThrow(() -> new ResumeNotFoundException("Can't find resume with this id"));
         if (!resume.getAuthor().getId().equals(user.getId())) {
             throw new ResumeNotFoundException("Can't find your resume with this id");

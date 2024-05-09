@@ -16,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -36,6 +35,10 @@ public class UserServiceImpl implements UserService {
     private final FileUtil fileUtil;
     private final UserRepository userRepository;
 
+    @Override
+    public void login(Authentication auth) {
+        log.info(auth.getName());
+    }
 
     @Override
     public Page<UserDto> getAllApplicants(Pageable pageable) {
@@ -52,7 +55,7 @@ public class UserServiceImpl implements UserService {
     @SneakyThrows
     @Override
     public ResponseEntity<?> getPhoto(Authentication authentication) {
-        User user = getUserFromAuth(authentication.getPrincipal().toString());
+        User user = getUserFromAuth(authentication);
         if (!((user.getAvatar() == null) && !user.getAvatar().isEmpty())) {
             String extension = getFilePath(user.getAvatar());
             if (extension != null && extension.equalsIgnoreCase("png")) {
@@ -101,7 +104,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @SneakyThrows
     public UserDto getUserByAuth(Authentication authentication) {
-        User user = getUserFromAuth(authentication.getPrincipal().toString());
+        User user = getUserFromAuth(authentication);
         return modelMapper.map(user, UserDto.class);
     }
 
@@ -152,7 +155,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @SneakyThrows
     public void editUser(UserEditDto userEditDto, Authentication authentication) {
-        User mayBeUser = getUserFromAuth(authentication.getPrincipal().toString());
+        User mayBeUser = getUserFromAuth(authentication);
         userRepository.findByEmail(mayBeUser.getEmail()).orElseThrow(() -> new UserNotFoundException("Unexpected problem with authentication"));
         User user = userRepository.findByEmail(mayBeUser.getEmail())
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
@@ -174,7 +177,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @SneakyThrows
     public void uploadUserAvatar(Authentication authentication, MultipartFile file) {
-        User user = getUserFromAuth(authentication.getPrincipal().toString());
+        User user = getUserFromAuth(authentication);
 
         String fileName = fileUtil.saveUploadedFile(file, "avatars");
         user.setAvatar(fileName);
@@ -184,7 +187,7 @@ public class UserServiceImpl implements UserService {
     @SneakyThrows
     @Override
     public void editUserPassword(UserPasswordChangeDto userDto, Authentication authentication) {
-        User user = getUserFromAuth(authentication.getPrincipal().toString());
+        User user = getUserFromAuth(authentication);
 
         if (!userDto.getPassword().equals(userDto.getConfirmPassword())) {
             throw new UserNotFoundException("Passwords aren't the same!");
@@ -199,11 +202,8 @@ public class UserServiceImpl implements UserService {
 
 
     @SneakyThrows
-    public User getUserFromAuth(String auth) {
-        int x = auth.indexOf("=");
-        int y = auth.indexOf(",");
-        String email = auth.substring(x + 1, y);
-        return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("can't find user with this email"));
+    public User getUserFromAuth(Authentication auth) {
+        return userRepository.findByEmail(auth.getName()).orElseThrow(() -> new UserNotFoundException("can't find user with this email"));
     }
 
 }

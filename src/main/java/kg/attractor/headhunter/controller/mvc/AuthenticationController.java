@@ -30,10 +30,11 @@ public class AuthenticationController {
         return "redirect:/login";
     }
 
+
     @GetMapping("/login")
     public String login(Authentication authentication) {
         if (authentication != null) {
-            User user = getUserFromAuth(authentication.getPrincipal().toString());
+            User user = getUserFromAuth(authentication);
             if (user != null) {
                 if (user.getAccountType().equals("EMPLOYER")) {
                     return "redirect:/resumes";
@@ -46,10 +47,7 @@ public class AuthenticationController {
     }
 
     @SneakyThrows
-    public User getUserFromAuth(String auth) {
-        int x = auth.indexOf("=");
-        int y = auth.indexOf(",");
-        String email = auth.substring(x + 1, y);
-        return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("can't find user with this email"));
+    public User getUserFromAuth(Authentication auth) {
+        return userRepository.findByEmail(auth.getName()).orElseThrow(() -> new UserNotFoundException("can't find user with this email"));
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface UserService {
+    void login(Authentication auth);
     ResponseEntity<?> getPhoto(Authentication authentication);
     ResponseEntity<?> getPhotoById(Integer id);
     Page<UserDto> getAllApplicants(Pageable pageable);

@@ -151,11 +151,9 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
     @SneakyThrows
-    public User getUserFromAuth(String auth) {
-        int x = auth.indexOf("=");
-        int y = auth.indexOf(",");
-        String email = auth.substring(x + 1, y);
-        return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("can't find user"));
+    public User getUserFromAuth(Authentication auth) {
+        System.out.println("вакансии");
+        return userRepository.findByEmail(auth.getName()).orElseThrow(() -> new UserNotFoundException("can't find user with this email"));
     }
 
 
@@ -268,7 +266,7 @@ public class VacancyServiceImpl implements VacancyService {
     @Override
     @SneakyThrows
     public void deleteVacancyById(Integer vacancyId, Authentication authentication) {
-        User user = getUserFromAuth(authentication.getPrincipal().toString());
+        User user = getUserFromAuth(authentication);
         Vacancy vacancy = vacancyRepository.findById(vacancyId).orElseThrow(() -> new ResumeNotFoundException("Can't find vacancy with this id"));
         if (!vacancy.getAuthor().getId().equals(user.getId())) {
             throw new ResumeNotFoundException("Can't find your vacancy with this id");

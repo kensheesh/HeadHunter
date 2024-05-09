@@ -39,7 +39,7 @@
              style="width: 28rem; height: 25.4rem;">
             <div class="card-body">
                 <h5 class="card-title fs-4 mb-5 fw-bolder">Вход</h5>
-                <form action="/login" method="post" id="login" class="mb-5 fs-6 fw-medium lh-sm">
+                <form action="/login" method="post" id="login-form"  class="mb-5 fs-6 fw-medium lh-sm">
                     <div class="d-flex flex-row align-items-center mb-4 pb-1">
                         <i class="fas fa-envelope fa-lg fa-fw"></i>
                         <div class="form-outline flex-fill">
@@ -78,13 +78,82 @@
 </div>
 
 <script>
-    document.getElementById("login").addEventListener('submit', login);
-    function login(event) {
-        let form = event.target;
-        let fromjsonUser = new FormData(form);
-        let user = Object.fromEntries(fromjsonUser);
-        let userInJsonToJS = JSON.stringify(user)
-        localStorage.setItem('user', userInJsonToJS);
+    let form = document.getElementById('login-form')
+
+    // form.addEventListener('submit', onLoginHandler)
+
+    function onLoginHandler(event) {
+        event.preventDefault()
+
+        let target = event.target
+        let data = new FormData(target)
+        let user = Object.fromEntries(data)
+
+        let headers = new Headers()
+        headers.set('Authorization', 'Basic ' + btoa(user.email + ':' + user.password))
+
+        fetchAuthorized(headers)
+        // let userJson = JSON.stringify(user)
+        // localStorage.setItem('user', userJson)
+        // window.location.href = 'http://localhost:8089/'
+
+    }
+
+    async function fetchAuthorized(auth) {
+        try {
+            await makeRequest('http://localhost:9089/api/auth/login', updateOptions({
+                method: 'post',
+                headers: auth
+            }));
+        } catch (e) {
+            alert(e)
+        }
+    }
+
+    // btoa()
+    // atob()
+
+    function makeHeaders() {
+        let user = restoreUser()
+        // console.log(user);
+
+        let headers = new Headers()
+        headers.set('Content-Type', 'application/json')
+        if (user) {
+            headers.set('Authorization', 'Basic ' + btoa(user.email + ':' + user.password))
+        }
+        return headers
+    }
+
+    async function makeRequest(url, options) {
+        let settings = options || requestSettings
+        let response = await fetch(url, settings)
+
+        if (response.ok) {
+            return await response.json()
+        } else {
+            let err = new Error(response.status.toString())
+            err.response = response
+            console.log(err);
+            throw err
+        }
+    }
+
+    function updateOptions(options) {
+        console.log(options);
+        let update = {...options}
+        update.mode = 'cors'
+        update.headers = makeHeaders()
+        return update
+    }
+
+    const requestSettings = {
+        method: 'get',
+        headers: makeHeaders()
+    }
+
+    function restoreUser() {
+        return JSON.parse(localStorage.getItem('user'))
     }
 </script>
 </body>

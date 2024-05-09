@@ -38,7 +38,7 @@ public class RespondedApplicantServiceImpl implements RespondedApplicantService 
     @Override
     @SneakyThrows
     public void createRespondedApplicant(RespondToVacancyDto respondToVacancyDto, Authentication authentication) {
-        User currentUser = getUserFromAuth(authentication.getPrincipal().toString());
+        User currentUser = getUserFromAuth(authentication);
 
         Resume resumeFor = resumeRepository.findById(respondToVacancyDto.getResumeId()).orElseThrow();
         Vacancy vacancyFor = vacancyRepository.findById(respondToVacancyDto.getVacancyId()).orElseThrow();
@@ -73,7 +73,7 @@ public class RespondedApplicantServiceImpl implements RespondedApplicantService 
     @Override
     @SneakyThrows
     public List<VacancyForRespondedDto> getVacanciesForRespondedApplicantsByUserId(Authentication authentication) {
-        User currentUser = getUserFromAuth(authentication.getPrincipal().toString());
+        User currentUser = getUserFromAuth(authentication);
         List<Vacancy> vacancies = respondedApplicantDao.getVacanciesForRespondedApplicantsByUserId(currentUser.getId());
 
 
@@ -89,7 +89,7 @@ public class RespondedApplicantServiceImpl implements RespondedApplicantService 
     @Override
     @SneakyThrows
     public List<RespondedApplicantDtoForChat> getRespondedApplicantDtoForChatByUserId(Authentication authentication) {
-        User currentUser = getUserFromAuth(authentication.getPrincipal().toString());
+        User currentUser = getUserFromAuth(authentication);
         List<RespondedApplicant> respondedApplicantsTest = respondedApplicantDao.getRespondedApplicantsByUserId(currentUser.getId());
         List<RespondedApplicant> respondedApplicants = new ArrayList<>();
         for (RespondedApplicant applicant : respondedApplicantsTest) {
@@ -115,17 +115,14 @@ public class RespondedApplicantServiceImpl implements RespondedApplicantService 
 
 
     @SneakyThrows
-    public User getUserFromAuth(String auth) {
-        int x = auth.indexOf("=");
-        int y = auth.indexOf(",");
-        String email = auth.substring(x + 1, y);
-        return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("can't find user"));
+    public User getUserFromAuth(Authentication auth) {
+        return userRepository.findByEmail(auth.getName()).orElseThrow(() -> new UserNotFoundException("can't find user with this email"));
     }
 
     @Override
     @SneakyThrows
     public List<UserDto> getRespondedUsersForVacancies(Integer vacancyId, Authentication authentication) {
-        User currentUser = getUserFromAuth(authentication.getPrincipal().toString());
+        User currentUser = getUserFromAuth(authentication);
 
         Vacancy vacancy = vacancyRepository.findById(vacancyId).orElseThrow();
         if (!vacancy.getAuthor().getId().equals(currentUser.getId())) {

@@ -39,7 +39,7 @@ public class UserController {
             model.addAttribute("username", null);
         } else {
             model.addAttribute("username", auth.getName());
-            AccountType accountType = AccountType.valueOf(getUserFromAuth(auth.getPrincipal().toString()).getAccountType());
+            AccountType accountType = AccountType.valueOf(getUserFromAuth(auth).getAccountType());
             model.addAttribute("type", accountType);
         }
 
@@ -58,7 +58,7 @@ public class UserController {
             model.addAttribute("username", null);
         } else {
             model.addAttribute("username", auth.getName());
-            AccountType accountType = AccountType.valueOf(getUserFromAuth(auth.getPrincipal().toString()).getAccountType());
+            AccountType accountType = AccountType.valueOf(getUserFromAuth(auth).getAccountType());
             model.addAttribute("type", accountType);
         }
 
@@ -76,7 +76,7 @@ public class UserController {
             model.addAttribute("username", null);
         } else {
             model.addAttribute("username", auth.getName());
-            AccountType accountType = AccountType.valueOf(getUserFromAuth(auth.getPrincipal().toString()).getAccountType());
+            AccountType accountType = AccountType.valueOf(getUserFromAuth(auth).getAccountType());
             model.addAttribute("type", accountType);
         }
         User user = userRepository.findById(id).orElseThrow();
@@ -89,12 +89,8 @@ public class UserController {
         return "users/profileById";
     }
 
-
     @SneakyThrows
-    public User getUserFromAuth(String auth) {
-        int x = auth.indexOf("=");
-        int y = auth.indexOf(",");
-        String email = auth.substring(x + 1, y);
-        return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("can't find user with this email"));
+    public User getUserFromAuth(Authentication auth) {
+        return userRepository.findByEmail(auth.getName()).orElseThrow(() -> new UserNotFoundException("can't find user with this email"));
     }
 }
