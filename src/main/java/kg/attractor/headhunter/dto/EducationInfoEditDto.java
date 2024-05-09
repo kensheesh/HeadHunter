@@ -29,6 +29,6 @@ public class EducationInfoEditDto {
     @PastOrPresent(message = "End date must be in the past or present")
     private LocalDate endDate;
 
-//    @Size(min = 2, max = 30)
+    //    @Size(min = 2, max = 30)
     private String degree;
 }

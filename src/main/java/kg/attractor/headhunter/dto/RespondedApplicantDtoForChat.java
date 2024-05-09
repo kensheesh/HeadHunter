@@ -9,8 +9,6 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 public class RespondedApplicantDtoForChat {
     private Integer id;
     private Vacancy vacancy;

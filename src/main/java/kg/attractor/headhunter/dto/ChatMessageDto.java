@@ -1,6 +1,5 @@
 package kg.attractor.headhunter.dto;
 
-import kg.attractor.headhunter.model.RespondedApplicant;
 import lombok.*;
 
 import java.time.LocalDateTime;
