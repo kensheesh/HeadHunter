@@ -10,10 +10,6 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class ContactInfoDto {
-    @NotBlank
-    @Size(min = 1, max = 30)
     private String contactType;
-    @NotBlank
-    @Size(min = 1, max = 40)
     private String value;
 }

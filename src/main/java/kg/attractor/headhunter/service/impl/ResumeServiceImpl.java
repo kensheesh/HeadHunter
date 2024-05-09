@@ -12,7 +12,6 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
@@ -122,15 +121,15 @@ public class ResumeServiceImpl implements ResumeService {
                 .isActive(isActive)
                 .build();
     }
+
     @Override
     @SneakyThrows
     public Page<ResumeViewAllDto> getAllActiveResumeByUserId(Integer pageNumber, int pageSize, Integer id) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<Resume> resumes = resumeRepository.findByAuthorIdAndIsActive(id, true,  pageable);
+        Page<Resume> resumes = resumeRepository.findByAuthorIdAndIsActive(id, true, pageable);
 
         return resumes.map(this::createResumeDto);
     }
-
 
 
     @SneakyThrows
@@ -351,8 +350,16 @@ public class ResumeServiceImpl implements ResumeService {
     @Override
     @SneakyThrows
     public void createResumeForApplicant(ResumeCreateDto resumeDto, Authentication authentication) {
-        System.out.println(resumeDto.getWorkExpInfos());
-        System.out.println("test");
+        int count = 0;
+        for (int i = 0; i < resumeDto.getContactInfos().size(); i++) {
+            if (!resumeDto.getContactInfos().get(i).getValue().isEmpty() && !resumeDto.getContactInfos().get(i).getValue().isBlank()) {
+                count++;
+            }
+        }
+        if (count == 0) {
+            throw new ResumeNotFoundException("You don't have any contact infos");
+        }
+
         User user = getUserFromAuth(authentication.getPrincipal().toString());
         Category category = categoryRepository.findByName(resumeDto.getCategoryName()).orElseThrow(() -> new CategoryNotFoundException("Cannot find this category"));
 
@@ -364,11 +371,7 @@ public class ResumeServiceImpl implements ResumeService {
         resume.setCreatedTime(LocalDateTime.now());
         resume.setUpdateTime(LocalDateTime.now());
 
-        if (Boolean.TRUE.equals(resumeDto.getIsActive())) {
-            resume.setIsActive(true);
-        } else {
-            resume.setIsActive(false);
-        }
+        resume.setIsActive(Boolean.TRUE.equals(resumeDto.getIsActive()));
 
         resumeRepository.save(resume);
 
@@ -414,7 +417,9 @@ public class ResumeServiceImpl implements ResumeService {
             contactInfo.setContactType(contactType);
             contactInfo.setContent(contactInfoDto.getValue());
 
-            contactInfoRepository.save(contactInfo);
+            if (!contactInfo.getContent().isEmpty() && !contactInfo.getContent().isBlank()) {
+                contactInfoRepository.save(contactInfo);
+            }
         }
     }
 

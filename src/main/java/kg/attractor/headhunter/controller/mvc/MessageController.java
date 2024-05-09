@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequiredArgsConstructor
@@ -30,6 +31,7 @@ public class MessageController {
     private final RespondedApplicantRepository respondedApplicantRepository;
     private final UserRepository userRepository;
 
+    @SneakyThrows
     @GetMapping("/chat/{respondedApplicantId}")
     public String getChatMessages(@PathVariable("respondedApplicantId") Integer respondedApplicantId, Model model, Authentication authentication) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -42,16 +44,17 @@ public class MessageController {
         }
 
         User user = getUserFromAuth(authentication.getPrincipal().toString());
+
         List<ChatMessageDto> chatMessages = chatService.getAllMessagesByRespondedApplicant(respondedApplicantId);
         RespondedApplicant respondedApplicant = respondedApplicantRepository.findById(respondedApplicantId).orElseThrow();
         Integer userFromId = user.getId();
         Integer userToId;
-        // проверяю кем является нынешний пользователь, дальше уже передаю userFromId и userToId,
-        // это я сделал по причине того что у меня возникали проблемы при сохранении сообщений, были неверны id пользователей
-        if (userFromId == vacancyRepository.findById(respondedApplicant.getVacancy().getId()).orElseThrow().getAuthor().getId()) {
+        if (Objects.equals(userFromId, vacancyRepository.findById(respondedApplicant.getVacancy().getId()).orElseThrow().getAuthor().getId())) {
             userToId = resumeRepository.findById(respondedApplicant.getResume().getId()).orElseThrow().getAuthor().getId();
-        } else {
+        } else if (Objects.equals(userFromId, resumeRepository.findById(respondedApplicant.getVacancy().getId()).orElseThrow().getAuthor().getId())) {
             userToId = vacancyRepository.findById(respondedApplicant.getVacancy().getId()).orElseThrow().getAuthor().getId();
+        } else {
+            throw new UserNotFoundException("Chat not found");
         }
 
         model.addAttribute("chatMessages", chatMessages);

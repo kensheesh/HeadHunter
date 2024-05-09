@@ -81,7 +81,6 @@ public class ResumeController {
 
     @PostMapping("/create")
     public String createResume(@Valid ResumeCreateDto resumeDto, Authentication authentication) {
-        System.out.println(resumeDto.getWorkExpInfos());
         resumeService.createResumeForApplicant(resumeDto, authentication);
         return "redirect:/profile";
     }
