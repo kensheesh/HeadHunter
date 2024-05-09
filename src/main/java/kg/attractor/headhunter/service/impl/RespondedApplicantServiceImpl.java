@@ -134,7 +134,6 @@ public class RespondedApplicantServiceImpl implements RespondedApplicantService 
 
         List<User> users = respondedApplicantDao.getRespondedUsersForVacancies(vacancyId);
         for (int i = 0; i < users.size(); i++) {
-            System.out.println(users.get(i));
         }
         return users.stream().map(this::convertToUserDto).collect(Collectors.toList());
     }

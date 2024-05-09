@@ -37,7 +37,6 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public void sendMessage(MessageSendDto messageSendDto, Integer respondedApplicantId) {
-        System.out.println(messageSendDto);
         Message message = new Message();
         User userFrom = userRepository.findById(messageSendDto.getUserFromId()).orElseThrow();
         User userTo = userRepository.findById(messageSendDto.getUserToId()).orElseThrow();

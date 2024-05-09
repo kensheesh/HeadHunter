@@ -106,7 +106,6 @@ public class ResumeServiceImpl implements ResumeService {
             contactInfoDto.setContactType(contactType.getType());
             contactInfoDto.setValue(contactInfo.getContent());
             contactInfoDtoFormat.add(contactInfoDto);
-            System.out.println(contactInfoDtoFormat);
         }
 
         return ResumeDto.builder()

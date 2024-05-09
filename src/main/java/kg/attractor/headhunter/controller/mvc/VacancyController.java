@@ -25,7 +25,6 @@ public class VacancyController {
     private final VacancyService vacancyService;
     private final UserService userService;
     private final UserRepository userRepository;
-    private final DataSourceTransactionManagerAutoConfiguration dataSourceTransactionManagerAutoConfiguration;
 
 
     @GetMapping("/updateTime/{id}")
@@ -92,7 +91,6 @@ public class VacancyController {
 
     @PostMapping("/create")
     public String createVacancy(@Valid VacancyCreateDto vacancyDto, Authentication authentication) {
-        System.out.println(vacancyDto.getIsActive());
         UserDto user = userService.getUserByAuth(authentication);
         vacancyService.createVacancyForEmployer(vacancyDto, user.getId());
         return "redirect:/profile";
@@ -107,7 +105,6 @@ public class VacancyController {
         } else {
             model.addAttribute("username", auth.getName());
             AccountType accountType = AccountType.valueOf(getUserFromAuth(auth.getPrincipal().toString()).getAccountType());
-            System.out.println(accountType);
             model.addAttribute("type", accountType);
         }
 
