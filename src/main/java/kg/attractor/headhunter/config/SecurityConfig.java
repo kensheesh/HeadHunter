@@ -31,7 +31,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)
+//                .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
                 .httpBasic(Customizer.withDefaults())
                 .formLogin(form -> form
@@ -64,8 +64,10 @@ public class SecurityConfig {
 //                        .requestMatchers(HttpMethod.GET, "/vacancies/**").hasAuthority("APPLICANT")
 
                         .anyRequest().authenticated())
-                .exceptionHandling(exception -> exception
-                        .accessDeniedHandler(customAccessDeniedHandler()));
+                .exceptionHandling(Customizer.withDefaults());
+
+//                .exceptionHandling(exception -> exception
+//                        .accessDeniedHandler(customAccessDeniedHandler()));
         return http.build();
     }
 

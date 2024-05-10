@@ -114,10 +114,5 @@
     <#--    </div>-->
 </div>
 
-<script>
-    document.getElementById('logout').addEventListener('click', () => {
-        localStorage.removeItem('user')
-    })
-</script>
 </body>
 </html>

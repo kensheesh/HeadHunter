@@ -40,6 +40,10 @@
             <div class="card-body">
                 <h5 class="card-title fs-4 mb-5 fw-bolder">Вход</h5>
                 <form action="/login" method="post" id="login-form"  class="mb-5 fs-6 fw-medium lh-sm">
+                    <#if _csrf??>
+                        <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
+                               value="${(_csrf.token)!'csrf-token'}"/>
+                    </#if>
                     <div class="d-flex flex-row align-items-center mb-4 pb-1">
                         <i class="fas fa-envelope fa-lg fa-fw"></i>
                         <div class="form-outline flex-fill">

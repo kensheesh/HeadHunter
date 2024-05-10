@@ -82,7 +82,9 @@
 <div class="container mt-5">
     <h2 class="mb-4">Resume Submission Form</h2>
     <form action="/resumes/create" method="post">
-
+        <#if _csrf??>
+            <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}" value="${(_csrf.token)!'csrf-token'}" />
+        </#if>
         <div class="form-group">
             <label for="name">Name of the resume:</label>
             <input type="text" id="name" name="name" class="form-control" required>

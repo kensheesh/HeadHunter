@@ -124,6 +124,9 @@
                         <h3>Ваш отклик:</h3>
                     </div>
                     <form action="/apply/vacancy/${vacancy.id}" method="post">
+                        <#if _csrf??>
+                            <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}" value="${(_csrf.token)!'csrf-token'}" />
+                        </#if>
                         <input type="hidden" name="vacancyId" value="${vacancy.id}">
                         <small>Текст сообщения:</small>
                         <label>

@@ -60,6 +60,9 @@
     <h1 class="text-center mb-4">Резюме</h1>
     <h3>Сортировать по категориям</h3>
     <form class="row mb-4" id="categoryForm">
+        <#if _csrf??>
+            <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}" value="${(_csrf.token)!'csrf-token'}" />
+        </#if>
         <div class="col-4">
             <select class="form-select border-dark" aria-label="выбрать категорию"
                     name="category" id="category">

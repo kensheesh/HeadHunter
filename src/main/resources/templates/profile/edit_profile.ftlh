@@ -72,7 +72,15 @@
                 </#if>
             </ul>
             <div class="right-buttons">
-                <a class="btn btn-primary btn-sign-in" href="/logout" id="logout">Log Out</a>
+                <#if _csrf??>
+                    <form action="/logout" method="post">
+                        <input type="hidden" name="${(_csrf.parameterName)!'csrf'}"
+                               value="${(_csrf.token)!'--no-token--'}"/>
+                        <button class="btn btn-primary btn-sign-in" id="logout">Log Out</button>
+                    </form>
+                <#else>
+                    <a class="btn btn-primary btn-sign-in" href="/logout" id="logout">Log Out</a>
+                </#if>
             </div>
         </div>
     </div>
@@ -89,6 +97,9 @@
                 </div>
                 <form class="text-center my-3" action="/profile/avatars" method="post"
                       enctype="multipart/form-data">
+                    <#if _csrf??>
+                        <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}" value="${(_csrf.token)!'csrf-token'}" />
+                    </#if>
                     <input type="file" class="form-control file_form mb-5" id="inputGroupFile04"
                            aria-describedby="inputGroupFileAddon04" aria-label="Upload" name="file"
                            style="width: 16rem; margin-left: 2.1rem;">
@@ -101,6 +112,9 @@
             <div class="card-body bg-white ms-5" style="width: 20rem; height: 25rem">
                 <h3 class="pt-2 text-center">Personal info</h3>
                 <form method="post" action="/profile/edit" id="edit_profile" class="form-horizontal ms-4">
+                    <#if _csrf??>
+                        <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}" value="${(_csrf.token)!'csrf-token'}" />
+                    </#if>
                     <div class="form-group mt-3">
                         <label class="col-md-3 control-label mt-2">Name</label>
                         <div class="col-md-8">
@@ -152,6 +166,9 @@
                 <h3 class="text-center pt-2">Password</h3>
                 <form method="post" action="/profile/edit/password" id="edit_profile_password"
                       class="form-horizontal">
+                    <#if _csrf??>
+                        <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}" value="${(_csrf.token)!'csrf-token'}" />
+                    </#if>
                     <div class="form-group mt-3">
                         <label class="control-label ms-3 mt-2">New password:</label>
                         <div class="col-md-8">

@@ -59,7 +59,15 @@
             </ul>
             <div class="right-buttons">
                 <#if username??>
-                    <a class="btn btn-primary btn-sign-in" href="/logout" id="logout">Log Out</a>
+                    <#if _csrf??>
+                        <form action="/logout" method="post">
+                            <input type="hidden" name="${(_csrf.parameterName)!'csrf'}"
+                                   value="${(_csrf.token)!'--no-token--'}"/>
+                            <button class="btn btn-primary btn-sign-in" id="logout">Log Out</button>
+                        </form>
+                    <#else>
+                        <a class="btn btn-primary btn-sign-in" href="/logout" id="logout">Log Out</a>
+                    </#if>
                 <#else>
                     <a class="btn btn-primary btn-sign-in" href="/login">Sign In</a>
                     <a class="btn btn-primary btn-sign-up" href="/register" style="width: 8rem">Sign Up</a>
@@ -73,6 +81,9 @@
     <h1 class="text-center mb-4">Вакансии</h1>
     <h3>Сортировать по категориям</h3>
     <form action="/vacancies" method="GET" class="mb-4">
+        <#if _csrf??>
+            <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}" value="${(_csrf.token)!'csrf-token'}" />
+        </#if>
         <div class="row">
             <div class="col-md-4">
                 <select class="form-select border-dark" aria-label="выбрать категорию"

@@ -61,8 +61,15 @@
                 </#if>
             </ul>
             <div class="right-buttons">
-                <a class="btn btn-primary btn-sign-in" href="/logout" id="logout">Log Out</a>
-            </div>
+                <#if _csrf??>
+                    <form action="/logout" method="post">
+                        <input type="hidden" name="${(_csrf.parameterName)!'csrf'}"
+                               value="${(_csrf.token)!'--no-token--'}"/>
+                        <button class="btn btn-primary btn-sign-in" id="logout">Log Out</button>
+                    </form>
+                <#else>
+                    <a class="btn btn-primary btn-sign-in" href="/logout" id="logout">Log Out</a>
+                </#if>            </div>
         </div>
     </div>
 </nav>
@@ -148,6 +155,9 @@
                                 <a href="/vacancies/edit/${item.id}" class="btn btn-secondary">Редактировать</a>
                                 <form action="/vacancies/delete/${item.id}" method="post" style="height: 0.5rem"
                                       class="ms-2 delete-form">
+                                    <#if _csrf??>
+                                        <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}" value="${(_csrf.token)!'csrf-token'}" />
+                                    </#if>
                                     <input type="hidden" name="_method" value="delete">
                                     <button class="btn btn-danger" type="submit">Удалить</button>
                                 </form>
@@ -156,6 +166,9 @@
                                 <a href="/resumes/edit/${item.id}" class="btn btn-secondary">Редактировать</a>
                                 <form action="/resumes/delete/${item.id}" method="post" style="height: 0.5rem"
                                       class="ms-2 delete-form">
+                                    <#if _csrf??>
+                                        <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}" value="${(_csrf.token)!'csrf-token'}" />
+                                    </#if>
                                     <input type="hidden" name="_method" value="delete">
                                     <button class="btn btn-danger" type="submit">Удалить</button>
                                 </form>

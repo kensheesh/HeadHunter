@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
+    <meta name="_csrf_token" content="${_csrf.token}"/>
     <title>Чат с работодателем</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <style>
@@ -83,6 +85,9 @@
             <div class="chat-container" id="chatContainer">
             </div>
             <form id="sendMessageForm">
+                <#if _csrf??>
+                    <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}" value="${(_csrf.token)!'csrf-token'}" />
+                </#if>
                 <div class="mb-3">
                     <label for="messageContent" class="form-label">Сообщение</label>
                     <textarea class="form-control" id="messageContent" rows="1"></textarea>
@@ -96,55 +101,59 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    function isResumeLink(content) {
-        const resumeLinkRegex = /^\/resumes\/\d+$/;
-        return resumeLinkRegex.test(content);
-    }
-
-    function getResumeIdFromLink(content) {
-        const resumeLinkRegex = /^\/resumes\/(\d+)$/;
-        const match = content.match(resumeLinkRegex);
-        if (match && match[1]) {
-            return match[1];
-        } else {
-            return null;
+    $(document).ready(function () {
+        function isResumeLink(content) {
+            const resumeLinkRegex = /^\/resumes\/\d+$/;
+            return resumeLinkRegex.test(content);
         }
-    }
 
-    function loadMessages() {
-        $.ajax({
-            url: '/api/chat/${respondedApplicantId}/messages',
-            method: 'GET',
-            success: function (messages) {
-                $('#chatContainer').empty();
+        function getResumeIdFromLink(content) {
+            const resumeLinkRegex = /^\/resumes\/(\d+)$/;
+            const match = content.match(resumeLinkRegex);
+            if (match && match[1]) {
+                return match[1];
+            } else {
+                return null;
+            }
+        }
 
-                messages.forEach(function (message) {
-                    let messageContent = '<div class="message-container"><div>'
-                        + message.userFromId.name + ': ';
+        function loadMessages() {
+            $.ajax({
+                url: '/api/chat/${respondedApplicantId}/messages',
+                method: 'GET',
+                beforeSend: function(xhr) {
+                    // Устанавливаем CSRF токен в заголовок запроса
+                    xhr.setRequestHeader('${_csrf.headerName}', '${_csrf.token}');
+                },
+                success: function (messages) {
+                    $('#chatContainer').empty();
 
-                    if (isResumeLink(message.content)) {
-                        const resumeId = getResumeIdFromLink(message.content);
-                        if (resumeId) {
-                            messageContent += '<a href="/resumes/' + resumeId + '">' + message.content + '</a>';
+                    messages.forEach(function (message) {
+                        let messageContent = '<div class="message-container"><div>'
+                            + message.userFromId.name + ': ';
+
+                        if (isResumeLink(message.content)) {
+                            const resumeId = getResumeIdFromLink(message.content);
+                            if (resumeId) {
+                                messageContent += '<a href="/resumes/' + resumeId + '">' + message.content + '</a>';
+                            } else {
+                                messageContent += message.content;
+                            }
                         } else {
                             messageContent += message.content;
                         }
-                    } else {
-                        messageContent += message.content;
-                    }
 
-                    messageContent += '</div></div>';
+                        messageContent += '</div></div>';
 
-                    $('#chatContainer').append(messageContent);
-                });
-            },
-            error: function () {
-                console.error('Ошибка загрузки сообщений');
-            }
-        });
-    }
+                        $('#chatContainer').append(messageContent);
+                    });
+                },
+                error: function () {
+                    console.error('Ошибка загрузки сообщений');
+                }
+            });
+        }
 
-    $(document).ready(function () {
         loadMessages();
 
         setInterval(function () {
@@ -165,17 +174,20 @@
                     content: messageContent,
                     timestamp: new Date().toISOString()
                 }),
+                beforeSend: function(xhr) {
+                    // Устанавливаем CSRF токен в заголовок запроса
+                    xhr.setRequestHeader('${_csrf.headerName}', '${_csrf.token}');
+                },
                 success: function (response) {
                     loadMessages();
                     $('#messageContent').val('');
                 },
                 error: function (err) {
-                    console.error('Erorr');
+                    console.error('Ошибка');
                 }
             });
         });
     });
 </script>
-
 </body>
 </html>

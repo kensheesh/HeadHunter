@@ -56,6 +56,9 @@
                 </div>
                 <div class="card-body">
                     <form action="/vacancies/edit/${vacancy.id}" method="post" id="vacancyForm">
+                        <#if _csrf??>
+                            <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}" value="${(_csrf.token)!'csrf-token'}" />
+                        </#if>
                         <input type="hidden" name="id" value="${vacancy.id}">
                         <div class="mb-3">
                             <label for="name" class="form-label">Vacancy Name:</label>
