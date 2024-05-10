@@ -43,6 +43,9 @@
             <div class="card-body">
                 <h5 class="card-title fs-4 mb-5 fw-bolder">Регистрация</h5>
                 <form action="/register" class="mb-5 fs-6 fw-medium lh-sm" method="post">
+                    <#if _csrf??>
+                        <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}" value="${(_csrf.token)!'csrf-token'}" />
+                    </#if>
                     <div class="form-group mb-3 pb-0 ">
                         <label class="form-label mb-2" for="accountType">Тип Аккаунта</label>
                         <select class="form-select rounded-0" id="accountType" name="accountType">
