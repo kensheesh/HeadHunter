@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -46,6 +47,8 @@ public class SecurityConfig {
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/register")).permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/")).permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/vacancies")).permitAll()
+                        .requestMatchers(AntPathRequestMatcher.antMatcher("/forgot_password")).permitAll()
+                        .requestMatchers(HttpMethod.POST, "/forgot_password").permitAll()
 
 //                        .requestMatchers(HttpMethod.PUT, "/accounts").fullyAuthenticated()
 //                        .requestMatchers(HttpMethod.POST, "/accounts/avatar").fullyAuthenticated()

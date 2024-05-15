@@ -54,6 +54,8 @@ public class User implements UserDetails {
     @Column(name = "ENABLED")
     private Boolean enabled;
 
+    private String resetPasswordToken;
+
 //    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
 //    private List<Vacancy> vacancies;
 //

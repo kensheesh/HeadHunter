@@ -1,5 +1,6 @@
 package kg.attractor.headhunter.service;
 
+import jakarta.servlet.http.HttpServletRequest;
 import kg.attractor.headhunter.dto.UserCreateDto;
 import kg.attractor.headhunter.dto.UserDto;
 import kg.attractor.headhunter.dto.UserEditDto;
@@ -49,4 +50,12 @@ public interface UserService {
 //    UserDto mapToUserDto(User user);
 
     void editUserPassword(UserPasswordChangeDto user, Authentication authentication);
+
+    void updateResetPasswordToken(String token, String email);
+
+    User getByResetPasswordToken(String token);
+
+    void updatePassword(User user, String newPassword);
+
+    void makeResetPasswdLink(HttpServletRequest request);
 }

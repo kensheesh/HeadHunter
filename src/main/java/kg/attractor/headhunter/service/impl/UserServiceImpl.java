@@ -1,5 +1,6 @@
 package kg.attractor.headhunter.service.impl;
 
+import jakarta.servlet.http.HttpServletRequest;
 import kg.attractor.headhunter.dto.UserCreateDto;
 import kg.attractor.headhunter.dto.UserDto;
 import kg.attractor.headhunter.dto.UserEditDto;
@@ -21,9 +22,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -200,10 +204,36 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
     @SneakyThrows
     public User getUserFromAuth(Authentication auth) {
         return userRepository.findByEmail(auth.getName()).orElseThrow(() -> new UserNotFoundException("can't find user with this email"));
     }
 
+
+    @Override
+    public void updateResetPasswordToken(String token, String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Could not find any user with the email " + email));
+        user.setResetPasswordToken(token);
+        userRepository.saveAndFlush(user);
+    }
+
+    @Override
+    public User getByResetPasswordToken(String token) {
+        return userRepository.findByResetPasswordToken(token).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    @Override
+    public void updatePassword(User user, String newPassword) {
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        user.setPassword(encodedPassword);
+        user.setResetPasswordToken(null);
+        userRepository.saveAndFlush(user);
+    }
+
+    public void makeResetPasswdLink(HttpServletRequest request) throws UsernameNotFoundException {
+        String email = request.getParameter("email");
+        String token = UUID.randomUUID().toString();
+        updateResetPasswordToken(token, email);
+
+    }
 }

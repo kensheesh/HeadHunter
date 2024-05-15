@@ -36,10 +36,11 @@
 <div class="container">
     <div class="d-flex justify-content-center">
         <div class="card rounded-0 p-4 pb-1 mt-5 text-black shadow-sm"
-             style="width: 28rem; height: 25.4rem;">
+             style="
+             width: 28rem; height: 27.4rem;">
             <div class="card-body">
                 <h5 class="card-title fs-4 mb-5 fw-bolder">Вход</h5>
-                <form action="/login" method="post" id="login-form"  class="mb-5 fs-6 fw-medium lh-sm">
+                <form action="/login" method="post" id="login-form" class="mb-5 fs-6 fw-medium lh-sm">
                     <#if _csrf??>
                         <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
                                value="${(_csrf.token)!'csrf-token'}"/>
@@ -63,6 +64,7 @@
                     <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4 mt-4 pt-3">
                         <input type="submit" class="btn btn-primary btn-lg px-5 rounded-0" value="Login">
                     </div>
+                    <a href="/forgot_password">Забыли пароль?</a>
                 </form>
             </div>
         </div>

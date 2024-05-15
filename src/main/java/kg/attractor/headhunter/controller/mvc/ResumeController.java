@@ -51,6 +51,9 @@ public class ResumeController {
         return "resumes/all_resumes";
     }
 
+
+
+
     @GetMapping("/{resumeId}")
     public String getResume(@PathVariable Integer resumeId, Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
