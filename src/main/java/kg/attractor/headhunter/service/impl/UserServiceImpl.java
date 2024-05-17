@@ -1,5 +1,6 @@
 package kg.attractor.headhunter.service.impl;
 
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import kg.attractor.headhunter.dto.UserCreateDto;
 import kg.attractor.headhunter.dto.UserDto;
@@ -11,6 +12,7 @@ import kg.attractor.headhunter.model.User;
 import kg.attractor.headhunter.repository.UserRepository;
 import kg.attractor.headhunter.service.UserService;
 import kg.attractor.headhunter.util.FileUtil;
+import kg.attractor.headhunter.util.Utility;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +29,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.UnsupportedEncodingException;
 import java.util.UUID;
 
 @Slf4j
@@ -38,6 +41,7 @@ public class UserServiceImpl implements UserService {
     private final ModelMapper modelMapper;
     private final FileUtil fileUtil;
     private final UserRepository userRepository;
+    private final EmailServiceImpl emailService;
 
     @Override
     public void login(Authentication auth) {
@@ -210,6 +214,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    //------------------------------------------------------------------------------------------------------------------------------
     @Override
     public void updateResetPasswordToken(String token, String email) {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Could not find any user with the email " + email));
@@ -230,10 +235,12 @@ public class UserServiceImpl implements UserService {
         userRepository.saveAndFlush(user);
     }
 
-    public void makeResetPasswdLink(HttpServletRequest request) throws UsernameNotFoundException {
+    @Override
+    public void makeResetPasswdLink(HttpServletRequest request) throws UsernameNotFoundException, UnsupportedEncodingException, MessagingException {
         String email = request.getParameter("email");
         String token = UUID.randomUUID().toString();
         updateResetPasswordToken(token, email);
-
+        String resetPasswordLink = Utility.getSiteURL(request) + "/reset_password?token=" + token;
+        emailService.sendEmail(email, resetPasswordLink);
     }
 }

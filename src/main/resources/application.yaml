@@ -8,6 +8,20 @@ spring:
     password: qwerty
     driver-class-name: org.h2.Driver
 
+  mail:
+    host: smtp.gmail.com
+    username: nursultanzynwa@gmail.com
+    password: rtbmgmtufihtxyua
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+
+
   liquibase:
     change-log: classpath:/db/changelog/master.yaml
   h2:

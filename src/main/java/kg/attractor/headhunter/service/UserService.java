@@ -1,5 +1,6 @@
 package kg.attractor.headhunter.service;
 
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import kg.attractor.headhunter.dto.UserCreateDto;
 import kg.attractor.headhunter.dto.UserDto;
@@ -12,13 +13,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import java.io.UnsupportedEncodingException;
 
 public interface UserService {
     void login(Authentication auth);
+
     ResponseEntity<?> getPhoto(Authentication authentication);
+
     ResponseEntity<?> getPhotoById(Integer id);
+
     Page<UserDto> getAllApplicants(Pageable pageable);
+
     Page<UserDto> getAllEmployers(Pageable pageable);
 
     UserDto getUserById(Integer id);
@@ -57,5 +62,5 @@ public interface UserService {
 
     void updatePassword(User user, String newPassword);
 
-    void makeResetPasswdLink(HttpServletRequest request);
+    void makeResetPasswdLink(HttpServletRequest request) throws MessagingException, UnsupportedEncodingException;
 }

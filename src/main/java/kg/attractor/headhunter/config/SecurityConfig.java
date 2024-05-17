@@ -48,7 +48,7 @@ public class SecurityConfig {
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/")).permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/vacancies")).permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/forgot_password")).permitAll()
-                        .requestMatchers(HttpMethod.POST, "/forgot_password").permitAll()
+                        .requestMatchers(AntPathRequestMatcher.antMatcher("/reset_password")).permitAll()
 
 //                        .requestMatchers(HttpMethod.PUT, "/accounts").fullyAuthenticated()
 //                        .requestMatchers(HttpMethod.POST, "/accounts/avatar").fullyAuthenticated()
