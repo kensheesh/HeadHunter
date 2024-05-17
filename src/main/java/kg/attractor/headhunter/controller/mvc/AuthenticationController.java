@@ -1,7 +1,9 @@
 package kg.attractor.headhunter.controller.mvc;
 
 import jakarta.mail.MessagingException;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import kg.attractor.headhunter.dto.UserCreateDto;
 import kg.attractor.headhunter.exception.UserNotFoundException;
@@ -10,6 +12,7 @@ import kg.attractor.headhunter.repository.UserRepository;
 import kg.attractor.headhunter.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.UnsupportedEncodingException;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class AuthenticationController {
@@ -32,11 +36,19 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public String register(@Valid UserCreateDto userDto) {
+    public String register(@Valid UserCreateDto userDto, HttpServletRequest request) {
         userService.createUser(userDto);
-        return "redirect:/login";
+        authWithHttpServletRequest(request, userDto.getEmail(), userDto.getPassword());
+        return "redirect:/profile";
     }
 
+    public void authWithHttpServletRequest(HttpServletRequest request, String username, String password) {
+        try {
+            request.login(username, password);
+        } catch (ServletException e) {
+            log.error("Error while login ", e);
+        }
+    }
 
     @GetMapping("/login")
     public String login(Authentication authentication) {
