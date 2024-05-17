@@ -4,12 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -67,10 +65,8 @@ public class SecurityConfig {
 //                        .requestMatchers(HttpMethod.GET, "/vacancies/**").hasAuthority("APPLICANT")
 
                         .anyRequest().authenticated())
-                .exceptionHandling(Customizer.withDefaults());
-
-//                .exceptionHandling(exception -> exception
-//                        .accessDeniedHandler(customAccessDeniedHandler()));
+                .exceptionHandling(exception -> exception
+                        .accessDeniedHandler(customAccessDeniedHandler()));
         return http.build();
     }
 
