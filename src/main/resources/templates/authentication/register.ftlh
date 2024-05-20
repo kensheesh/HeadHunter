@@ -1,3 +1,4 @@
+<#import "../spring.ftl" as spring>
 <!DOCTYPE html>
 <html lang="ru">
 
@@ -29,7 +30,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    <a class="nav-link active" aria-current="page" href="/"><@spring.message 'navbar.home'/></a>
                 </li>
             </ul>
         </div>
@@ -41,30 +42,30 @@
         <div class="card rounded-0 p-4 pb-1 mt-5 text-black shadow-sm"
              style="width: 28rem; height: 49rem;">
             <div class="card-body">
-                <h5 class="card-title fs-4 mb-5 fw-bolder">Регистрация</h5>
+                <h5 class="card-title fs-4 mb-5 fw-bolder"><@spring.message 'authentication.registerSubject'/></h5>
                 <form action="/register" class="mb-5 fs-6 fw-medium lh-sm" method="post">
                     <#if _csrf??>
                         <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}" value="${(_csrf.token)!'csrf-token'}" />
                     </#if>
                     <div class="form-group mb-3 pb-0 ">
-                        <label class="form-label mb-2" for="accountType">Тип Аккаунта</label>
+                        <label class="form-label mb-2" for="accountType"><@spring.message 'authentication.accountsType'/></label>
                         <select class="form-select rounded-0" id="accountType" name="accountType">
-                            <option value="APPLICANT">Соискатель</option>
-                            <option value="EMPLOYER">Работодатель</option>
+                            <option value="APPLICANT"><@spring.message 'authentication.applicant'/></option>
+                            <option value="EMPLOYER"><@spring.message 'authentication.employer'/></option>
                         </select>
                     </div>
 
                     <div class="d-flex flex-row align-items-center mb-4 pb-1">
                         <i class="fas fa-user fa-lg fa-fw"></i>
                         <div class="form-outline flex-fill">
-                            <label class="form-label" for="name">Имя</label>
+                            <label class="form-label" for="name"><@spring.message 'authentication.name'/></label>
                             <input type="text" id="name" name="name" class="form-control rounded-0"/>
                         </div>
                     </div>
                     <div class="d-flex flex-row align-items-center mb-4 pb-1">
                         <i class="fas fa-user fa-lg fa-fw"></i>
                         <div class="form-outline flex-fill " id="surnameField">
-                            <label class="form-label" for="surname">Фамилия</label>
+                            <label class="form-label" for="surname"><@spring.message 'authentication.surname'/></label>
                             <input type="text" id="surname" name="surname" class="form-control rounded-0"/>
                         </div>
                     </div>
@@ -80,7 +81,7 @@
                     <div class="d-flex flex-row align-items-center mb-4 pb-1">
                         <i class="fas fa-lock fa-lg fa-fw"></i>
                         <div class="form-outline flex-fill">
-                            <label class="form-label" for="password">Пароль</label>
+                            <label class="form-label" for="password"><@spring.message 'authentication.password'/></label>
                             <input type="password" id="password" name="password" class="form-control rounded-0"/>
                         </div>
                     </div>
@@ -88,13 +89,13 @@
                     <div class="d-flex flex-row align-items-center mb-4 pb-1">
                         <i class="fas fa-phone-alt fa-lg fa-fw"></i>
                         <div class="form-outline flex-fill">
-                            <label class="form-label" for="phoneNumber">Номер Телефона</label>
+                            <label class="form-label" for="phoneNumber"><@spring.message 'authentication.phoneNumber'/></label>
                             <input type="tel" id="phoneNumber" name="phoneNumber" class="form-control rounded-0"/>
                         </div>
                     </div>
 
                     <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4 mt-4 pt-3">
-                        <button type="submit" class="btn btn-primary btn-lg px-5 rounded-0">Зарегистрироваться</button>
+                        <button type="submit" class="btn btn-primary btn-lg px-5 rounded-0"><@spring.message 'authentication.registerTo'/></button>
                     </div>
                 </form>
             </div>
@@ -105,8 +106,8 @@
              style="width: 28rem; height: 4rem;">
             <div class="d-flex align-items-center pb-0">
                 <div class="card-body">
-                    <p class="card-text fs-6 mb-5 fw-medium text-center">Уже зарегистрированы? <a
-                                href="/login">Войдите</a></p>
+                    <p class="card-text fs-6 mb-5 fw-medium text-center"><@spring.message 'authentication.areRegistered'/> <a
+                                href="/login"><@spring.message 'navbar.signIn'/></a></p>
                 </div>
             </div>
         </div>

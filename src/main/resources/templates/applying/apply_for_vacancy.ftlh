@@ -1,3 +1,4 @@
+<#import "../spring.ftl" as spring>
 <!doctype html>
 <html lang="en">
 <head>
@@ -19,39 +20,39 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    <a class="nav-link active" aria-current="page" href="/"><@spring.message 'navbar.home'/></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/profile">Profile</a>
+                    <a class="nav-link" href="/profile"><@spring.message 'navbar.profile'/></a>
                 </li>
+
                 <li class="nav-item">
-                    <a class="nav-link" href="/vacancies">Vacancies</a>
+                    <a class="nav-link" href="/vacancies"><@spring.message 'navbar.vacancies'/></a>
                 </li>
 
                 <#if type = "EMPLOYER">
                     <li class="nav-item">
-                        <a class="nav-link" href="/resumes">Resumes</a>
+                        <a class="nav-link" href="/resumes"><@spring.message 'navbar.resumes'/></a>
                     </li>
                 </#if>
 
                 <#if type = "APPLICANT">
                     <li class="nav-item">
-                        <a class="nav-link" href="/users/employers">Employers</a>
+                        <a class="nav-link" href="/users/employers"><@spring.message 'navbar.employers'/></a>
                     </li>
                 </#if>
 
                 <#if type = "EMPLOYER">
                     <li class="nav-item">
-                        <a class="nav-link" href="/users/applicants">Applicants</a>
+                        <a class="nav-link" href="/users/applicants"><@spring.message 'navbar.applicants'/></a>
                     </li>
                 </#if>
             </ul>
         </div>
     </div>
 </nav>
-
 <div class="container">
-    <h2 class="text-black fs-2 text-center mt-2"> Откликнуться на вакансию:</h2>
+    <h2 class="text-black fs-2 text-center mt-2"> <@spring.message 'applying.respondToVacancy'/></h2>
 
     <div class="row gutters-sm mt-5">
         <div class="col-md-4 mb-4">
@@ -59,7 +60,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-8">
-                            <h6 class="text-secondary mt-1">Название компании:</h6>
+                            <h6 class="text-secondary mt-1"><@spring.message 'applying.companyName'/></h6>
                         </div>
                         <div class="col-4">
                             <h4>${vacancy.user.name}</h4>
@@ -72,7 +73,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-5">
-                            <h6 class="text-secondary mt-1">E-mail компании:</h6>
+                            <h6 class="text-secondary mt-1"><@spring.message 'applying.companiesEmail'/></h6>
                         </div>
                         <div class="col-7">
                             <h4>${vacancy.user.email}</h4>
@@ -85,7 +86,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-5">
-                            <h6 class="text-secondary mt-1">Номер компании:</h6>
+                            <h6 class="text-secondary mt-1"><@spring.message 'applying.companiesNumber'/></h6>
                         </div>
                         <div class="col-7">
                             <h4>${vacancy.user.phoneNumber}</h4>
@@ -99,7 +100,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-sm-3">
-                            <h6 class="mb-0 pt-3">Название вакансии:</h6>
+                            <h6 class="mb-0 pt-3"><@spring.message 'applying.nameOfVacancy'/>:</h6>
                         </div>
                         <div class="col-sm-9 text-black fs-5 pt-2">
                             <p> ${vacancy.name}</p>
@@ -109,7 +110,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-sm-3">
-                            <h6 class="mb-0">Оклад вакансии:</h6>
+                            <h6 class="mb-0"><@spring.message 'applying.casingOfVacancy'/></h6>
                         </div>
                         <div class="col-sm-9 text-black fs-5 ">
                             <p> ${vacancy.salary}</p>
@@ -121,38 +122,38 @@
             <div class="card mb-3">
                 <div class="card-body">
                     <div class="card-title mb-3">
-                        <h3>Ваш отклик:</h3>
+                        <h3><@spring.message 'applying.yourResponse'/></h3>
                     </div>
                     <form action="/apply/vacancy/${vacancy.id}" method="post">
                         <#if _csrf??>
-                            <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}" value="${(_csrf.token)!'csrf-token'}" />
+                            <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
+                                   value="${(_csrf.token)!'csrf-token'}"/>
                         </#if>
                         <input type="hidden" name="vacancyId" value="${vacancy.id}">
-                        <small>Текст сообщения:</small>
+                        <small><@spring.message 'applying.textOfMessage'/></small>
                         <label>
-                            <input class="form-control mb-2" type="text" placeholder="Текст сообщения работодателю"
+                            <input class="form-control mb-2" type="text" placeholder="<@spring.message 'applying.messageToEmployer'/>"
                                    name="message" style="width: 17rem" id="message">
                         </label>
 
-                        <p class="mb-1">Создайте резюме, или выберите существующую ниже:</p>
-                        <a href="/resumes/create" class="btn btn-secondary my-3">Создать резюме</a>
+                        <p class="mb-1"><@spring.message 'applying.createResumeOrPickBelow'/></p>
+                        <a href="/resumes/create" class="btn btn-secondary my-3"><@spring.message 'applying.createResume'/></a>
                         <#if resumes??>
                             <select class="form-select border-dark"
                                     aria-label="Default select example" name="resumeId" id="resumeId">
                                 <#list resumes as resume>
-                                    <small>Резюме</small>
+                                    <small><@spring.message 'applying.resume'/></small>
                                     <option value="${resume.id}" class="form-brd-radius col-6">
                                         ${resume.name}</option>
                                 </#list>
                             </select>
                         </#if>
-                        <button type="submit" class="btn btn-primary my-3"> Отправить</button>
+                        <button type="submit" class="btn btn-primary my-3"> <@spring.message 'applying.send'/></button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 </body>
 </html>

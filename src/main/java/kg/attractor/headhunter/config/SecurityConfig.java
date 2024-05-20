@@ -23,47 +23,25 @@ import java.util.Map;
 public class SecurityConfig {
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-//                .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
                 .httpBasic(Customizer.withDefaults())
                 .formLogin(form -> form
-                        .loginPage("/login")
-                        .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/login")
+                        .loginPage("/login**")
+                        .loginProcessingUrl("/login**")
+                        .defaultSuccessUrl("/login**")
                         .permitAll())
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                         .permitAll())
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/register")).permitAll()
+                        .requestMatchers(AntPathRequestMatcher.antMatcher("/login")).permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/")).permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/vacancies")).permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/forgot_password")).permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/reset_password")).permitAll()
-
-//                        .requestMatchers(HttpMethod.PUT, "/accounts").fullyAuthenticated()
-//                        .requestMatchers(HttpMethod.POST, "/accounts/avatar").fullyAuthenticated()
-//
-//                        .requestMatchers(HttpMethod.GET, "/resumes/applicant").hasAuthority("APPLICANT")
-//                        .requestMatchers(HttpMethod.POST, "/resumes").hasAuthority("APPLICANT")
-//                        .requestMatchers(HttpMethod.PUT, "/resumes/**").hasAuthority("APPLICANT")
-//                        .requestMatchers(HttpMethod.GET, "/resumes/**").hasAuthority("EMPLOYER")
-//                        .requestMatchers(HttpMethod.DELETE, "/resumes/**").hasAuthority("APPLICANT")
-//
-//                        .requestMatchers(HttpMethod.GET, "/vacancies/employer").hasAuthority("EMPLOYER")
-//                        .requestMatchers(HttpMethod.GET, "/vacancies/{vacancyId}/respondents").hasAuthority("EMPLOYER")
-//                        .requestMatchers(HttpMethod.GET, "/vacancies//{id}/responded-vacancies").hasAuthority("EMPLOYER")
-//                        .requestMatchers(HttpMethod.POST, "/vacancies").hasAuthority("EMPLOYER")
-//                        .requestMatchers(HttpMethod.PUT, "/vacancies/**").hasAuthority("EMPLOYER")
-//                        .requestMatchers(HttpMethod.GET, "/vacancies/**").hasAuthority("APPLICANT")
-
                         .anyRequest().authenticated())
                 .exceptionHandling(exception -> exception
                         .accessDeniedHandler(customAccessDeniedHandler()));

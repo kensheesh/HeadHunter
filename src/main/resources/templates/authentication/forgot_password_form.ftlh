@@ -1,3 +1,4 @@
+<#import "../spring.ftl" as spring>
 <!doctype html>
 <html lang="en">
 <head>
@@ -21,7 +22,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    <a class="nav-link active" aria-current="page" href="/"><@spring.message 'navbar.home'/></a>
                 </li>
             </ul>
         </div>
@@ -29,7 +30,9 @@
 </nav>
 
 
-<h2>Forgot Password</h2>
+<h2>
+    <@spring.message 'authentication.forgotPassword'/>
+</h2>
 <#if error??>
     <b class="text-danger text-center">${error}</b>
 </#if>
@@ -46,15 +49,15 @@
                 </#if>
                 <div class="form-outline  border border-secondary rounded p-3">
                     <div>
-                        <p>We will be sending a reset password link to your email.</p>
+                        <p><@spring.message 'authentication.weWillSendReset'/></p>
                     </div>
                     <div>
                         <p>
                             <input type="email" name="email" class="form-control"
-                                   placeholder="Enter your e-mail" required autofocus/>
+                                   placeholder="<@spring.message 'authentication.writeYourEmail'/>" required autofocus/>
                         </p>
                         <p class="text-center">
-                            <input type="submit" value="Send" class="btn btn-primary"/>
+                            <input type="submit" value="<@spring.message 'authentication.changePassword'/>" class="btn btn-primary"/>
                         </p>
                     </div>
                 </div>

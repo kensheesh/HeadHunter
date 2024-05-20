@@ -1,3 +1,4 @@
+<#import "../spring.ftl" as spring>
 <!doctype html>
 <html lang="en">
 <head>
@@ -10,9 +11,27 @@
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/"><@spring.message 'navbar.home'/></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
 
 <div class="text-center">
-    <h2>Reset Your Password</h2>
+    <h2><@spring.message 'authentication.resetYourPassword'/></h2>
     <#if error??>
         <b class="text-danger">${error}</b>
     </#if>
@@ -28,9 +47,9 @@
                 </#if>
                 <input type="hidden" name="token" value="${token!}">
                 <input type="password" name="password" class="form-control"
-                       placeholder="Enter your new password" required autofocus/>
+                       placeholder="<@spring.message 'authentication.enterYourNewPassword'/>" required autofocus/>
                 <p class="text-center">
-                    <button type="submit" class="btn btn-primary mt-3">Change Password</button>
+                    <button type="submit" class="btn btn-primary mt-3"><@spring.message 'authentication.changePassword'/></button>
                 </p>
             </form>
         </div>

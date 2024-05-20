@@ -1,5 +1,5 @@
 server:
-  port: 9089
+  port: 8000
 
 spring:
   datasource:
@@ -19,8 +19,6 @@ spring:
           auth: true
           starttls:
             enable: true
-
-
 
   liquibase:
     change-log: classpath:/db/changelog/master.yaml

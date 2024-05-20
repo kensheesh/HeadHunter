@@ -1,3 +1,4 @@
+<#import "spring.ftl" as spring>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,33 +26,33 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    <a class="nav-link active" aria-current="page" href="/"><@spring.message 'navbar.home'/></a>
                 </li>
                 <#if username??>
                     <li class="nav-item">
-                        <a class="nav-link" href="/profile">Profile</a>
+                        <a class="nav-link" href="/profile"><@spring.message 'navbar.profile' /></a>
                     </li>
                 </#if>
                 <li class="nav-item">
-                    <a class="nav-link" href="/vacancies">Vacancies</a>
+                    <a class="nav-link" href="/vacancies"><@spring.message 'navbar.vacancies' /></a>
                 </li>
                 <#if username??>
 
                     <#if type == "EMPLOYER">
                         <li class="nav-item">
-                            <a class="nav-link" href="/resumes">Resumes</a>
+                            <a class="nav-link" href="/resumes"><@spring.message 'navbar.resumes' /></a>
                         </li>
                     </#if>
 
                     <#if type = "APPLICANT">
                         <li class="nav-item">
-                            <a class="nav-link" href="/users/employers">Employers</a>
+                            <a class="nav-link" href="/users/employers"><@spring.message 'navbar.employers' /></a>
                         </li>
                     </#if>
 
                     <#if type = "EMPLOYER">
                         <li class="nav-item">
-                            <a class="nav-link" href="/users/applicants">Applicants</a>
+                            <a class="nav-link" href="/users/applicants"><@spring.message 'navbar.applicants' /></a>
                         </li>
                     </#if>
                 </#if>
@@ -62,14 +63,14 @@
                         <form action="/logout" method="post">
                             <input type="hidden" name="${(_csrf.parameterName)!'csrf'}"
                                    value="${(_csrf.token)!'--no-token--'}"/>
-                            <button class="btn btn-primary btn-sign-in" id="logout">Log Out</button>
+                            <button class="btn btn-primary btn-sign-in" id="logout"><@spring.message 'navbar.logout' /></button>
                         </form>
                     <#else>
-                        <a class="btn btn-primary btn-sign-in" href="/logout" id="logout">Log Out</a>
+                        <a class="btn btn-primary btn-sign-in" href="/logout" id="logout"><@spring.message 'navbar.logout' /></a>
                     </#if>
                 <#else>
-                    <a class="btn btn-primary btn-sign-in" href="/login">Sign In</a>
-                    <a class="btn btn-primary btn-sign-up" href="/register" style="width: 8rem">Sign Up</a>
+                    <a class="btn btn-primary btn-sign-in" href="/login"><@spring.message 'navbar.signIn' /></a>
+                    <a class="btn btn-primary btn-sign-up" href="/register" style="width: 8rem"><@spring.message 'navbar.signUp' /></a>
                 </#if>
             </div>
         </div>
@@ -77,9 +78,9 @@
 </nav>
 <div class="container">
     <#if username??>
-        <h1>HI ${username}</h1>
+        <h1><@spring.message 'home.hi'/> ${username}</h1>
     <#else>
-        <h1>WELCOME TO HOMEPAGE</h1>
+        <h1><@spring.message 'home.welcome'/></h1>
     </#if>
     <script>
         document.getElementById('logout').addEventListener('click', () => {
