@@ -5,7 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+          crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+            integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         .container {
             margin-top: 40px;
@@ -13,6 +22,35 @@
 
         .right-buttons .btn {
             margin-left: 10px;
+        }
+
+        .dropdown {
+            display: inline-block;
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            min-width: 160px;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
         }
     </style>
 </head>
@@ -56,6 +94,15 @@
                         </li>
                     </#if>
                 </#if>
+                <li class="nav-item">
+                    <div class="dropdown">
+                        <button class="btn" style="margin-top: 1.4px"><@spring.message 'dropdown' /></button>
+                        <div class="dropdown-content">
+                            <a href="?lang=ru"><@spring.message 'ru' /></a>
+                            <a href="?lang=en"><@spring.message 'en' /></a>
+                        </div>
+                    </div>
+                </li>
             </ul>
             <div class="right-buttons">
                 <#if username??>
@@ -63,14 +110,17 @@
                         <form action="/logout" method="post">
                             <input type="hidden" name="${(_csrf.parameterName)!'csrf'}"
                                    value="${(_csrf.token)!'--no-token--'}"/>
-                            <button class="btn btn-primary btn-sign-in" id="logout"><@spring.message 'navbar.logout' /></button>
+                            <button class="btn btn-primary btn-sign-in"
+                                    id="logout"><@spring.message 'navbar.logout' /></button>
                         </form>
                     <#else>
-                        <a class="btn btn-primary btn-sign-in" href="/logout" id="logout"><@spring.message 'navbar.logout' /></a>
+                        <a class="btn btn-primary btn-sign-in" href="/logout"
+                           id="logout"><@spring.message 'navbar.logout' /></a>
                     </#if>
                 <#else>
                     <a class="btn btn-primary btn-sign-in" href="/login"><@spring.message 'navbar.signIn' /></a>
-                    <a class="btn btn-primary btn-sign-up" href="/register" style="width: 8rem"><@spring.message 'navbar.signUp' /></a>
+                    <a class="btn btn-primary btn-sign-up" href="/register"
+                       style="width: 8rem"><@spring.message 'navbar.signUp' /></a>
                 </#if>
             </div>
         </div>

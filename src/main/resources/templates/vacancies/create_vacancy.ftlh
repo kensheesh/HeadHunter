@@ -1,4 +1,4 @@
-<#import "spring.ftl" as spring>
+<#import "../spring.ftl" as spring>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,6 +45,15 @@
                         <a class="nav-link" href="/users/applicants"><@spring.message 'navbar.applicants'/></a>
                     </li>
                 </#if>
+                <li class="nav-item">
+                    <div class="dropdown">
+                        <button class="btn" style="margin-top: 1.4px"><@spring.message 'dropdown' /></button>
+                        <div class="dropdown-content">
+                            <a href="?lang=ru"><@spring.message 'ru' /></a>
+                            <a href="?lang=en"><@spring.message 'en' /></a>
+                        </div>
+                    </div>
+                </li>
             </ul>
         </div>
     </div>
