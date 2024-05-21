@@ -1,3 +1,4 @@
+<#import "../spring.ftl" as spring>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -31,30 +32,31 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    <a class="nav-link active" aria-current="page" href="/"><@spring.message 'navbar.home'/></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/profile">Profile</a>
+                    <a class="nav-link" href="/profile"><@spring.message 'navbar.profile'/></a>
                 </li>
+
                 <li class="nav-item">
-                    <a class="nav-link" href="/vacancies">Vacancies</a>
+                    <a class="nav-link" href="/vacancies"><@spring.message 'navbar.vacancies'/></a>
                 </li>
 
                 <#if type = "EMPLOYER">
                     <li class="nav-item">
-                        <a class="nav-link" href="/resumes">Resumes</a>
+                        <a class="nav-link" href="/resumes"><@spring.message 'navbar.resumes'/></a>
                     </li>
                 </#if>
 
                 <#if type = "APPLICANT">
                     <li class="nav-item">
-                        <a class="nav-link" href="/users/employers">Employers</a>
+                        <a class="nav-link" href="/users/employers"><@spring.message 'navbar.employers'/></a>
                     </li>
                 </#if>
 
                 <#if type = "EMPLOYER">
                     <li class="nav-item">
-                        <a class="nav-link" href="/users/applicants">Applicants</a>
+                        <a class="nav-link" href="/users/applicants"><@spring.message 'navbar.applicants'/></a>
                     </li>
                 </#if>
             </ul>
@@ -66,20 +68,20 @@
     <div class="row mt-5">
         <div class="col-md-4">
             <#if guestUser.accountType == "EMPLOYER">
-                <h4 class="mb-3">Информация о работодателе:</h4>
+                <h4 class="mb-3"><@spring.message 'chat.employersInfo'/></h4>
                 <div class="col-5 mt-2">
-                    <img class="avatar rounded-circle " style="width: 6rem; height: 6rem" src="/profile/avatars/${guestUser.id}" alt="photo">
+                    <img class="avatar rounded-circle " style="width: 6rem; height: 6rem" src="/profile/avatars/${guestUser.id}" alt="<@spring.message 'chat.avatar'/>">
                 </div>
-                <p>Название: ${guestUser.name}</p>
+                <p><@spring.message 'applying.companyName'/>: ${guestUser.name}</p>
             <#else>
-                <h4 class="mb-3">Информация о соискателе:</h4>
+                <h4 class="mb-3"><@spring.message 'chat.applicantsInfo'/></h4>
                 <div class="col-5 mt-2">
-                    <img class="avatar rounded-circle " style="width: 6rem; height: 6rem" src="/profile/avatars/${guestUser.id}" alt="photo">
+                    <img class="avatar rounded-circle " style="width: 6rem; height: 6rem" src="/profile/avatars/${guestUser.id}" alt="<@spring.message 'chat.avatar'/>">
                 </div>
-                <p>Имя: ${guestUser.name} ${guestUser.surname}</p>
+                <p><@spring.message 'chat.name'/>: ${guestUser.name} ${guestUser.surname}</p>
             </#if>
             <p>Email: ${guestUser.email}</p>
-            <p>Номер телефона: ${guestUser.phoneNumber}</p>
+            <p><@spring.message 'authentication.phoneNumber'/>: ${guestUser.phoneNumber}</p>
         </div>
         <div class="col-md-8 mx-auto">
             <div class="chat-container" id="chatContainer">
@@ -89,10 +91,10 @@
                     <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}" value="${(_csrf.token)!'csrf-token'}" />
                 </#if>
                 <div class="mb-3">
-                    <label for="messageContent" class="form-label">Сообщение</label>
+                    <label for="messageContent" class="form-label"><@spring.message 'chat.message'/></label>
                     <textarea class="form-control" id="messageContent" rows="1"></textarea>
                 </div>
-                <button type="button" id="sendMessageBtn" class="btn btn-primary">Отправить</button>
+                <button type="button" id="sendMessageBtn" class="btn btn-primary"><@spring.message 'applying.send'/></button>
             </form>
         </div>
 

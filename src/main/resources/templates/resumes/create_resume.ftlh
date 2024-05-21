@@ -1,3 +1,4 @@
+<#import "../spring.ftl" as spring>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,30 +49,31 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    <a class="nav-link active" aria-current="page" href="/"><@spring.message 'navbar.home'/></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/profile">Profile</a>
+                    <a class="nav-link" href="/profile"><@spring.message 'navbar.profile'/></a>
                 </li>
+
                 <li class="nav-item">
-                    <a class="nav-link" href="/vacancies">Vacancies</a>
+                    <a class="nav-link" href="/vacancies"><@spring.message 'navbar.vacancies'/></a>
                 </li>
 
                 <#if type = "EMPLOYER">
                     <li class="nav-item">
-                        <a class="nav-link" href="/resumes">Resumes</a>
+                        <a class="nav-link" href="/resumes"><@spring.message 'navbar.resumes'/></a>
                     </li>
                 </#if>
 
                 <#if type = "APPLICANT">
                     <li class="nav-item">
-                        <a class="nav-link" href="/users/employers">Employers</a>
+                        <a class="nav-link" href="/users/employers"><@spring.message 'navbar.employers'/></a>
                     </li>
                 </#if>
 
                 <#if type = "EMPLOYER">
                     <li class="nav-item">
-                        <a class="nav-link" href="/users/applicants">Applicants</a>
+                        <a class="nav-link" href="/users/applicants"><@spring.message 'navbar.applicants'/></a>
                     </li>
                 </#if>
             </ul>
@@ -79,92 +81,92 @@
     </div>
 </nav>
 
+
 <div class="container mt-5">
-    <h2 class="mb-4">Resume Submission Form</h2>
+    <h2 class="mb-4"><@spring.message 'resumes.resumeSubmissionForm'/></h2>
     <form action="/resumes/create" method="post">
         <#if _csrf??>
             <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}" value="${(_csrf.token)!'csrf-token'}" />
         </#if>
         <div class="form-group">
-            <label for="name">Name of the resume:</label>
+            <label for="name"><@spring.message 'applying.nameOfResume'/></label>
             <input type="text" id="name" name="name" class="form-control" required>
         </div>
 
         <div class="form-group">
-            <label for="categoryName">Category:</label>
+            <label for="categoryName"><@spring.message 'resumes.category'/></label>
             <select id="categoryName" name="categoryName" class="form-select" required>
-                <option value="Медицина" class="form-brd-radius col-6">Медицина</option>
-                <option value="Информационные технологии">Информационные технологии</option>
-                <option value="Маркетинг">Маркетинг</option>
-                <option value="HrРекрутинг">HrРекрутинг</option>
-                <option value="Бухгалтерия">Бухгалтерия</option>
-                <option value="Образование">Образование</option>
-                <option value="Производство">Производство</option>
-                <option value="Строительство">Строительство</option>
-                <option value="Искусство и дизайн">Искусство и дизайн</option>
-                <option value="Путешествия и туризм">Путешествия и туризм</option>
-                <option value="Искусственный интеллект">Искусственный интеллект</option>
-                <option value="Экология и устойчивое развитие">Экология и устойчивое развитие</option>
-                <option value="Кибербезопасность">Кибербезопасность</option>
-                <option value="Финансовые технологии (FinTech)">Финансовые технологии (FinTech)</option>
-                <option value="Электромобили и зеленая энергия">Электромобили и зеленая энергия</option>
+                <option value="Медицина" class="form-brd-radius col-6"><@spring.message 'resumes.medicine'/></option>
+                <option value="Информационные технологии"><@spring.message 'resumes.it'/></option>
+                <option value="Маркетинг"><@spring.message 'resumes.marketing'/></option>
+                <option value="HrРекрутинг"><@spring.message 'resumes.hrRecruiting'/></option>
+                <option value="Бухгалтерия"><@spring.message 'resumes.accounting'/></option>
+                <option value="Образование"><@spring.message 'resumes.education'/></option>
+                <option value="Производство"><@spring.message 'resumes.manufacturing'/></option>
+                <option value="Строительство"><@spring.message 'resumes.construction'/></option>
+                <option value="Искусство и дизайн"><@spring.message 'resumes.artDesign'/></option>
+                <option value="Путешествия и туризм"><@spring.message 'resumes.travelTourism'/></option>
+                <option value="Искусственный интеллект"><@spring.message 'resumes.ai'/></option>
+                <option value="Экология и устойчивое развитие"><@spring.message 'resumes.ecologySustainability'/></option>
+                <option value="Кибербезопасность"><@spring.message 'resumes.cybersecurity'/></option>
+                <option value="Финансовые технологии (FinTech)"><@spring.message 'resumes.fintech'/></option>
+                <option value="Электромобили и зеленая энергия"><@spring.message 'resumes.electricVehiclesGreenEnergy'/></option>
             </select>
         </div>
 
         <div class="form-group">
-            <label for="salary">Expected Salary (USD):</label>
+            <label for="salary"><@spring.message 'applying.salary'/>:</label>
             <input type="number" id="salary" name="salary" class="form-control" required>
         </div>
 
         <div class="mb-3">
-            <label class="form-check-label" for="isActive">Is Active:</label>
+            <label class="form-check-label" for="isActive"><@spring.message 'resumes.isActive'/>:</label>
             <input class="form-check-input" type="checkbox" id="isActive" name="isActive">
         </div>
 
         <div class="form-group">
-            <label for="telegram">Telegram:</label>
+            <label for="telegram"><@spring.message 'resumes.telegram'/>:</label>
             <input type="text" id="telegram" name="contactInfos[0].contactType" value="Telegram" readonly>
-            <input type="text" id="telegramValue" name="contactInfos[0].value" class="form-control" placeholder="Telegram Username">
+            <input type="text" id="telegramValue" name="contactInfos[0].value" class="form-control" placeholder="<@spring.message 'resumes.telegram'/>">
         </div>
 
         <div class="form-group">
-            <label for="linkedin">LinkedIn:</label>
+            <label for="linkedin"><@spring.message 'resumes.linkedIn'/>:</label>
             <input type="text" id="linkedin" name="contactInfos[1].contactType" value="LinkedIn" readonly>
-            <input type="text" id="linkedinValue" name="contactInfos[1].value" class="form-control" placeholder="LinkedIn Profile">
+            <input type="text" id="linkedinValue" name="contactInfos[1].value" class="form-control" placeholder="<@spring.message 'resumes.linkedIn'/>">
         </div>
 
         <div class="form-group">
-            <label for="facebook">Facebook:</label>
+            <label for="facebook"><@spring.message 'resumes.facebook'/>:</label>
             <input type="text" id="facebook" name="contactInfos[2].contactType" value="Facebook" readonly>
-            <input type="text" id="facebookValue" name="contactInfos[2].value" class="form-control" placeholder="Facebook Profile">
+            <input type="text" id="facebookValue" name="contactInfos[2].value" class="form-control" placeholder="<@spring.message 'resumes.facebook'/>">
         </div>
 
         <div class="form-group">
             <label for="email">Email:</label>
             <input type="text" id="email" name="contactInfos[3].contactType" value="Email" readonly>
-            <input type="email" id="emailValue" name="contactInfos[3].value" class="form-control" placeholder="Email Address">
+            <input type="email" id="emailValue" name="contactInfos[3].value" class="form-control" placeholder="Email">
         </div>
 
         <div class="form-group">
-            <label for="phone">Phone Number:</label>
+            <label for="phone"><@spring.message 'authentication.phoneNumber'/>:</label>
             <input type="text" id="phone" name="contactInfos[4].contactType" value="PhoneNumber" readonly>
-            <input type="tel" id="phoneValue" name="contactInfos[4].value" class="form-control" placeholder="Phone Number">
+            <input type="tel" id="phoneValue" name="contactInfos[4].value" class="form-control" placeholder="<@spring.message 'authentication.phoneNumber'/>">
         </div>
 
 
 
-        <button type="button" class="btn btn-primary mt-3" id="educationAddButton">Добавить информацию об образовании
+        <button type="button" class="btn btn-primary mt-3" id="educationAddButton"><@spring.message 'resumes.addEducationInfo'/>
         </button>
         <div id="addEducation">
         </div>
 
-        <button type="button" class="btn btn-primary mt-3" id="experienceAddButton">Добавить информацию об опыте
-            работы
+        <button type="button" class="btn btn-primary mt-3" id="experienceAddButton"><@spring.message 'resumes.addExperienceInfo'/>
         </button>
         <div id="addExperience">
         </div>
 
-        <button class="btn btn-primary mt-3 mb-5" type="submit">Создать резюме</button>
+        <button class="btn btn-primary mt-3 mb-5" type="submit"><@spring.message 'applying.createResume'/></button>
     </form>
 </div>
 
@@ -189,19 +191,19 @@
         let newExperienceForm = document.createElement('div');
         newExperienceForm.className = 'border mt-3';
         newExperienceForm.innerHTML = '<label>' +
-            '<input name="workExpInfos[' + expCounter + '].years" class="form-control" type=number placeholder="Лет опыта"> ' +
+            '<input name="workExpInfos[' + expCounter + '].years" class="form-control" type=number placeholder="<@spring.message 'resumes.workYears'/>"> ' +
             '</label>' +
             '<label>' +
-            '<input name="workExpInfos[' + expCounter + '].companyName" class="form-control" type=text placeholder="Название компании"> ' +
+            '<input name="workExpInfos[' + expCounter + '].companyName" class="form-control" type=text placeholder="<@spring.message 'applying.companyName'/>"> ' +
             '</label>' +
             '<label>' +
-            '<input name="workExpInfos[' + expCounter + '].position" class="form-control" type=text placeholder="Должность"> ' +
+            '<input name="workExpInfos[' + expCounter + '].position" class="form-control" type=text placeholder="<@spring.message 'resumes.years'/>"> ' +
             '</label>' +
             '<label>' +
-            '<input name="workExpInfos[' + expCounter + '].responsibilities" class="form-control" type=text placeholder="Обязанности"> ' +
+            '<input name="workExpInfos[' + expCounter + '].responsibilities" class="form-control" type=text placeholder="<@spring.message 'resumes.responsibilities'/>"> ' +
             '</label>' +
 
-            '<button type="button" class="btn btn-danger ms-1 mb-1 remove-button">Удалить</i></button>'
+            '<button type="button" class="btn btn-danger ms-1 mb-1 remove-button"><@spring.message 'profile.delete'/></i></button>'
         experienceFormContainer.appendChild(newExperienceForm);
 
         newExperienceForm.querySelector('.remove-button').addEventListener('click', () => {
@@ -218,49 +220,28 @@
         let newEduForm = document.createElement('div');
         newEduForm.className = 'border mt-3';
         newEduForm.innerHTML = '<label>' +
-            '<input name="educationInfos[' + eduCounter + '].institution" class="form-control" type=text placeholder="institution"> ' +
+            '<input name="educationInfos[' + eduCounter + '].institution" class="form-control" type=text placeholder="<@spring.message 'resumes.institution'/>"> ' +
             '</label>' +
             '<label>' +
-            '<input name="educationInfos[' + eduCounter + '].program" class="form-control" type=text placeholder="program"> ' +
+            '<input name="educationInfos[' + eduCounter + '].program" class="form-control" type=text placeholder="<@spring.message 'resumes.program'/>"> ' +
             '</label>' +
             '<label>' +
-            '<input name="educationInfos[' + eduCounter + '].startDate" class="form-control" type=date placeholder="startDate" style="padding-top: 0" > ' +
+            '<input name="educationInfos[' + eduCounter + '].startDate" class="form-control" type=date placeholder="<@spring.message 'resumes.startDate'/>" style="padding-top: 0" > ' +
             '</label>' +
             '<label>' +
-            '<input name="educationInfos[' + eduCounter + '].endDate" class="form-control" type=date placeholder="endDate" style="padding-top: 0"> ' +
+            '<input name="educationInfos[' + eduCounter + '].endDate" class="form-control" type=date placeholder="<@spring.message 'resumes.endDate'/>" style="padding-top: 0"> ' +
             '</label>' +
             '<label>' +
-            '<input name="educationInfos[' + eduCounter + '].degree" class="form-control" type=text placeholder="degree"> ' +
+            '<input name="educationInfos[' + eduCounter + '].degree" class="form-control" type=text placeholder="<@spring.message 'resumes.degree'/>"> ' +
             '</label>' +
 
-            '<button type="button" class="btn btn-danger ms-1 mb-1 remove-button">Удалить</i></button>'
+            '<button type="button" class="btn btn-danger ms-1 mb-1 remove-button"><@spring.message 'profile.delete'/></i></button>'
         eduFormContainer.appendChild(newEduForm);
 
         newEduForm.querySelector('.remove-button').addEventListener('click', () => {
             eduFormContainer.removeChild(newEduForm);
         });
     });
-
-    // document.getElementById('resumeForm').addEventListener('submit', async (e) => {
-    //     e.preventDefault(); // Prevent default form submission
-    //     const form = e.target;
-    //     const formData = new FormData(form); // Create FormData object to collect form data
-    //     try {
-    //         const response = await fetch('/resumes/create', {
-    //             method: 'POST',
-    //             body: formData
-    //         });
-    //         if (!response.ok) {
-    //             throw new Error('Network response was not ok');
-    //         }
-    //         const data = await response.json();
-    //         console.log(data); // Output data received from the server
-    //         // Add your logic here to handle the response data
-    //     } catch (error) {
-    //         console.error('There was a problem with the fetch operation:', error);
-    //     }
-    // });
-
 </script>
 </body>
 </html>
