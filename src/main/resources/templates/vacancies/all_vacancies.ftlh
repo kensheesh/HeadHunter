@@ -1,3 +1,4 @@
+<#import "spring.ftl" as spring>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,37 +26,36 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    <a class="nav-link active" aria-current="page" href="/"><@spring.message 'navbar.home'/></a>
                 </li>
                 <#if username??>
                     <li class="nav-item">
-                        <a class="nav-link" href="/profile">Profile</a>
+                        <a class="nav-link" href="/profile"><@spring.message 'navbar.profile' /></a>
                     </li>
                 </#if>
                 <li class="nav-item">
-                    <a class="nav-link" href="/vacancies">Vacancies</a>
+                    <a class="nav-link" href="/vacancies"><@spring.message 'navbar.vacancies' /></a>
                 </li>
                 <#if username??>
 
                     <#if type == "EMPLOYER">
                         <li class="nav-item">
-                            <a class="nav-link" href="/resumes">Resumes</a>
+                            <a class="nav-link" href="/resumes"><@spring.message 'navbar.resumes' /></a>
                         </li>
                     </#if>
 
                     <#if type = "APPLICANT">
                         <li class="nav-item">
-                            <a class="nav-link" href="/users/employers">Employers</a>
+                            <a class="nav-link" href="/users/employers"><@spring.message 'navbar.employers' /></a>
                         </li>
                     </#if>
 
                     <#if type = "EMPLOYER">
                         <li class="nav-item">
-                            <a class="nav-link" href="/users/applicants">Applicants</a>
+                            <a class="nav-link" href="/users/applicants"><@spring.message 'navbar.applicants' /></a>
                         </li>
                     </#if>
                 </#if>
-
             </ul>
             <div class="right-buttons">
                 <#if username??>
@@ -63,67 +63,68 @@
                         <form action="/logout" method="post">
                             <input type="hidden" name="${(_csrf.parameterName)!'csrf'}"
                                    value="${(_csrf.token)!'--no-token--'}"/>
-                            <button class="btn btn-primary btn-sign-in" id="logout">Log Out</button>
+                            <button class="btn btn-primary btn-sign-in" id="logout"><@spring.message 'navbar.logout' /></button>
                         </form>
                     <#else>
-                        <a class="btn btn-primary btn-sign-in" href="/logout" id="logout">Log Out</a>
+                        <a class="btn btn-primary btn-sign-in" href="/logout" id="logout"><@spring.message 'navbar.logout' /></a>
                     </#if>
                 <#else>
-                    <a class="btn btn-primary btn-sign-in" href="/login">Sign In</a>
-                    <a class="btn btn-primary btn-sign-up" href="/register" style="width: 8rem">Sign Up</a>
+                    <a class="btn btn-primary btn-sign-in" href="/login"><@spring.message 'navbar.signIn' /></a>
+                    <a class="btn btn-primary btn-sign-up" href="/register" style="width: 8rem"><@spring.message 'navbar.signUp' /></a>
                 </#if>
             </div>
         </div>
     </div>
 </nav>
 
+
 <div class="container mt-5">
-    <h1 class="text-center mb-4">Вакансии</h1>
-    <h3>Сортировать по категориям</h3>
+    <h1 class="text-center mb-4"><@spring.message 'navbar.vacancies'/></h1>
+    <h3><@spring.message 'resumes.sortByCategory'/></h3>
     <form action="/vacancies" method="GET" class="mb-4">
         <#if _csrf??>
             <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}" value="${(_csrf.token)!'csrf-token'}" />
         </#if>
         <div class="row">
             <div class="col-md-4">
-                <select class="form-select border-dark" aria-label="выбрать категорию"
+                <select class="form-select border-dark" aria-label="<@spring.message 'resumes.select'/>"
                         name="category" id="category">
-                    <option selected>выбрать категорию (все)</option>
-                    <option value="Медицина" class="form-brd-radius col-6">Медицина</option>
-                    <option value="Информационные технологии">Информационные технологии</option>
-                    <option value="Маркетинг">Маркетинг</option>
-                    <option value="HrРекрутинг">HrРекрутинг</option>
-                    <option value="Бухгалтерия">Бухгалтерия</option>
-                    <option value="Образование">Образование</option>
-                    <option value="Производство">Производство</option>
-                    <option value="Строительство">Строительство</option>
-                    <option value="Искусство и дизайн">Искусство и дизайн</option>
-                    <option value="Путешествия и туризм">Путешествия и туризм</option>
-                    <option value="Искусственный интеллект">Искусственный интеллект</option>
-                    <option value="Экология и устойчивое развитие">Экология и устойчивое развитие</option>
-                    <option value="Кибербезопасность">Кибербезопасность</option>
-                    <option value="Финансовые технологии (FinTech)">Финансовые технологии (FinTech)</option>
-                    <option value="Электромобили и зеленая энергия">Электромобили и зеленая энергия</option>
+                    <option selected><@spring.message 'resumes.selectCategory'/></option>
+                    <option value="Медицина" class="form-brd-radius col-6"><@spring.message 'resumes.medicine'/></option>
+                    <option value="Информационные технологии"><@spring.message 'resumes.it'/></option>
+                    <option value="Маркетинг"><@spring.message 'resumes.marketing'/></option>
+                    <option value="HrРекрутинг"><@spring.message 'resumes.hrRecruiting'/></option>
+                    <option value="Бухгалтерия"><@spring.message 'resumes.accounting'/></option>
+                    <option value="Образование"><@spring.message 'resumes.education'/></option>
+                    <option value="Производство"><@spring.message 'resumes.manufacturing'/></option>
+                    <option value="Строительство"><@spring.message 'resumes.construction'/></option>
+                    <option value="Искусство и дизайн"><@spring.message 'resumes.artDesign'/></option>
+                    <option value="Путешествия и туризм"><@spring.message 'resumes.travelTourism'/></option>
+                    <option value="Искусственный интеллект"><@spring.message 'resumes.ai'/></option>
+                    <option value="Экология и устойчивое развитие"><@spring.message 'resumes.ecologySustainability'/></option>
+                    <option value="Кибербезопасность"><@spring.message 'resumes.cybersecurity'/></option>
+                    <option value="Финансовые технологии (FinTech)"><@spring.message 'resumes.fintech'/></option>
+                    <option value="Электромобили и зеленая энергия"><@spring.message 'resumes.electricVehiclesGreenEnergy'/></option>
                 </select>
             </div>
             <div class="col-md-4">
                 <label>
                     <select class="form-select" name="sort" id="sort">
-                        <option value="date" selected>Sort by Date</option>
-                        <option value="responses">Sort by Responses</option>
+                        <option value="date" selected><@spring.message 'vacancies.sortByDate'/></option>
+                        <option value="responses"><@spring.message 'vacancies.sortByResponses'/></option>
                     </select>
                 </label>
             </div>
             <div class="col-md-2">
                 <label>
                     <select class="form-select" name="order" id="order">
-                        <option value="asc" selected>Ascending</option>
-                        <option value="desc">Descending</option>
+                        <option value="asc" selected><@spring.message 'vacancies.ascending'/></option>
+                        <option value="desc"><@spring.message 'vacancies.descending'/></option>
                     </select>
                 </label>
             </div>
             <div class="col-md-2">
-                <button type="submit" class="btn btn-primary">Apply Filters</button>
+                <button type="submit" class="btn btn-primary"><@spring.message 'vacancies.applyFilter'/></button>
             </div>
         </div>
     </form>
@@ -131,7 +132,7 @@
 
     <div class="row">
         <#if vacanciesPage.content?size == 0>
-            <p>No vacancies found.</p>
+            <p><@spring.message 'error.notFound'/></p>
         <#else>
             <#list vacanciesPage.content as vacancy>
                 <div class="col-md-12">
@@ -141,8 +142,8 @@
 
                             <div class="card-body rounded-0">
                                 <h5 class="card-title">${vacancy.name}</h5>
-                                <p class="card-text">Зарплата: ${vacancy.salary}</p>
-                                <p class="card-text">Опубликовано: ${vacancy.updateTime}</p>
+                                <p class="card-text"><@spring.message 'applying.salary'/>: ${vacancy.salary}</p>
+                                <p class="card-text"><@spring.message 'vacancies.uploaded'/>: ${vacancy.updateTime}</p>
                             </div>
                         </div>
                     </a>
@@ -155,7 +156,7 @@
         <div class="col text-center">
             <#if vacanciesPage.hasPrevious()>
                 <a href="/vacancies?page=${vacanciesPage.previousPageable().pageNumber}&category=${category}&sort=${sort}&order=${sort}"
-                   class="btn btn-primary">Previous</a>
+                   class="btn btn-primary"><@spring.message 'resumes.last'/></a>
             </#if>
             <#list 0..vacanciesPage.totalPages - 1 as page>
                 <a href="/vacancies?page=${page}&category=${category}&sort=${sort}&order=${order}"
@@ -163,7 +164,7 @@
             </#list>
             <#if vacanciesPage.hasNext()>
                 <a href="/vacancies?page=${vacanciesPage.nextPageable().pageNumber}&category=${category}&sort=${sort}&order=${order}"
-                   class="btn btn-primary">Next</a>
+                   class="btn btn-primary"><@spring.message 'resumes.next'/></a>
             </#if>
         </div>
     </div>

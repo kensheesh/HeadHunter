@@ -1,3 +1,4 @@
+<#import "spring.ftl" as spring>
 <!doctype html>
 <html lang="en">
 <head>
@@ -11,7 +12,7 @@
 </head>
 <body>
 <div class="text-center">
-    <h2>Reset your password!</h2>
+    <h2><@spring.message 'vacancies.resetYourPassword'/></h2>
     <p class="text-warning">${message}</p>
 </div>
 </body>

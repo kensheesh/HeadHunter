@@ -1,3 +1,4 @@
+<#import "spring.ftl" as spring>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,49 +26,52 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    <a class="nav-link active" aria-current="page" href="/"><@spring.message 'navbar.home'/></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/profile">Profile</a>
+                    <a class="nav-link" href="/profile"><@spring.message 'navbar.profile'/></a>
                 </li>
+
                 <li class="nav-item">
-                    <a class="nav-link" href="/vacancies">Vacancies</a>
+                    <a class="nav-link" href="/vacancies"><@spring.message 'navbar.vacancies'/></a>
                 </li>
 
                 <#if type = "EMPLOYER">
                     <li class="nav-item">
-                        <a class="nav-link" href="/resumes">Resumes</a>
+                        <a class="nav-link" href="/resumes"><@spring.message 'navbar.resumes'/></a>
                     </li>
                 </#if>
 
                 <#if type = "APPLICANT">
                     <li class="nav-item">
-                        <a class="nav-link" href="/users/employers">Employers</a>
+                        <a class="nav-link" href="/users/employers"><@spring.message 'navbar.employers'/></a>
                     </li>
                 </#if>
 
                 <#if type = "EMPLOYER">
                     <li class="nav-item">
-                        <a class="nav-link" href="/users/applicants">Applicants</a>
+                        <a class="nav-link" href="/users/applicants"><@spring.message 'navbar.applicants'/></a>
                     </li>
                 </#if>
             </ul>
         </div>
     </div>
 </nav>
+
+
 <div class="container mt-5">
     <h1 class="text-center mb-4">
         <#if userType.name() == "APPLICANT">
-            Applicants
+            <@spring.message 'navbar.applicants'/>
         <#else>
-            Employers
+            <@spring.message 'navbar.employers'/>
         </#if>
 
     </h1>
 
     <div class="row">
         <#if users.content?size == 0>
-            <p>No users found.</p>
+            <p><@spring.message 'error.notFound'/></p>
         <#else>
             <#list users.content as user>
                 <div class="col-md-12">
@@ -76,7 +80,7 @@
                             <div class="card-body rounded-0">
                                 <h5 class="card-title">${user.name}</h5>
                                 <p class="card-text">Email: ${user.email}</p>
-                                <p class="card-text">Phone: ${user.phoneNumber}</p>
+                                <p class="card-text"><@spring.message 'authentication.phoneNumber'/>: ${user.phoneNumber}</p>
                             </div>
                         </div>
                     </a>
@@ -90,7 +94,7 @@
         <div class="col text-center">
             <#if users.hasPrevious()>
                 <a href="?page=${users.previousPageable().pageNumber}"
-                   class="btn btn-primary">Предыдущая</a>
+                   class="btn btn-primary"><@spring.message 'resumes.last'/></a>
             </#if>
             <#list 0..users.totalPages - 1 as page>
                 <a href="?page=${page}" class="btn btn-primary">${page + 1}</a>
@@ -98,20 +102,10 @@
 
             <#if users.hasNext()>
                 <a href="?page=${users.nextPageable().pageNumber}"
-                   class="btn btn-primary">Следующая</a>
+                   class="btn btn-primary"><@spring.message 'resumes.next'/></a>
             </#if>
         </div>
     </div>
-
-    <#--    <div class="pagination">-->
-    <#--        <#if users.hasPrevious()>-->
-    <#--            <a class="btn btn-primary" href="?page=${users.number - 1}">Previous</a>-->
-    <#--        </#if>-->
-    <#--        Page ${users.number + 1} of ${users.totalPages}-->
-    <#--        <#if users.hasNext()>-->
-    <#--            <a class="btn btn-primary" href="?page=${users.number + 1}">Next</a>-->
-    <#--        </#if>-->
-    <#--    </div>-->
 </div>
 
 </body>
