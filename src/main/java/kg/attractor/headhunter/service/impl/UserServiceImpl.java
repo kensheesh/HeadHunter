@@ -17,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -36,8 +35,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
     private final FileUtil fileUtil;
     private final UserRepository userRepository;
@@ -118,23 +116,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @SneakyThrows
-    public UserDto getUserByEmail(String email) {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("Can't find user with id: " + email));
-        return modelMapper.map(user, UserDto.class);
-    }
-
-    @Override
-    @SneakyThrows
     public void createUser(UserCreateDto userCreateDto) {
-        // Проверка существования пользователя по email
         if (userRepository.findByEmail(userCreateDto.getEmail()).isPresent()) {
-            throw new RuntimeException("User with email " + userCreateDto.getEmail() + " already exists");
+            throw new UserNotFoundException("User with email " + userCreateDto.getEmail() + " already exists");
         }
 
-        // Проверка существования пользователя по номеру телефона
         userRepository.findByPhoneNumber(userCreateDto.getPhoneNumber())
                 .ifPresent(user -> {
-                    throw new RuntimeException("User with phone number " + userCreateDto.getPhoneNumber() + " already exists");
+                    throw new UsernameNotFoundException("User with phone number " + userCreateDto.getPhoneNumber() + " already exists");
                 });
 
         if (userCreateDto.getAccountType().equals(AccountType.APPLICANT) && userCreateDto.getSurname() == null) {
@@ -214,7 +203,6 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    //------------------------------------------------------------------------------------------------------------------------------
     @Override
     public void updateResetPasswordToken(String token, String email) {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Could not find any user with the email " + email));

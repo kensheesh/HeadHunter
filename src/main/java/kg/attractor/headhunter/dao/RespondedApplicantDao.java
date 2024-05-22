@@ -6,14 +6,9 @@ import kg.attractor.headhunter.model.Vacancy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
-import java.sql.PreparedStatement;
-import java.sql.Statement;
 import java.util.List;
-import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
@@ -78,9 +73,4 @@ public class RespondedApplicantDao {
         String sql = "SELECT * FROM respondedApplicants WHERE resumeId IN (SELECT id FROM resumes WHERE userId = ?) OR vacancyId IN (SELECT id FROM vacancies WHERE authorId = ?)";
         return template.query(sql, new BeanPropertyRowMapper<>(RespondedApplicant.class), userId, userId);
     }
-
-//    public RespondedApplicant getRespondedApplicantById(int id) {
-//        String sql = "SELECT * FROM respondedApplicants WHERE id = ?";
-//        return template.queryForObject(sql, new BeanPropertyRowMapper<>(RespondedApplicant.class), id);
-//    }
 }

@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/vacancies")
 @RequiredArgsConstructor
-public class RespondedApplicantController {
+public class RespondedApplicantRestController {
     private final RespondedApplicantServiceImpl respondedApplicantService;
 
     @GetMapping("/{id}/responded-vacancies")

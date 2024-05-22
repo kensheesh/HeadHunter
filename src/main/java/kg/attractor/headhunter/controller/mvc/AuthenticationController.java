@@ -3,7 +3,6 @@ package kg.attractor.headhunter.controller.mvc;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import kg.attractor.headhunter.dto.UserCreateDto;
 import kg.attractor.headhunter.exception.UserNotFoundException;
@@ -38,11 +37,11 @@ public class AuthenticationController {
     @PostMapping("/register")
     public String register(@Valid UserCreateDto userDto, HttpServletRequest request) {
         userService.createUser(userDto);
-        authWithHttpServletRequest(request, userDto.getEmail(), userDto.getPassword());
+        autoLogin(request, userDto.getEmail(), userDto.getPassword());
         return "redirect:/profile";
     }
 
-    public void authWithHttpServletRequest(HttpServletRequest request, String username, String password) {
+    public void autoLogin(HttpServletRequest request, String username, String password) {
         try {
             request.login(username, password);
         } catch (ServletException e) {
@@ -70,8 +69,6 @@ public class AuthenticationController {
         return userRepository.findByEmail(auth.getName()).orElseThrow(() -> new UserNotFoundException("can't find user with this email"));
     }
 
-
-    //------------------------------------------------------------------------------------------------------------------------
     @GetMapping("forgot_password")
     public String showForgotPasswordForm() {
         return "authentication/forgot_password_form";
@@ -90,10 +87,7 @@ public class AuthenticationController {
         }
         return "authentication/forgot_password_form";
     }
-//------------------------------------------------------------------------------------------------------------------------
 
-
-    //------------------------------------------------------------------------------------------------------------------------
     @GetMapping("/reset_password")
     public String showResetPasswordForm(@RequestParam String token, Model model) {
         try {
@@ -118,7 +112,5 @@ public class AuthenticationController {
         }
         return "message";
     }
-//------------------------------------------------------------------------------------------------------------------------
-
 
 }

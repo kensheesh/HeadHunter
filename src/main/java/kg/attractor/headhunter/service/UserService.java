@@ -30,29 +30,11 @@ public interface UserService {
 
     UserDto getUserByAuth(Authentication authentication);
 
-    UserDto getUserByEmail(String email);
-
-//    List<UserDto> getEmployersByName(String name);
-//
-//    List<UserDto> getApplicantsByName(String name);
-//
-//    List<UserDto> getApplicantsBySurname(String surname);
-
-//    UserDto getApplicantByEmail(String email);
-//
-//    UserDto getApplicantByPhoneNumber(String phoneNumber);
-
     void createUser(UserCreateDto userCreateDto);
 
     void editUser(UserEditDto userEditDto, Authentication authentication);
 
-//    void editUserById(UserEditDto userEditDto, Integer userId);
-//
-//    void addAvatar(MultipartFile file, Authentication authentication);
-
     void uploadUserAvatar(Authentication authentication, MultipartFile file);
-
-//    UserDto mapToUserDto(User user);
 
     void editUserPassword(UserPasswordChangeDto user, Authentication authentication);
 

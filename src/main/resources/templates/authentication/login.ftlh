@@ -13,7 +13,7 @@
             display: none;
             position: absolute;
             background-color: white;
-            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
             z-index: 1;
             min-width: 160px;
         }
@@ -37,13 +37,12 @@
     <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
           name="viewport">
     <meta content="ie=edge" http-equiv="X-UA-Compatible">
-    <title>Http server Index page</title>
+    <title>Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 
 <body class="bg-body-secondary">
-
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -101,7 +100,7 @@
                     <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4 mt-4 pt-3">
                         <input type="submit" class="btn btn-primary btn-lg px-5 rounded-0" value="<@spring.message 'navbar.signIn'/>">
                     </div>
-                    <a href="/forgot_password"><@spring.message 'authentication.forgotPassword'/>?</a>
+                    <a href="/forgot_password" style="text-decoration: none"><@spring.message 'authentication.forgotPassword'/>?</a>
                 </form>
             </div>
         </div>
@@ -113,81 +112,10 @@
             <div class="d-flex align-items-center pb-0">
                 <div class="card-body">
                     <p class="card-text fs-6 mb-5 fw-medium text-center"><@spring.message 'authentication.dontHaveAccount'/> <a
-                                href="/register"><@spring.message 'authentication.register'/></a></p>
+                                href="/register" style="text-decoration: none;"><@spring.message 'authentication.register'/></a></p>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<script>
-    let form = document.getElementById('login-form')
-
-    function onLoginHandler(event) {
-        event.preventDefault()
-
-        let target = event.target
-        let data = new FormData(target)
-        let user = Object.fromEntries(data)
-
-        let headers = new Headers()
-        headers.set('Authorization', 'Basic ' + btoa(user.email + ':' + user.password))
-
-        fetchAuthorized(headers)
-
-    }
-
-    async function fetchAuthorized(auth) {
-        try {
-            await makeRequest('http://localhost:9089/api/auth/login', updateOptions({
-                method: 'post',
-                headers: auth
-            }));
-        } catch (e) {
-            alert(e)
-        }
-    }
-
-    function makeHeaders() {
-        let user = restoreUser()
-
-        let headers = new Headers()
-        headers.set('Content-Type', 'application/json')
-        if (user) {
-            headers.set('Authorization', 'Basic ' + btoa(user.email + ':' + user.password))
-        }
-        return headers
-    }
-
-    async function makeRequest(url, options) {
-        let settings = options || requestSettings
-        let response = await fetch(url, settings)
-
-        if (response.ok) {
-            return await response.json()
-        } else {
-            let err = new Error(response.status.toString())
-            err.response = response
-            console.log(err);
-            throw err
-        }
-    }
-
-    function updateOptions(options) {
-        console.log(options);
-        let update = {...options}
-        update.mode = 'cors'
-        update.headers = makeHeaders()
-        return update
-    }
-
-    const requestSettings = {
-        method: 'get',
-        headers: makeHeaders()
-    }
-
-    function restoreUser() {
-        return JSON.parse(localStorage.getItem('user'))
-    }
-</script>
 </body>
