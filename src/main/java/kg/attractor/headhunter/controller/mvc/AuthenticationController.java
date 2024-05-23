@@ -16,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,16 +31,25 @@ public class AuthenticationController {
     private final UserRepository userRepository;
 
     @GetMapping("/register")
-    public String register() {
-        return "authentication/register";
+    public String register(Model model) {
+        model.addAttribute("userDto", new UserCreateDto());
+        return "register";
     }
 
     @PostMapping("/register")
-    public String register(@Valid UserCreateDto userDto, HttpServletRequest request) {
+    public String register(@Valid UserCreateDto userDto, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            System.out.println("asdfadfasd");
+            model.addAttribute("userDto", userDto);
+            return "register";
+        }
         userService.createUser(userDto);
-        autoLogin(request, userDto.getEmail(), userDto.getPassword());
+//        autoLogin(request, userDto.getEmail(), userDto.getPassword());
         return "redirect:/profile";
     }
+
+
+
 
     public void autoLogin(HttpServletRequest request, String username, String password) {
         try {

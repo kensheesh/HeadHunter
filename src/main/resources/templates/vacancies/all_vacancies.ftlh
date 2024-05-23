@@ -1,4 +1,4 @@
-<#import "../spring.ftl" as spring>
+<#import "/spring.ftl" as spring>
 <!DOCTYPE html>
 <html lang="en">
 <head>

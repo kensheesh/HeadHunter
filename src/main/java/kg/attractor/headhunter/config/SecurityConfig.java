@@ -9,7 +9,6 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -43,21 +42,7 @@ public class SecurityConfig {
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/forgot_password")).permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/reset_password")).permitAll()
                         .anyRequest().authenticated())
-                .exceptionHandling(exception -> exception
-                        .accessDeniedHandler(customAccessDeniedHandler()));
+                .exceptionHandling(Customizer.withDefaults());
         return http.build();
-    }
-
-    @Bean
-    public AccessDeniedHandler customAccessDeniedHandler() {
-        return (request, response, accessDeniedException) -> {
-            response.setStatus(HttpStatus.FORBIDDEN.value());
-            response.setContentType("application/json;charset=UTF-8");
-
-            Map<String, Object> data = new HashMap<>();
-            data.put("error", "Недостаточно прав для доступа к этому ресурсу");
-
-            response.getWriter().write(new ObjectMapper().writeValueAsString(data));
-        };
     }
 }

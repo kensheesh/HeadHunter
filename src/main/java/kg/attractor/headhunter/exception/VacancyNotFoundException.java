@@ -1,6 +1,8 @@
 package kg.attractor.headhunter.exception;
 
-public class VacancyNotFoundException extends Exception{
+import java.util.NoSuchElementException;
+
+public class VacancyNotFoundException extends NoSuchElementException {
     public VacancyNotFoundException() {
     }
 

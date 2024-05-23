@@ -1,4 +1,4 @@
-<#import "../spring.ftl" as spring>
+<#import "spring.ftl" as spring>
 <!DOCTYPE html>
 <html lang="ru">
 
@@ -118,7 +118,9 @@
                         <i class="fas fa-lock fa-lg fa-fw"></i>
                         <div class="form-outline flex-fill">
                             <label class="form-label" for="password"><@spring.message 'authentication.password'/></label>
-                            <input type="password" id="password" name="password" class="form-control rounded-0"/>
+<#--                            <input type="password" id="password" name="password" class="form-control rounded-0"/>-->
+                            <@spring.formInput "userDto.password" 'id="password" name="password" class="form-control rounded-0"'/>
+                            <@spring.showErrors "<br>" "error"/>
                         </div>
                     </div>
 
@@ -155,6 +157,7 @@
         const accountTypeSelect = document.getElementById('accountType');
         const nameInput = document.getElementById('name');
         const surnameField = document.getElementById('surnameField');
+        const emailField = document.getElementById('emailField');
 
         accountTypeSelect.addEventListener('change', function () {
             const selectedValue = accountTypeSelect.value;
