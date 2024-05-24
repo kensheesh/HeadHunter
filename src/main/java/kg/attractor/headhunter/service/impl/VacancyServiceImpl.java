@@ -243,16 +243,6 @@ public class VacancyServiceImpl implements VacancyService {
             vacancy.setSalary(vacancyDto.getSalary());
         }
 
-        if (vacancyDto.getExperienceFrom() != null && vacancyDto.getExperienceTo() != null) {
-
-            vacancy.setExperienceFrom(vacancyDto.getExperienceFrom());
-            vacancy.setExperienceTo(vacancyDto.getExperienceTo());
-
-            if (vacancyDto.getExperienceFrom() > vacancyDto.getExperienceTo()) {
-                throw new VacancyNotFoundException("ExperienceTo cannot be less then experienceFrom");
-            }
-        }
-
 
         if (Boolean.TRUE.equals(vacancyDto.getIsActive())) {
             vacancy.setIsActive(true);

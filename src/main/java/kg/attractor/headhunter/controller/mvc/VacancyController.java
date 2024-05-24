@@ -92,7 +92,6 @@ public class VacancyController {
 
     @PostMapping("/create")
     public String createVacancy(@Valid VacancyCreateDto vacancyDto, BindingResult bindingResult, Model model, Authentication authentication) {
-        System.out.println(vacancyDto.toString());
         if (bindingResult.hasErrors()) {
             model.addAttribute("vacancyCreateDto", vacancyDto);
             return "vacancies/create_vacancy";
@@ -105,6 +104,7 @@ public class VacancyController {
 
     @GetMapping("/edit/{vacancyId}")
     public String editVacancy(Model model, @PathVariable Integer vacancyId) {
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth.getName().equals("anonymousUser")) {
             model.addAttribute("username", null);
@@ -116,11 +116,16 @@ public class VacancyController {
 
         VacancyViewEditDto vacancyDto = vacancyService.getVacancyByIdForEdit(vacancyId);
         model.addAttribute("vacancy", vacancyDto);
+        model.addAttribute("vacancyEditDto", new VacancyEditDto());
         return "vacancies/edit_vacancy";
     }
 
     @PostMapping("/edit/{vacancyId}")
-    public String editVacancy(@Valid VacancyEditDto vacancyEditDto, @PathVariable Integer vacancyId) {
+    public String editVacancy(@Valid VacancyEditDto vacancyEditDto, BindingResult bindingResult, Model model, @PathVariable Integer vacancyId) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("vacancyEditDto", vacancyEditDto);
+            return "vacancies/edit_vacancy";
+        }
         vacancyService.editVacancy(vacancyEditDto, vacancyId);
         return "redirect:/profile";
     }

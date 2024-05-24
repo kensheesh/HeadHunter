@@ -25,16 +25,8 @@
             border-radius: 0.25rem;
         }
 
-        .btn-toggle-fields {
-            margin-bottom: 1rem;
-        }
-
         .btn-toggle-fields .btn {
             margin-right: 0.5rem;
-        }
-
-        .hidden-fields {
-            display: none;
         }
         .dropdown {
             display: inline-block;
@@ -127,7 +119,9 @@
         </#if>
         <div class="form-group">
             <label for="name"><@spring.message 'applying.nameOfResume'/></label>
-            <input type="text" id="name" name="name" class="form-control" required>
+<#--            <input type="text" id="name" name="name" class="form-control" required>-->
+            <@spring.formInput "resumeCreateDto.name" 'type="text" class="form-control" id="name" name="name"'/>
+            <@spring.showErrors "<br>" "error text-danger"/>
         </div>
 
         <div class="form-group">
@@ -153,7 +147,9 @@
 
         <div class="form-group">
             <label for="salary"><@spring.message 'applying.salary'/>:</label>
-            <input type="number" id="salary" name="salary" class="form-control" required>
+<#--            <input type="number" id="salary" name="salary" class="form-control" required>-->
+            <@spring.formInput "resumeCreateDto.salary" 'type="number" id="salary" name="salary" class="form-control"'/>
+            <@spring.showErrors "<br>" "error text-danger"/>
         </div>
 
         <div class="mb-3">
