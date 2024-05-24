@@ -1,6 +1,8 @@
 package kg.attractor.headhunter.exception;
 
-public class SalaryNotFoundException extends Exception{
+import java.util.NoSuchElementException;
+
+public class SalaryNotFoundException extends NoSuchElementException {
     public SalaryNotFoundException() {
     }
 

@@ -1,6 +1,8 @@
 package kg.attractor.headhunter.exception;
 
-public class ContactInfoNotFound extends Exception{
+import java.util.NoSuchElementException;
+
+public class ContactInfoNotFound extends NoSuchElementException {
     public ContactInfoNotFound() {
     }
 

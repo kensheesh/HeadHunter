@@ -39,55 +39,55 @@
 </head>
 <body class="bg-body-secondary">
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/"><@spring.message 'navbar.home'/></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/profile"><@spring.message 'navbar.profile'/></a>
-                </li>
+<#--<nav class="navbar navbar-expand-lg navbar-light bg-light">-->
+<#--    <div class="container-fluid">-->
+<#--        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"-->
+<#--                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">-->
+<#--            <span class="navbar-toggler-icon"></span>-->
+<#--        </button>-->
+<#--        <div class="collapse navbar-collapse" id="navbarNav">-->
+<#--            <ul class="navbar-nav me-auto mb-2 mb-lg-0">-->
+<#--                <li class="nav-item">-->
+<#--                    <a class="nav-link active" aria-current="page" href="/"><@spring.message 'navbar.home'/></a>-->
+<#--                </li>-->
+<#--                <li class="nav-item">-->
+<#--                    <a class="nav-link" href="/profile"><@spring.message 'navbar.profile'/></a>-->
+<#--                </li>-->
 
-                <li class="nav-item">
-                    <a class="nav-link" href="/vacancies"><@spring.message 'navbar.vacancies'/></a>
-                </li>
+<#--                <li class="nav-item">-->
+<#--                    <a class="nav-link" href="/vacancies"><@spring.message 'navbar.vacancies'/></a>-->
+<#--                </li>-->
 
-                <#if type = "EMPLOYER">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/resumes"><@spring.message 'navbar.resumes'/></a>
-                    </li>
-                </#if>
+<#--                <#if type = "EMPLOYER">-->
+<#--                    <li class="nav-item">-->
+<#--                        <a class="nav-link" href="/resumes"><@spring.message 'navbar.resumes'/></a>-->
+<#--                    </li>-->
+<#--                </#if>-->
 
-                <#if type = "APPLICANT">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/users/employers"><@spring.message 'navbar.employers'/></a>
-                    </li>
-                </#if>
+<#--                <#if type = "APPLICANT">-->
+<#--                    <li class="nav-item">-->
+<#--                        <a class="nav-link" href="/users/employers"><@spring.message 'navbar.employers'/></a>-->
+<#--                    </li>-->
+<#--                </#if>-->
 
-                <#if type = "EMPLOYER">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/users/applicants"><@spring.message 'navbar.applicants'/></a>
-                    </li>
-                </#if>
-                <li class="nav-item">
-                    <div class="dropdown">
-                        <button class="btn" style="margin-top: 1.4px"><@spring.message 'dropdown' /></button>
-                        <div class="dropdown-content">
-                            <a href="?lang=ru"><@spring.message 'ru' /></a>
-                            <a href="?lang=en"><@spring.message 'en' /></a>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<#--                <#if type = "EMPLOYER">-->
+<#--                    <li class="nav-item">-->
+<#--                        <a class="nav-link" href="/users/applicants"><@spring.message 'navbar.applicants'/></a>-->
+<#--                    </li>-->
+<#--                </#if>-->
+<#--                <li class="nav-item">-->
+<#--                    <div class="dropdown">-->
+<#--                        <button class="btn" style="margin-top: 1.4px"><@spring.message 'dropdown' /></button>-->
+<#--                        <div class="dropdown-content">-->
+<#--                            <a href="?lang=ru"><@spring.message 'ru' /></a>-->
+<#--                            <a href="?lang=en"><@spring.message 'en' /></a>-->
+<#--                        </div>-->
+<#--                    </div>-->
+<#--                </li>-->
+<#--            </ul>-->
+<#--        </div>-->
+<#--    </div>-->
+<#--</nav>-->
 
 
 <div class="container mt-5">
@@ -104,7 +104,9 @@
                         </#if>
                         <div class="mb-3">
                             <label for="name" class="form-label"><@spring.message 'applying.nameOfVacancy'/>:</label>
-                            <input type="text" class="form-control" id="name" name="name">
+                            <#--                            <input type="text" class="form-control" id="name" name="name">-->
+                            <@spring.formInput "vacancyCreateDto.name" 'type="text" class="form-control" id="name" name="name"'/>
+                            <@spring.showErrors "<br>" "error text-danger"/>
                         </div>
                         <div class="mb-3">
                             <label for="categoryName" class="form-label">Category:</label>
@@ -128,20 +130,28 @@
                         </div>
                         <div class="mb-3">
                             <label for="salary" class="form-label"><@spring.message 'applying.salary'/>:</label>
-                            <input type="number" class="form-control" id="salary" name="salary">
+                            <#--                            <input type="number" class="form-control" id="salary" name="salary">-->
+                            <@spring.formInput "vacancyCreateDto.salary" 'type="number" class="form-control" id="salary" name="salary"'/>
+                            <@spring.showErrors "<br>" "error text-danger"/>
                         </div>
                         <div class="mb-3">
                             <label for="description" class="form-label"><@spring.message 'vacancies.description'/>:</label>
-                            <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                            <#--                            <input type="number" class="form-control" id="salary" name="salary">&ndash;&gt;-->
+                            <@spring.formInput "vacancyCreateDto.description" 'class="form-control" id="description" name="description"'/>
+                            <@spring.showErrors "<br>" "error text-danger"/>
                         </div>
                         <div class="mb-3 row">
                             <div class="col">
                                 <label for="experienceFrom" class="form-label"><@spring.message 'vacancies.experienceFrom'/>:</label>
-                                <input type="text" class="form-control" id="experienceFrom" name="experienceFrom">
+                                <#--                                <input type="text" class="form-control" id="experienceFrom" name="experienceFrom">-->
+                                <@spring.formInput "vacancyCreateDto.experienceFrom" 'type="text" class="form-control" id="experienceFrom" name="experienceFrom"'/>
+                                <@spring.showErrors "<br>" "error text-danger"/>
                             </div>
                             <div class="col">
                                 <label for="experienceTo" class="form-label"><@spring.message 'vacancies.experienceTo'/>:</label>
-                                <input type="text" class="form-control" id="experienceTo" name="experienceTo">
+                                <#--                                <input type="text" class="form-control" id="experienceTo" name="experienceTo">-->
+                                <@spring.formInput "vacancyCreateDto.experienceTo" ' type="text" class="form-control" id="experienceTo" name="experienceTo"'/>
+                                <@spring.showErrors "<br>" "error text-danger"/>
                             </div>
                         </div>
                         <div class="mb-3">
@@ -161,3 +171,4 @@
 
 </body>
 </html>
+

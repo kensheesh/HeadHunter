@@ -1,6 +1,8 @@
 package kg.attractor.headhunter.exception;
 
-public class WorkExperienceNotFoundException extends Exception{
+import java.util.NoSuchElementException;
+
+public class WorkExperienceNotFoundException extends NoSuchElementException {
     public WorkExperienceNotFoundException() {
     }
 

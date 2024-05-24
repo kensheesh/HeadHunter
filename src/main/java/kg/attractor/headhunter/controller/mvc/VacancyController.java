@@ -10,12 +10,12 @@ import kg.attractor.headhunter.service.UserService;
 import kg.attractor.headhunter.service.VacancyService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -86,11 +86,17 @@ public class VacancyController {
         }
 
         model.addAttribute("user", userService.getUserByAuth(authentication));
+        model.addAttribute("vacancyCreateDto", new VacancyCreateDto());
         return "vacancies/create_vacancy";
     }
 
     @PostMapping("/create")
-    public String createVacancy(@Valid VacancyCreateDto vacancyDto, Authentication authentication) {
+    public String createVacancy(@Valid VacancyCreateDto vacancyDto, BindingResult bindingResult, Model model, Authentication authentication) {
+        System.out.println(vacancyDto.toString());
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("vacancyCreateDto", vacancyDto);
+            return "vacancies/create_vacancy";
+        }
         UserDto user = userService.getUserByAuth(authentication);
         vacancyService.createVacancyForEmployer(vacancyDto, user.getId());
         return "redirect:/profile";

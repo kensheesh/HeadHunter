@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import kg.attractor.headhunter.dto.UserCreateDto;
 import kg.attractor.headhunter.exception.UserNotFoundException;
+import kg.attractor.headhunter.model.AccountType;
 import kg.attractor.headhunter.model.User;
 import kg.attractor.headhunter.repository.UserRepository;
 import kg.attractor.headhunter.service.UserService;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,24 +34,20 @@ public class AuthenticationController {
 
     @GetMapping("/register")
     public String register(Model model) {
-        model.addAttribute("userDto", new UserCreateDto());
-        return "register";
+        model.addAttribute("userCreateDto", new UserCreateDto());
+        return "authentication/register";
     }
 
     @PostMapping("/register")
-    public String register(@Valid UserCreateDto userDto, BindingResult bindingResult, Model model) {
+    public String register(@Valid UserCreateDto userDto, BindingResult bindingResult, Model model, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
-            System.out.println("asdfadfasd");
-            model.addAttribute("userDto", userDto);
-            return "register";
+            model.addAttribute("userCreateDto", userDto);
+            return "authentication/register";
         }
         userService.createUser(userDto);
-//        autoLogin(request, userDto.getEmail(), userDto.getPassword());
+        autoLogin(request, userDto.getEmail(), userDto.getPassword());
         return "redirect:/profile";
     }
-
-
-
 
     public void autoLogin(HttpServletRequest request, String username, String password) {
         try {
@@ -80,7 +78,15 @@ public class AuthenticationController {
     }
 
     @GetMapping("forgot_password")
-    public String showForgotPasswordForm() {
+    public String showForgotPasswordForm(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth.getName().equals("anonymousUser")) {
+            model.addAttribute("username", null);
+        } else {
+            model.addAttribute("username", auth.getName());
+            AccountType accountType = AccountType.valueOf(getUserFromAuth(auth).getAccountType());
+            model.addAttribute("type", accountType);
+        }
         return "authentication/forgot_password_form";
     }
 
@@ -122,5 +128,4 @@ public class AuthenticationController {
         }
         return "message";
     }
-
 }

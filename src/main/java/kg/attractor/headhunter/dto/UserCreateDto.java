@@ -15,22 +15,25 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserCreateDto {
-    @NotBlank(message = "Name is required")
+    @NotBlank(message = "{validation.register.nameBlank}")
+    @Pattern(regexp = "^[a-zA-Zа-яА-Я]+$", message = "{validation.register.nameContaining}")
     private String name;
 
+    @Pattern(regexp = "^[a-zA-Zа-яА-Я]*$", message = "{validation.register.surnameContaining}")
     private String surname;
 
-    @Email(message = "Invalid email")
-    @NotBlank(message = "Email is required")
+    @Email(message = "{validation.register.emailType}")
+    @NotBlank(message = "{validation.register.emailBlank}")
+    @Pattern(regexp = ".+@.+\\..+", message = "{validation.register.emailFormat}")
     private String email;
 
-    @NotBlank(message = "Password is required")
-    @Size(min = 4, max = 24, message = "Password's length must be >= 4 and <= 24")
-    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).+$", message = "Password should contain at least one uppercase letter, one number")
+    @NotBlank(message = "{validation.register.passwordBlank}")
+    @Size(min = 4, max = 24, message = "{validation.register.passwordLength}")
+    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).+$", message = "{validation.register.passwordContaining}")
     private String password;
 
-    @NotBlank(message = "Phone number is required")
-    @Pattern(regexp = "^\\d+$", message = "Phone number should contains only numbers")
+    @NotBlank(message = "{validation.register.phoneNumberBlank}")
+    @Pattern(regexp = "^(\\+\\d{1,3}[- ]?)?\\d{10}$", message = "{validation.register.phoneNumberFormat}")
     private String phoneNumber;
 
     private AccountType accountType;

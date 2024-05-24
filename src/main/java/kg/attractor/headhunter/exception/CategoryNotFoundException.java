@@ -1,6 +1,8 @@
 package kg.attractor.headhunter.exception;
 
-public class CategoryNotFoundException extends Exception{
+import java.util.NoSuchElementException;
+
+public class CategoryNotFoundException extends NoSuchElementException {
     public CategoryNotFoundException() {
     }
 

@@ -1,4 +1,4 @@
-<#import "spring.ftl" as spring>
+<#import "../spring.ftl" as spring>
 <!DOCTYPE html>
 <html lang="ru">
 
@@ -7,6 +7,7 @@
         .navbar-links a {
             margin-right: 10px;
         }
+
         .dropdown {
             display: inline-block;
             position: relative;
@@ -76,15 +77,17 @@
 <div class="container">
     <div class="d-flex justify-content-center">
         <div class="card rounded-0 p-4 pb-1 mt-5 text-black shadow-sm"
-             style="width: 28rem; height: 49rem;">
+             style="width: 28rem">
             <div class="card-body">
                 <h5 class="card-title fs-4 mb-5 fw-bolder"><@spring.message 'authentication.registerSubject'/></h5>
-                <form action="/register" class="mb-5 fs-6 fw-medium lh-sm" method="post">
+                <form action="/register" class="mb-2 fs-6 fw-medium lh-sm" method="post">
                     <#if _csrf??>
-                        <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}" value="${(_csrf.token)!'csrf-token'}" />
+                        <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
+                               value="${(_csrf.token)!'csrf-token'}"/>
                     </#if>
                     <div class="form-group mb-3 pb-0 ">
-                        <label class="form-label mb-2" for="accountType"><@spring.message 'authentication.accountsType'/></label>
+                        <label class="form-label mb-2"
+                               for="accountType"><@spring.message 'authentication.accountsType'/></label>
                         <select class="form-select rounded-0" id="accountType" name="accountType">
                             <option value="APPLICANT"><@spring.message 'authentication.applicant'/></option>
                             <option value="EMPLOYER"><@spring.message 'authentication.employer'/></option>
@@ -95,14 +98,16 @@
                         <i class="fas fa-user fa-lg fa-fw"></i>
                         <div class="form-outline flex-fill">
                             <label class="form-label" for="name"><@spring.message 'authentication.name'/></label>
-                            <input type="text" id="name" name="name" class="form-control rounded-0"/>
+                            <@spring.formInput "userCreateDto.name" 'type="text" id="name" name="name" class="form-control rounded-0"'/>
+                            <@spring.showErrors "<br>" "error text-danger"/>
                         </div>
                     </div>
                     <div class="d-flex flex-row align-items-center mb-4 pb-1">
                         <i class="fas fa-user fa-lg fa-fw"></i>
                         <div class="form-outline flex-fill " id="surnameField">
                             <label class="form-label" for="surname"><@spring.message 'authentication.surname'/></label>
-                            <input type="text" id="surname" name="surname" class="form-control rounded-0"/>
+                            <@spring.formInput "userCreateDto.surname" 'type="text" id="surname" name="surname" class="form-control rounded-0"'/>
+                            <@spring.showErrors "<br>" "error text-danger"/>
                         </div>
                     </div>
 
@@ -110,30 +115,34 @@
                         <i class="fas fa-envelope fa-lg fa-fw"></i>
                         <div class="form-outline flex-fill">
                             <label class="form-label" for="email">E-mail</label>
-                            <input type="email" id="email" name="email" class="form-control rounded-0"/>
+                            <@spring.formInput "userCreateDto.email" 'type="email" id="email" name="email" class="form-control rounded-0"'/>
+                            <@spring.showErrors "<br>" "error text-danger"/>
                         </div>
                     </div>
 
                     <div class="d-flex flex-row align-items-center mb-4 pb-1">
                         <i class="fas fa-lock fa-lg fa-fw"></i>
                         <div class="form-outline flex-fill">
-                            <label class="form-label" for="password"><@spring.message 'authentication.password'/></label>
-<#--                            <input type="password" id="password" name="password" class="form-control rounded-0"/>-->
-                            <@spring.formInput "userDto.password" 'id="password" name="password" class="form-control rounded-0"'/>
-                            <@spring.showErrors "<br>" "error"/>
+                            <label class="form-label"
+                                   for="password"><@spring.message 'authentication.password'/></label>
+                            <@spring.formInput "userCreateDto.password" 'id="password" name="password" class="form-control rounded-0"'/>
+                            <@spring.showErrors "<br>" "error text-danger"/>
                         </div>
                     </div>
 
                     <div class="d-flex flex-row align-items-center mb-4 pb-1">
                         <i class="fas fa-phone-alt fa-lg fa-fw"></i>
                         <div class="form-outline flex-fill">
-                            <label class="form-label" for="phoneNumber"><@spring.message 'authentication.phoneNumber'/></label>
-                            <input type="tel" id="phoneNumber" name="phoneNumber" class="form-control rounded-0"/>
+                            <label class="form-label"
+                                   for="phoneNumber"><@spring.message 'authentication.phoneNumber'/></label>
+                            <@spring.formInput "userCreateDto.phoneNumber" 'type="tel" id="phoneNumber" name="phoneNumber" class="form-control rounded-0"'/>
+                            <@spring.showErrors "<br>" "error text-danger"/>
                         </div>
                     </div>
 
                     <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4 mt-4 pt-3">
-                        <button type="submit" class="btn btn-primary btn-lg px-5 rounded-0"><@spring.message 'authentication.registerTo'/></button>
+                        <button type="submit"
+                                class="btn btn-primary btn-lg px-5 rounded-0"><@spring.message 'authentication.registerTo'/></button>
                     </div>
                 </form>
             </div>
@@ -144,7 +153,8 @@
              style="width: 28rem; height: 4rem;">
             <div class="d-flex align-items-center pb-0">
                 <div class="card-body">
-                    <p class="card-text fs-6 mb-5 fw-medium text-center"><@spring.message 'authentication.areRegistered'/> <a
+                    <p class="card-text fs-6 mb-5 fw-medium text-center"><@spring.message 'authentication.areRegistered'/>
+                        <a
                                 href="/login"><@spring.message 'navbar.signIn'/></a></p>
                 </div>
             </div>
@@ -163,7 +173,7 @@
             const selectedValue = accountTypeSelect.value;
 
             if (selectedValue === 'EMPLOYER') {
-                nameInput.previousElementSibling.textContent = 'Имя компании';
+                nameInput.previousElementSibling.textContent = '<@spring.message 'authentication.nameOfCompany'/>';
                 surnameField.style.display = 'none';
                 emailField.style.marginTop = '-40px';
 
