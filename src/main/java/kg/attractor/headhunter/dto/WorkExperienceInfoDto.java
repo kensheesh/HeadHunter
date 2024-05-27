@@ -11,15 +11,15 @@ import lombok.*;
 @ToString
 public class WorkExperienceInfoDto {
 
-    @PositiveOrZero(message = "Years for Work Experience cannot be negative")
+    @PositiveOrZero(message = "{validation.resume.workExpYear}")
     private Integer years;
 
-    @NotBlank(message = "company name cannot be null")
+    @NotBlank(message = "{validation.resume.workExpCompanyName}")
     private String companyName;
 
-    @NotBlank(message = "position cannot be null")
+    @NotBlank(message = "{validation.resume.workExpPosition}")
     private String position;
 
-    @NotBlank(message = "responsibilities cannot be null")
+    @NotBlank(message = "{validation.resume.workExpResponsibilities}")
     private String responsibilities;
 }

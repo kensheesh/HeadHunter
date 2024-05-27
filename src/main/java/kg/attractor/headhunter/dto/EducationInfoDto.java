@@ -12,18 +12,18 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @ToString
 public class EducationInfoDto {
-    @NotBlank(message = "Institution cannot be blank")
+    @NotBlank(message = "{validation.resume.educationInfoInstitution}")
     private String institution;
 
-    @NotBlank(message = "Program cannot be blank")
+    @NotBlank(message = "{validation.resume.educationInfoProgram}")
     private String program;
 
-    @NotNull(message = "Start date cannot be null")
+    @NotNull(message = "{validation.resume.educationInfoStartDate}")
     private LocalDate startDate;
 
-    @NotNull(message = "End date cannot be null")
+    @NotNull(message = "{validation.resume.educationInfoEndDate}")
     private LocalDate endDate;
 
-    @NotBlank(message = "Degree cannot be blank")
+    @NotBlank(message = "{validation.resume.educationInfoDegree}")
     private String degree;
 }

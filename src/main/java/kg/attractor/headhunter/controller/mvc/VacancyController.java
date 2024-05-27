@@ -93,6 +93,15 @@ public class VacancyController {
     @PostMapping("/create")
     public String createVacancy(@Valid VacancyCreateDto vacancyDto, BindingResult bindingResult, Model model, Authentication authentication) {
         if (bindingResult.hasErrors()) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if (auth.getName().equals("anonymousUser")) {
+                model.addAttribute("username", null);
+            } else {
+                model.addAttribute("username", auth.getName());
+                AccountType accountType = AccountType.valueOf(getUserFromAuth(auth).getAccountType());
+                model.addAttribute("type", accountType);
+            }
+            model.addAttribute("user", userService.getUserByAuth(authentication));
             model.addAttribute("vacancyCreateDto", vacancyDto);
             return "vacancies/create_vacancy";
         }

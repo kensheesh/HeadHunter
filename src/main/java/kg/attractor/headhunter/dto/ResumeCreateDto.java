@@ -17,16 +17,17 @@ import java.util.List;
 @NoArgsConstructor
 public class ResumeCreateDto {
 
-    @NotBlank(message = "Name cannot be null or blank")
-    @Size(min = 2, max = 20)
+    @NotBlank(message = "{validation.resume.nameBlank}")
+    @Size(min = 2, max = 20, message = "{validation.resume.nameSize}")
     private String name;
 
-    @NotBlank(message = "Category cannot be null or blank")
+    @NotBlank(message = "{validation.vacancy.categoryNameBlank}")
+    @Size(min = 2, max = 50, message = "{validation.vacancy.categoryNameSize}")
     private String categoryName;
 
-    @NotNull(message = "Salary cannot be null")
-    @Min(0)
-    @Max(1000000)
+    @NotNull(message = "{validation.vacancy.salaryNotNull}")
+    @DecimalMin(value = "0.0", message = "{validation.vacancy.salaryMin}")
+    @DecimalMax(value = "1000000.0", message = "{validation.vacancy.salaryMax}")
     private BigDecimal salary;
 
     @Valid

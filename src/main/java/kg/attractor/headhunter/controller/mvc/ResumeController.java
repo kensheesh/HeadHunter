@@ -87,6 +87,14 @@ public class ResumeController {
     @PostMapping("/create")
     public String createResume(@Valid ResumeCreateDto resumeDto, BindingResult bindingResult, Model model, Authentication authentication) {
         if (bindingResult.hasErrors()) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if (auth.getName().equals("anonymousUser")) {
+                model.addAttribute("username", null);
+            } else {
+                model.addAttribute("username", auth.getName());
+                AccountType accountType = AccountType.valueOf(getUserFromAuth(auth).getAccountType());
+                model.addAttribute("type", accountType);
+            }
             model.addAttribute("resumeCreateDto", resumeDto);
             return "resumes/create_resume";
         }
